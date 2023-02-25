@@ -1,0 +1,116 @@
+.sidebar {
+    grid-area: menu;
+    padding: 18px 0 24px;
+    margin-right: 48px;
+}
+.sidebarMob {
+    grid-area: menu;
+    display: block;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    padding: 16px 0 17px;
+}
+
+.links1 {
+    font-weight: 500;
+}
+.links2 {
+    font-weight: 400;
+}
+
+.currentLink {
+    background-color: rgba(129,119,99,.1);
+}
+
+.links1 li a {
+    border-radius: 8px;
+    display: block;
+    padding: 9px 12px 10px!important;
+    text-decoration: none;
+    padding: 0;
+    font-size: 16px;
+    line-height: 17px;
+}
+
+.links1 li a:hover {
+    background-color: rgba(129,119,99,.1);
+}
+
+.links2 {
+    margin-left: 16px;
+    padding: 8px 0 16px;
+}
+
+.links2 li a:hover {
+    background-color: rgba(129,119,99,.1);
+}
+
+.links li div {
+    padding: 15px 0 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.links li div:hover {
+    color: #9e9b98;
+}
+.sublinks {
+    padding-bottom: 16px;
+}
+.sublinks li {
+    cursor: pointer;
+}
+.sublinks li span:hover {
+    color: #9e9b98;
+}
+.sublinks li span {
+    padding: 9px 0 10px;
+    font-weight: 500;
+    display: block;
+}
+
+
+
+
+.sidebarMob {
+    display: none;
+    padding: 0 0 24px;
+
+}
+.sidebarMob .links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.sidebarMob .links li {
+    margin: 0 15px 15px 0;
+    background: #efeeed;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+}
+.sidebarMob .links li div {
+    padding: 12px;
+}
+.sidebarMob .links li a {
+    padding: 12px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media only screen and (max-width: 980px) {
+    .sidebar {
+      display: none;
+    }
+    .sidebarMob {
+        display: block;
+    }
+}

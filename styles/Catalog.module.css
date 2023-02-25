@@ -1,0 +1,12 @@
+.catalog {
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(214px,1fr));
+}
+
+@media only screen and (max-width: 483px) {
+    .catalog {
+        grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    }
+}

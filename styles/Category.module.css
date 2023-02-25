@@ -1,0 +1,25 @@
+.wrapper {
+  grid-template: "menu main" auto/minmax(270px,auto) minmax(660px,auto);
+  display: grid;
+  margin: 0 15px;
+}
+
+.main {
+  grid-area: main;
+}
+
+.section:not(:first-child) {
+  margin-top: 40px;
+}
+
+.section h2.sectionTitle {
+  font-weight: 700;
+  font-size: 28px;
+  padding: 19px 0 22px;
+}
+
+@media only screen and (max-width: 980px) {
+  .wrapper {
+    grid-template: "menu" "main";
+  }
+}
