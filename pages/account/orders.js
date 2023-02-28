@@ -5,12 +5,29 @@ import Link from 'next/link'
 import { useTranslation } from '../../hooks/useTranslation';
 
 import {useState, useEffect} from 'react'
-
 import {firebaseAuth} from '../../utils/init-firebase';
-
 import Order from '../../components/order';
-
 import ArrowLeftSVG from '../../public/icons/arrow-left'
+import { withSessionSsr } from "../../lib/withSession";
+
+export const getServerSideProps = withSessionSsr(
+  async function getServerSideProps({ req }) {
+    const user = req.session.user;
+
+    if (!user) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };  
+    }
+
+    return {
+      props: {}
+    };
+  },
+);
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);

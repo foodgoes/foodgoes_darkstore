@@ -11,6 +11,9 @@ async function handler(req, res) {
     await dbConnect();
 
     const {id: userId} = req.session.user;
+    if (!userId) {
+      throw('Error, auth.');
+    }
 
     if (req.method === 'GET') {
       const cart = await handleGETAsync(userId, req.query);
