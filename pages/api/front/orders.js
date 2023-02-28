@@ -18,8 +18,6 @@ async function handler(req, res) {
     
     if (req.method === 'GET') {
       const orders = await handleGETAsync(userId, req.query);
-      console.log('orders')
-      console.log(orders)
       return res.status(200).json(orders);
     }
 
