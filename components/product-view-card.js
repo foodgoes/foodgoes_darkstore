@@ -13,13 +13,13 @@ export default function ProductViewCard({product, disabledBuy=false}) {
 
             <div className={styles.wrapper}>
                 <div>
-                    {product.image && <img src={product.image} />}
+                    {product.images && <img src={product.images[0]} />}
                 </div>
                 <div className={styles.info}>
                     <div className={styles.priceBlock}>
-                        {product.discountPrice ? (
+                        {product.compareAtPrice ? (
                             <>
-                                <span className={styles.discountPrice}>&#8362;{product.discountPrice}</span>
+                                <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice}</span>
                                 <span className={styles.oldPriceWithLine}>
                                     <span className={styles.oldPrice}>&#8362;{product.price}</span>
                                     <span className={styles.line}></span>
@@ -30,7 +30,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                     
                     <h3 className={styles.title}>{product.title[locale]}</h3>
                 </div>
-                {!disabledBuy && <BuyButton productId={product.id} price={product.discountPrice || product.price} disabled={!product.quantity} secondary/>}
+                {!disabledBuy && <BuyButton productId={product.id} price={product.compareAtPrice || product.price} disabled={!product.quantity} secondary/>}
             </div>
         </div>
     );

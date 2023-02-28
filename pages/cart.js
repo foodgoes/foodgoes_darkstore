@@ -11,8 +11,7 @@ import CartContext from '../context/cart-context'
 
 import { useTranslation } from '../hooks/useTranslation';
 
-import {firebaseAuth, firebaseDB} from '../utils/init-firebase';
-import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp} from "firebase/firestore";
+import {firebaseAuth} from '../utils/init-firebase';
 
 import TrashSVG from '../public/icons/trash'
 import ArrowLeftSVG from '../public/icons/arrow-left'
@@ -33,47 +32,32 @@ export default function Cart() {
       setProducts([]);
       return;
     };
-    const productIds = cartFromContext.cart?.products?.map(p => p.productId);
 
-    async function fetchProducts(productIds) {
-      try {
-        const products = [];
+    const user = firebaseAuth.currentUser;
+    if (user) {
+      const userId = user.uid;
 
-        if (productIds && productIds.length > 0) {
-          const querySnapshot = await getDocs(query(collection(firebaseDB, "products"), 
-          where("__name__", "in", productIds), 
-          where("enabled", "==", true)));
-          querySnapshot.forEach((doc) => {
-            products.push({
-              id: doc.id,
-              ...doc.data(),
-              image: doc.data().images.length > 0 ? doc.data().images[0] : null,
-              quantity: cartFromContext.cart.products.find(p => p.productId === doc.id).quantity,
-            });
-          });
+      const getProductsCartAPI = async (userId) => {
+        try {
+          const res = await fetch('/api/front/cart?userId='+userId);
+          const cart = await res.json();
+    
+          setProducts(cart.products);
+          setProductsTotal(cart.total);
+        } catch(e) {
+          console.log(e);
         }
-  
-        setProducts(products);
-
-        const productsTotal = products.reduce((acc, p) => {
-          const price = p.discountPrice || p.price;
-          acc += p.quantity * price;
-          return acc;
-        }, 0);
-        setProductsTotal(productsTotal);
-      } catch(e) {
-        console.log(e);
       }
+      getProductsCartAPI(userId);
     }
-
-    fetchProducts(productIds);
   }, [cartFromContext]);
 
   const clearCart = async () => {
     const {cart: {id}, deleteCart} = cartFromContext;
-    await deleteDoc(doc(firebaseDB, "cart", id));
     deleteCart();
     setProducts([]);
+
+    await deleteCartAPI(id);
   };
 
   const checkout = async () => {
@@ -81,20 +65,41 @@ export default function Cart() {
     if (user) {
       const userId = user.uid;
 
-      const total = productsTotal+shippingTotal-discountTotal;
+      const total = +(productsTotal+shippingTotal-discountTotal).toFixed(2);
 
-      const docRef = await addDoc(collection(firebaseDB, "orders"), {
-        userId, products, statusPayment: 'pending', statusShipping: 'pending', 
-        shippingTotal, productsTotal, discountTotal, total,
-        createdAt: serverTimestamp()
+      const order = await createOrderAPI(userId, {
+        lineItems: products,
+        financialStatus: 'pending',
+        fulfillmentStatus: 'pending_fulfillment',
+        totalShippingPrice: shippingTotal,
+        totalTax: 0,
+        totalLineItemsPrice: productsTotal, 
+        totalDiscounts: discountTotal,
+        subtotalPrice: productsTotal-discountTotal,
+        totalPrice: total,
       });
-      if (docRef.id) {
+      if (order) {
         clearCart();
       }
     } else {
       console.log('Авторизуйтесь, чтобы оформить заказ');
     }
   };
+
+
+  const createOrderAPI = async (userId, data) => {
+    const body = {userId, data};
+    const res = await fetch('/api/front/order', {method: 'POST',  headers: {
+        'Content-Type': 'application/json',
+        }, body: JSON.stringify(body)});
+
+    return await res.json();
+  };
+  async function deleteCartAPI(cartId) {
+    const res = await fetch('/api/front/cart?cartId='+cartId, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
+    return await res.json();
+  } 
+
 
   if (!products) return;
   
@@ -160,7 +165,7 @@ export default function Cart() {
                 </tr>
                 <tr>
                   <th>{translate('payment')}</th>
-                  <td>&#8362; {productsTotal + shippingTotal}</td>
+                  <td>&#8362; {+(productsTotal + shippingTotal).toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>

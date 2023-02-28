@@ -5,10 +5,8 @@ import '../styles/globals.css'
 import { useEffect, useState} from 'react';
 import localFont from 'next/font/local';
 
-import {firebaseAuth, firebaseDB} from '../utils/init-firebase';
-
+import {firebaseAuth} from '../utils/init-firebase';
 import { onAuthStateChanged } from "firebase/auth";
-import { query, collection, where, getDocs } from "firebase/firestore";
 
 import CartContext from '../context/cart-context';
 
@@ -38,27 +36,22 @@ function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState(null);
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, user => {
+    onAuthStateChanged(firebaseAuth, async user => {
       setAuth(!!user);
 
       if (user && !cart) {
-        fetchCart(user.uid);
+        const cart = await getCartAPI(user.uid);
+        setCart(cart);
       }
     });
   }, []);
 
-  const fetchCart = async userId => {
+  const getCartAPI = async userId => {
     try {
-      const querySnapshot = await getDocs((query(collection(firebaseDB, "cart"), where("userId", "==", userId))));
-      if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0];
-        setCart({
-          id: doc.id,
-          ...doc.data()
-        });
-      }
+      const res = await fetch('/api/front/cart?userId='+userId, {headers: {'Content-Type': 'application/json',}});
+      return await res.json();
     } catch(e) {
-      console.log(e);
+      return null;
     }
   };
 

@@ -32,7 +32,7 @@ export default function Sidebar({categories, slug}) {
                 <>
                     {link.links.length > 0 && (
                         <ul className={styles.sublinks}>
-                            {link.links.map((l, j) => <li key={j}><Link href={`/category/${l.slug}`}><span>{l.title[locale]}</span></Link></li>)}
+                            {link.links.map((l, j) => <li key={j}><Link href={`/category/${l.handle}`}><span>{l.title[locale]}</span></Link></li>)}
                         </ul>
                     )}
                 </>
@@ -63,11 +63,11 @@ export default function Sidebar({categories, slug}) {
                                 {
                                     c.links?.map((l1, i1) => (
                                         <li key={i1}>
-                                            <Link href={`/category/${l1.slug}`} className={l1.slug === slug ? ' ' +styles.currentLink : ''}>{l1.title[locale]}</Link>
-                                            {l1.slug === slug && (
+                                            <Link href={`/category/${l1.handle}`} className={l1.handle === slug ? ' ' +styles.currentLink : ''}>{l1.title[locale]}</Link>
+                                            {l1.handle === slug && (
                                                 <ul className={styles.links2}>
                                                     {l1.links?.map((l2, i2) => (
-                                                        <li key={i2}><Link href={`/category/${l1.slug}/${l2.slug}`}>{l2.title[locale]}</Link></li>
+                                                        <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`}>{l2.title[locale]}</Link></li>
                                                     ))}
                                                 </ul>
                                             )}
@@ -88,7 +88,7 @@ export default function Sidebar({categories, slug}) {
                             {link && <li key={'catalog'} onClick={() => toggleLinks()}><div><ChevronLeftSVG /></div></li>}
                             {catalogMob}
                             {link && (
-                                <>{link.links.map((l, j) => <li key={j}><Link href={`/category/${l.slug}`}><span>{l.title[locale]}</span></Link></li>)}</>
+                                <>{link.links.map((l, j) => <li key={j}><Link href={`/category/${l.handle}`}><span>{l.title[locale]}</span></Link></li>)}</>
                             )}
                         </ul>
                         
@@ -102,11 +102,11 @@ export default function Sidebar({categories, slug}) {
                                 {
                                     c.links?.map((l1, i1) => (
                                         <li key={i1}>
-                                            <Link href={`/category/${l1.slug}`} className={l1.slug === slug ? ' ' +styles.currentLink : ''}>{l1.title[locale]}</Link>
-                                            {l1.slug === slug && (
+                                            <Link href={`/category/${l1.handle}`} className={l1.handle === slug ? ' ' +styles.currentLink : ''}>{l1.title[locale]}</Link>
+                                            {l1.handle === slug && (
                                                 <ul className={styles.links2}>
                                                     {l1.links?.map((l2, i2) => (
-                                                        <li key={i2}><Link href={`/category/${l1.slug}/${l2.slug}`}>{l2.title[locale]}</Link></li>
+                                                        <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`}>{l2.title[locale]}</Link></li>
                                                     ))}
                                                 </ul>
                                             )}

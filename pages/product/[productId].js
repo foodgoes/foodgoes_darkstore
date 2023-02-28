@@ -17,7 +17,7 @@ const Product = ({product}) => {
   return (
     <>
       <Head>
-        <title>{product.title[locale]} — купить с доставкой из FoodGoes</title>
+        <title>{`${product.title[locale]} — купить с доставкой из FoodGoes`}</title>
       </Head>
       <div className='topBar'>
         <div className='breadcrumbs'>
@@ -38,9 +38,9 @@ const Product = ({product}) => {
         <div className={styles.aboutProduct}>
           <div className={styles.priceAndBtnBlock}>
             <div className={styles.priceBlock}>
-                {product.discountPrice ? (
+                {product.compareAtPrice ? (
                     <>
-                        <span className={styles.discountPrice}>&#8362;{product.discountPrice}</span>
+                        <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice}</span>
                         <span className={styles.oldPriceWithLine}>
                             <span className={styles.oldPrice}>&#8362;{product.price}</span>
                             <span className={styles.line}></span>
@@ -48,7 +48,7 @@ const Product = ({product}) => {
                     </>
                 ) : <span className={styles.price}>&#8362;{product.price}</span>}
             </div>
-            <div><BuyButton disabled={!product.quantity} price={product.discountPrice || product.price} productId={productId} primary size="large"/></div>
+            <div><BuyButton disabled={!product.quantity} price={product.compareAtPrice || product.price} productId={productId} primary size="large"/></div>
           </div>
 
           <section className={styles.section}>
@@ -81,10 +81,8 @@ const Product = ({product}) => {
 }
 
 const getProduct = async productId => {
-  const res = await fetch(`${process.env.DOMAIN}/api/product?productId=${productId}`);
-  const product = await res.json();
-
-  return product;
+  const res = await fetch(`${process.env.DOMAIN}/api/front/product?productId=${productId}`);
+  return await res.json();
 };
 
 export async function getServerSideProps(context) {

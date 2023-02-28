@@ -26,13 +26,13 @@ export default function Search({categories, search}) {
 }
 
 const getCategories = async () => {
-  const res = await fetch(`${process.env.DOMAIN}/api/categories`);
+  const res = await fetch(`${process.env.DOMAIN}/api/front/categories`);
   const categories = await res.json();
 
   return categories;
 };
 const getProductsByQuery = async (query, locale='en') => {
-  const res = await fetch(`${process.env.DOMAIN}/api/search?q=${query}&locale=${locale}`);
+  const res = await fetch(`${process.env.DOMAIN}/api/front/search?q=${query}&locale=${locale}`);
   return await res.json();
 };
 

@@ -39,10 +39,10 @@
   "completed": "Completed",
   "orderId": "ID order",
   "date": "Date",
-  "statusShipping": "Status shopping",
-  "statusPayment": "Status payment",
-  "productsTotal": "Products",
-  "shippingTotal": "Shipping",
-  "discountTotal": "Discount",
+  "fulfillmentStatus": "fulfillment status",
+  "financialStatus": "Financial status",
+  "totalLineItemsPrice": "Products",
+  "totalShippingPrice": "Shipping",
+  "totalDiscounts": "Discount",
   "alertDiscountFirstOrder": "Minus [discount] on the first order"
 }

@@ -39,10 +39,10 @@
   "completed": "Выполнен",
   "orderId": "ID заказа",
   "date": "Дата",
-  "statusShipping": "Статус доставки",
-  "statusPayment": "Статус оплаты",
-  "productsTotal": "Продуктов",
-  "shippingTotal": "Доставка",
-  "discountTotal": "Скидка",
+  "fulfillmentStatus": "Статус доставки",
+  "financialStatus": "Статус оплаты",
+  "totalLineItemsPrice": "Продуктов",
+  "totalShippingPrice": "Доставка",
+  "totalDiscounts": "Скидка",
   "alertDiscountFirstOrder": "Минус [discount] на первый заказ"
 }

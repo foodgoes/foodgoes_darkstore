@@ -5,9 +5,8 @@ import Link from 'next/link'
 import { useTranslation } from '../../hooks/useTranslation';
 
 import {useState, useEffect} from 'react'
-import {collection, query, where, getDocs, orderBy, limit} from "firebase/firestore";
 
-import {firebaseAuth, firebaseDB} from '../../utils/init-firebase';
+import {firebaseAuth} from '../../utils/init-firebase';
 
 import Order from '../../components/order';
 
@@ -17,35 +16,15 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
   const {translate} = useTranslation();  
 
-  const statusDefinition = {
-    cancelled: translate('cancelled'),
-    pending: translate('pending'),
-    completed: translate('completed')
-  };
-
   useEffect(() => {
-    async function fetchOrders() {
+    async function getOrdersAPI() {
       try {
         const user = firebaseAuth.currentUser;
 
         if (!user) return;
 
-        const orders = [];
-
-        const querySnapshot = await getDocs(query(collection(firebaseDB, "orders"), where("userId", "==", user.uid), orderBy("createdAt", "desc"), limit(25)));
-        querySnapshot.forEach(doc => {
-          const {createdAt, statusShipping, statusPayment} = doc.data();
-
-          const date = new Date(+(createdAt.seconds+'000'));
-
-          orders.push({
-            id: doc.id,
-            ...doc.data(),
-            statusShipping: statusDefinition[statusShipping],
-            statusPayment: statusDefinition[statusPayment],
-            createdAt: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes()
-          });
-        });
+        const res = await fetch(`/api/front/orders?userId=${user.uid}`);
+        const orders = await res.json();
   
         setOrders(orders);
       } catch(e) {
@@ -53,7 +32,7 @@ export default function Orders() {
       }
     }
 
-    fetchOrders();
+    getOrdersAPI();
   }, [firebaseAuth.currentUser]);
 
   return (

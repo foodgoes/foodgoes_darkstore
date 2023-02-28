@@ -85,6 +85,14 @@ export default function Navbar({isAuth}) {
   const logout = () => {
       signOut(firebaseAuth).then(() => {
           // Sign-out successful.
+
+          fetch('/api/account/logout', {method: 'POST',  headers: {
+            'Content-Type': 'application/json',
+          }})
+          .then((res) => res.json())
+          .then((data) => {
+            console.log('data', data)
+          });
       }).catch((error) => {
           // An error happened.
       });

@@ -17,11 +17,11 @@ function NestedLayoutCategory({children, categories, slug, slug2}) {
         categories.forEach(c => {
             if (c.links) {
                 c.links.forEach(l1 => {
-                    if (l1.slug === slug) {
+                    if (l1.handle === slug) {
                         links.push(l1);
                         if (slug2 && l1.links) {
                             l1.links.forEach(l2 => {
-                                if (l2.slug === slug2) {
+                                if (l2.handle === slug2) {
                                     links.push(l2);
                                 }
                             });
@@ -47,13 +47,16 @@ function NestedLayoutCategory({children, categories, slug, slug2}) {
                     {links.map((l,i) => (
                         <div key={i}>
                             <ChevronRightSVG stroke='#9e9b98' />
-                            <Link href={`/category/${l.slug}`}>{l.title[locale]}</Link>
+                            <Link href={`/category/${l.handle}`}>{l.title[locale]}</Link>
                         </div>
                     ))}
                 </div>
                 <div className='infoBlock'>
                     <div>
-                        <h1 className='heading'>{links.length === 1 ? links[0].title[locale] : links[1].title[locale]}</h1>
+                        <h1 className='heading'>
+                            {links.length === 1 && links[0].title[locale]}
+                            {links.length > 1 &&links[1].title[locale]}
+                        </h1>
                     </div>
                 </div>
             </div>

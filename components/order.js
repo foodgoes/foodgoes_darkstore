@@ -15,42 +15,42 @@ export default function Order({order}) {
                 </div>
                 <div className={styles.section}>
                     <span className={styles.label}>{translate('date')}</span>
-                    <div>{order.createdAt}</div>
+                    <div>{order.date}</div>
                 </div>
                 <div className={styles.section + ' ' + styles.status}>
                     <div>
-                        <span className={styles.label}>{translate('statusShipping')}</span>
-                        <div>{order.statusShipping}</div>
+                        <span className={styles.label}>{translate('fulfillmentStatus')}</span>
+                        <div>{order.fulfillmentStatus}</div>
                     </div>
                     <div>
-                        <span className={styles.label}>{translate('statusPayment')}</span>
-                        <div className={styles.paymentStatus}>{order.statusPayment}</div>
+                        <span className={styles.label}>{translate('financialStatus')}</span>
+                        <div className={styles.paymentStatus}>{order.financialStatus}</div>
                     </div>
                 </div>
                 <div className={styles.section + ' ' + styles.totals}>
                     <div>
-                        <span className={styles.label}>{translate('productsTotal')}</span>
-                        <div>&#8362;{order.productsTotal}</div>
+                        <span className={styles.label}>{translate('totalLineItemsPrice')}</span>
+                        <div>&#8362;{order.totalLineItemsPrice}</div>
                     </div>
                     <div>
-                        <span className={styles.label}>{translate('shippingTotal')}</span>
-                        <div>&#8362;{order.shippingTotal}</div>
+                        <span className={styles.label}>{translate('totalShippingPrice')}</span>
+                        <div>&#8362;{order.totalShippingPrice}</div>
                     </div>
-                    {order.discountTotal > 0 && (
+                    {order.totalDiscounts > 0 && (
                         <div>
-                            <span className={styles.label}>{translate('discountTotal')}</span>
-                            <div>&#8362;{order.discountTotal}</div>
+                            <span className={styles.label}>{translate('totalDiscounts')}</span>
+                            <div>&#8362;{order.totalDiscounts}</div>
                         </div>
                     )}
                 </div>
                 <div>
                     <span className={styles.label}>{translate('total')}</span>
-                    <div className={styles.total}>&#8362;{order.total}</div>
+                    <div className={styles.total}>&#8362;{order.totalPrice}</div>
                 </div>
             </div>            
             <div className={styles.products}>
                 <ul>
-                    {order.products.map(p => <li key={p.id}><ProductViewList product={p} disabledBuy={true}/></li>)}
+                    {order.lineItems.map(p => <li key={p.id}><ProductViewList product={p} disabledBuy={true}/></li>)}
                 </ul>
             </div>
         </div>

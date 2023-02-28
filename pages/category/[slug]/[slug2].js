@@ -12,22 +12,20 @@ const Category = ({products}) => {
   );
 }
 
-const getProducts = async (slug, slug2) => {
-  const res = await fetch(`${process.env.DOMAIN}/api/products?slug=${slug}&slug2=${slug2}`);
+const getProductsAPI = async (slug, slug2) => {
+  const res = await fetch(`${process.env.DOMAIN}/api/front/products?slug=${slug}&slug2=${slug2}`);
   return await res.json();
 };
-const getCategories = async () => {
-  const res = await fetch(`${process.env.DOMAIN}/api/categories`);
-  const categories = await res.json();
-
-  return categories;
+const getCategoriesAPI = async () => {
+  const res = await fetch(`${process.env.DOMAIN}/api/front/categories`);
+  return await res.json();
 };
 
 export async function getServerSideProps(context) {
   const {slug, slug2} = context.params;
 
-  const categories = await getCategories();
-  const {products, currentLinks} = await getProducts(slug, slug2);
+  const categories = await getCategoriesAPI();
+  const {products, currentLinks} = await getProductsAPI(slug, slug2);
 
   return { props: { categories, products, currentLinks, slug, slug2 } };
 }

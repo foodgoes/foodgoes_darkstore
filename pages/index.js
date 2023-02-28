@@ -26,23 +26,21 @@ export default function Home({categories, products}) {
   )
 }
 
-const getCategories = async () => {
-  const res = await fetch(`${process.env.DOMAIN}/api/categories`);
-  const categories = await res.json();
-
-  return categories;
+const getCategoriesAPI = async () => {
+  const res = await fetch(`${process.env.DOMAIN}/api/front/categories`);
+  return await res.json();
 };
 
-const getProducts = async () => {
-  const res = await fetch(`${process.env.DOMAIN}/api/products`);
+const getProductsAPI = async () => {
+  const res = await fetch(`${process.env.DOMAIN}/api/front/products`);
   const {products} = await res.json();
 
   return products;
 };
 
 export async function getServerSideProps() {
-  const categories = await getCategories();
-  const products = await getProducts();
+  const categories = await getCategoriesAPI();
+  const products = await getProductsAPI();
 
   return { props: { categories, products } };
 }
