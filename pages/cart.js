@@ -89,7 +89,7 @@ export default function Cart() {
 
   const createOrderAPI = async (userId, data) => {
     const body = {userId, data};
-    const res = await fetch('/api/front/order', {method: 'POST',  headers: {
+    const res = await fetch('/api/front/orders', {method: 'POST',  headers: {
         'Content-Type': 'application/json',
         }, body: JSON.stringify(body)});
 
