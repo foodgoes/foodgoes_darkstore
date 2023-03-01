@@ -52,6 +52,10 @@ const UserSchema = new Schema({
     },
     providers: {
         firebase: Firebase
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 });
 
