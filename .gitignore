@@ -35,4 +35,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-foodgoes-darkstore-firebase-adminsdk-n671c-a57ac3a649.json
+/import_data

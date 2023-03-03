@@ -18,8 +18,8 @@ async function handler(req, res) {
     res.status(200).json({
       id: product.id,
       title: product.title,
-      image: product.images && product.images.length ? product.images[0] : null,
-      images: product.images,
+      image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+      images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
       price: product.price,
       compareAtPrice: product.compareAtPrice,
       brand: product.brand,

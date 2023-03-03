@@ -44,15 +44,37 @@ async function handler(req, res) {
           const {title, productIds} = collection;
 
           const dataProducts = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['sort', 'asc']]);
-          dataProducts.forEach(doc => {
-            products.push(doc);
+          dataProducts.forEach(product => {
+            const images = product.images.map(img => process.env.UPLOAD_PRODUCTS+img);
+
+            products.push({
+              id: product.id,
+              title: product.title,
+              image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+              images,
+              price: product.price,
+              compareAtPrice: product.compareAtPrice,
+              brand: product.brand,
+              quantity: product.quantity,
+            });
           });
         }
       }
     } else {
       const data = await Product.find({status: 'active'}, null, {skip: 0, limit: 30}).sort([['sort', 'asc']]);
-      data.forEach(p => {
-        products.push(p);
+      data.forEach(product => {
+        const images = product.images.map(img => process.env.UPLOAD_PRODUCTS+img);
+
+        products.push({
+          id: product.id,
+          title: product.title,
+          image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+          images,
+          price: product.price,
+          compareAtPrice: product.compareAtPrice,
+          brand: product.brand,
+          quantity: product.quantity,
+        });
       });
     }
 

@@ -33,7 +33,18 @@ async function handler(req, res) {
           const collection = await Collection.findById(link.subjectId);
         
           const {title, productIds} = collection;
-          const products = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['sort', 'asc']]);
+          const productsData = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['sort', 'asc']]);
+
+          const products = productsData.map(product => ({
+            id: product.id,
+            title: product.title,
+            image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+            images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
+            price: product.price,
+            compareAtPrice: product.compareAtPrice,
+            brand: product.brand,
+            quantity: product.quantity,
+          }));
 
           linksWithProducts.push({
             title: link.title,

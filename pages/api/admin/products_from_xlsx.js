@@ -35,7 +35,7 @@ async function handler(req, res) {
 
 async function handleBodyPUTAsync(userId) {
     try {
-        const obj = xlsx.parse('./upload/products.xlsx');
+        const obj = xlsx.parse('./import_data/products.xlsx');
         const data = obj[0]['data'];
         const [keys, ...values] = data;
 

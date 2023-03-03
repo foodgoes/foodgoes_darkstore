@@ -64,8 +64,8 @@ async function handleGETAsync(userId, query) {
             price: item.price,
             quantity: item.quantity,
             productId: item.productId,
-            images,
-            image: images.length ? images[0] : null
+            images: images.map(img => process.env.UPLOAD_PRODUCTS+img),
+            image: images.length ? process.env.UPLOAD_PRODUCTS+images[0] : null
           };
         });
 
