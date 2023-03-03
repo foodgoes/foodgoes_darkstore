@@ -3,16 +3,33 @@ import {useRouter} from 'next/router'
 import { withSessionSsr } from "../../lib/withSession";
 import NestedLayoutAdmin from '../../components/nested-layout-admin'
 import styles from '../../styles/Admin.module.css'
+import Button from '@/components/button';
 
 const Dashboard = () => {
   const { locale } = useRouter();
+
+  const updateProducts = async () => {
+    const body = {};
+    const res = await fetch('/api/admin/products_from_xlsx', {method: 'PUT',  headers: {
+        'Content-Type': 'application/json',
+        }, body: JSON.stringify(body)});
+
+    const data = await res.json();
+    console.log(data);
+  };
 
   return (
     <div>
         <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Dashboard</h2>
 
-            <div>Export/Import</div>
+            <div>
+              <h3>Export/Import</h3>
+              <div>
+                <p>Update products in DB from file (.xlsx)</p>
+                <Button onClick={updateProducts}>Update</Button>
+              </div>
+            </div>
         </div>
     </div>
   );
