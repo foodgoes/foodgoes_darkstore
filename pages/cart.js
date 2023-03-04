@@ -5,8 +5,8 @@ import Link from 'next/link'
 import Head from 'next/head'
 
 import styles from '../styles/Cart.module.css'
-import Button from '@/components/button'
-import Modal from '@/components/modal'
+import Button from '@/components/elements/button'
+import Modal from '@/components/elements/modal'
 import ProductViewList from '../components/product-view-list'
 
 import CartContext from '../context/cart-context'

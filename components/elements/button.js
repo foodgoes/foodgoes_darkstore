@@ -1,4 +1,4 @@
-import styles from '../styles/Button.module.css'
+import styles from '../../styles/Button.module.css'
 
 export default function Button({children, ...props}) {
     const {onClick, plain, url, external=false, fullWidth=false, submit, primary, secondary, size="medium"} = props;

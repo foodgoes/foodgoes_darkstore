@@ -9,8 +9,8 @@ import { useTranslation } from '../hooks/useTranslation';
 
 import { signOut } from "firebase/auth";
 
-import Modal from './modal'
-import Button from './button'
+import Modal from './elements/modal'
+import Button from './elements/button'
 import Login from './login/login'
 
 import {firebaseAuth} from '../utils/init-firebase';

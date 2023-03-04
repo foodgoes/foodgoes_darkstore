@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form";
 
 import { useTranslation } from '../../hooks/useTranslation';
 
-import Button from "../button";
+import Button from "../elements/button";
 
 export default function LoginPhone({setStep}) {
     const { translate } = useTranslation();

@@ -13,7 +13,7 @@ import PlusSmallSVG from '../public/icons/plus-small'
 import CartContext from '../context/cart-context'
 import { useTranslation } from '../hooks/useTranslation';
 
-import Button from './button'
+import Button from './elements/button'
 
 export default function BuyButton({disabled, productId, price, primary=false, secondary=false, size="medium"}) {
     const cartFromContext = useContext(CartContext);

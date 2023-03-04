@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router'
-import Button from './button';
+import Button from '../components/elements/button';
 
 import styles from '../styles/LocalesList.module.css'
 

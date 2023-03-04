@@ -1,6 +1,6 @@
-import styles from '../styles/Modal.module.css'
-import Button from './button';
-import CloseSVG from '../public/icons/close'
+import styles from '../../styles/Modal.module.css'
+import Button from '../../components/elements/button';
+import CloseSVG from '../../public/icons/close'
 
 export default function Modal(props) {
     const {activator, open, title, onClose, children, primaryAction, secondaryActions} = props;

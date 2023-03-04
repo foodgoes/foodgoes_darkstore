@@ -13,7 +13,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
 
             <div className={styles.wrapper}>
                 <div>
-                    {product.images && <img src={product.images[0]} />}
+                    {product.image && <img src={product.image} />}
                 </div>
                 <div className={styles.info}>
                     <div className={styles.priceBlock}>
