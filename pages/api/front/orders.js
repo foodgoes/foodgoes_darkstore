@@ -5,6 +5,8 @@ import User from '../../../models/User';
 import {getFullDate} from '../../../utils/date';
 import Product from "@/models/Product";
 
+import {getNextSequence} from '../../../lib/counter';
+
 export default withSessionRoute(handler);
 
 async function handler(req, res) {
@@ -71,6 +73,7 @@ async function handleGETAsync(userId, query) {
 
         output.push({
           id: order.id,
+          orderNumber: order.orderNumber,
           date,
           financialStatus: order.financialStatus,
           fulfillmentStatus: order.fulfillmentStatus,
@@ -111,8 +114,12 @@ async function handleBodyPOSTAsync(userId, body) {
         brand: lineItem.brand,
       }));
 
+      const seq = await getNextSequence('orderId');
+
       const newOrder = await Order.create({
         userId, 
+        number: seq,
+        orderNumber: 1000 + seq,
         financialStatus: data.financialStatus,
         fulfillmentStatus: data.fulfillmentStatus,
         totalShippingPrice: data.totalShippingPrice,

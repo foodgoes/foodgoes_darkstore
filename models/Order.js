@@ -57,6 +57,8 @@ const OrderSchema = new Schema({
         type: ObjectId,
         required: true
     },
+    number: Number,
+    orderNumber: Number,
     totalShippingPrice: {
         type: Number,
         default: 0

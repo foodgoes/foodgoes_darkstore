@@ -11,7 +11,7 @@ export default function Order({order}) {
             <div className={styles.info}>
                 <div className={styles.section}>
                     <span className={styles.label}>{translate('orderId')}</span>
-                    <div>{order.id}</div>
+                    <div><strong>#{order.orderNumber}</strong></div>
                 </div>
                 <div className={styles.section}>
                     <span className={styles.label}>{translate('date')}</span>

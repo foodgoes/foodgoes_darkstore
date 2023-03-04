@@ -1,10 +1,11 @@
-import {useState, useEffect, useContext} from 'react'
+import {useState, useEffect, useContext, useCallback} from 'react'
 
 import Link from 'next/link'
 import Head from 'next/head'
 
 import styles from '../styles/Cart.module.css'
-import Button from '../components/button'
+import Button from '@/components/button'
+import Modal from '@/components/modal'
 import ProductViewList from '../components/product-view-list'
 
 import CartContext from '../context/cart-context'
@@ -19,10 +20,13 @@ import ArrowLeftSVG from '../public/icons/arrow-left'
 export default function Cart() {
   const [products, setProducts] = useState(null);
   const [productsTotal, setProductsTotal] = useState(0);
+  const [activeAlert, setActiveAlert] = useState(false);
 
   const cartFromContext = useContext(CartContext);
   
   const { translate } = useTranslation();
+
+  const handleChangeAlert = useCallback(() => setActiveAlert(!activeAlert), [activeAlert]);
   
   const discountTotal = 0;
   const shippingTotal = 25;
@@ -80,12 +84,13 @@ export default function Cart() {
       });
       if (order) {
         clearCart();
+
+        //POPUP
       }
     } else {
       console.log('Авторизуйтесь, чтобы оформить заказ');
     }
   };
-
 
   const createOrderAPI = async (userId, data) => {
     const body = {userId, data};
@@ -98,8 +103,7 @@ export default function Cart() {
   async function deleteCartAPI(cartId) {
     const res = await fetch('/api/front/cart?cartId='+cartId, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
     return await res.json();
-  } 
-
+  }
 
   if (!products) return;
   
@@ -109,6 +113,14 @@ export default function Cart() {
         <Head>
           <title>{translate('metaTitleCart')}</title>
         </Head>
+        <Modal
+          open={activeAlert}
+          onClose={handleChangeAlert}
+          title={''}
+        >
+          <p>Заказ успешно выполнен! Спасибо!</p>
+        </Modal>
+
         <div className='topBar'>
           <div className='infoBlock'>
             <div>
