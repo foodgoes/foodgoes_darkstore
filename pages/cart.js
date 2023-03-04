@@ -1,4 +1,5 @@
 import {useState, useEffect, useContext, useCallback} from 'react'
+import {useRouter} from 'next/router'
 
 import Link from 'next/link'
 import Head from 'next/head'
@@ -16,11 +17,15 @@ import {firebaseAuth} from '../utils/init-firebase';
 
 import TrashSVG from '../public/icons/trash'
 import ArrowLeftSVG from '../public/icons/arrow-left'
+import AlertOrderSuccess from '@/components/alerts/order-success'
 
 export default function Cart() {
   const [products, setProducts] = useState(null);
   const [productsTotal, setProductsTotal] = useState(0);
   const [activeAlert, setActiveAlert] = useState(false);
+  const [orderNumber, setOrderNumber] = useState();
+
+  const router = useRouter();
 
   const cartFromContext = useContext(CartContext);
   
@@ -84,8 +89,8 @@ export default function Cart() {
       });
       if (order) {
         clearCart();
-
-        //POPUP
+        setOrderNumber(order.orderNumber);
+        handleChangeAlert();
       }
     } else {
       console.log('Авторизуйтесь, чтобы оформить заказ');
@@ -116,9 +121,16 @@ export default function Cart() {
         <Modal
           open={activeAlert}
           onClose={handleChangeAlert}
-          title={''}
+          primaryAction={{
+            onAction: () =>  router.push({pathname: '/account/orders'}, undefined, { locale: router.locale }), 
+            content: translate('aboutOrder')
+          }}
+          secondaryActions={[{
+            onAction: () =>  router.push({pathname: '/'}, undefined, { locale: router.locale }), 
+            content: translate('btnInCatalog')
+          }]}
         >
-          <p>Заказ успешно выполнен! Спасибо!</p>
+          <AlertOrderSuccess orderNumber={orderNumber} />
         </Modal>
 
         <div className='topBar'>

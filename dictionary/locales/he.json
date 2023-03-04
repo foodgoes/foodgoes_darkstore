@@ -44,5 +44,7 @@
   "totalLineItemsPrice": "Products",
   "totalShippingPrice": "Shipping",
   "totalDiscounts": "Discount",
-  "alertDiscountFirstOrder": "Minus [discount] on the first order"
+  "alertDiscountFirstOrder": "Minus [discount] on the first order",
+  "aboutOrder": "About order",
+  "orderTitle": "Order"
 }

@@ -24,7 +24,7 @@ export default function Modal(props) {
                                 <div className={styles.content}>{children}</div>
                             )}
                             <div className={styles.footer}>
-                                {primaryAction && <Button onClick={primaryAction.onAction}>{primaryAction.content}</Button>}
+                                {primaryAction && <Button primary={true} onClick={primaryAction.onAction}>{primaryAction.content}</Button>}
                                 {secondaryActions && (
                                     <div className={styles.secondaryActions}>
                                         {secondaryActions.map((secondaryAction, i) => 

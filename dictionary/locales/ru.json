@@ -44,5 +44,7 @@
   "totalLineItemsPrice": "Продуктов",
   "totalShippingPrice": "Доставка",
   "totalDiscounts": "Скидка",
-  "alertDiscountFirstOrder": "Минус [discount] на первый заказ"
+  "alertDiscountFirstOrder": "Минус [discount] на первый заказ",
+  "aboutOrder": "Подробно о заказе",
+  "orderTitle": "Заказ"
 }
