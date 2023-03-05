@@ -17,9 +17,9 @@ ProductCart.set('toObject', { virtuals: true });
 ProductCart.set('toJSON', { virtuals: true });
 
 const CartSchema = new Schema({
-    userId: {
-        type: ObjectId,
-        required: true
+    userId: ObjectId,
+    token: {
+        type: String
     },
     total: {
         type: Number,
@@ -30,7 +30,8 @@ const CartSchema = new Schema({
     products: [ProductCart],
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        expires: 604800
     },
     updatedAt: {
         type: Date,

@@ -10,7 +10,7 @@ async function handler(req, res) {
 
     const {productId} = req.query;
 
-    const product = await Product.findOne({id: productId, status: 'active'});
+    const product = await Product.findOne({_id: productId, status: 'active'});
     if (!product) {
       throw("not found product")
     }

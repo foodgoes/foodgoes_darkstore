@@ -19,9 +19,10 @@ import CartSVG from '../public/icons/cart'
 import GlobeSVG from '../public/icons/globe'
 import LocalesList from './locales-list';
 
-import CartContext from '../context/cart-context'
+import CartContext from '@/context/cart-context'
+import AuthContext from '@/context/auth-context';
 
-export default function Navbar({isAuth}) {
+export default function Navbar() {
   const [active, setActive] = useState(false);
   const [activeLocales, setActiveLocales] = useState(false);
   const [accountMenu, setAccountMenu] = useState(false);
@@ -32,6 +33,7 @@ export default function Navbar({isAuth}) {
   const { translate } = useTranslation();
 
   const {cart} = useContext(CartContext);
+  const {auth, setAuth} = useContext(AuthContext);
 
   const handleChange = useCallback(() => setActive(!active), [active]);
   const handleChangeLocales = useCallback(() => setActiveLocales(!activeLocales), [activeLocales]);
@@ -84,14 +86,12 @@ export default function Navbar({isAuth}) {
 
   const logout = () => {
       signOut(firebaseAuth).then(() => {
-          // Sign-out successful.
-
           fetch('/api/account/logout', {method: 'POST',  headers: {
             'Content-Type': 'application/json',
           }})
           .then((res) => res.json())
           .then((data) => {
-            console.log('data', data)
+            setAuth(null);
           });
       }).catch((error) => {
           // An error happened.
@@ -136,7 +136,7 @@ export default function Navbar({isAuth}) {
             <Button plain onClick={handleChangeLocales}><GlobeSVG /></Button>
           </div>
 
-          {isAuth && (
+          {auth && (
             <div className={styles.account}>
               <div ref={btnRef}>
                 <Button plain onClick={() => setAccountMenu(prev => !prev)}><AccountSVG /></Button>
@@ -154,7 +154,7 @@ export default function Navbar({isAuth}) {
 
           <div>
             <div className={styles.auth}>
-              {isAuth === false && <Button onClick={handleChange}>{translate('login')}</Button>}
+              {!auth && <Button onClick={handleChange}>{translate('login')}</Button>}
             </div>
           </div>
         </div>

@@ -10,109 +10,72 @@ import Modal from '@/components/elements/modal'
 import ProductViewList from '../components/product-view-list'
 
 import CartContext from '../context/cart-context'
+import AuthContext from '../context/auth-context'
 
 import { useTranslation } from '../hooks/useTranslation';
-
-import {firebaseAuth} from '../utils/init-firebase';
 
 import TrashSVG from '../public/icons/trash'
 import ArrowLeftSVG from '../public/icons/arrow-left'
 import AlertOrderSuccess from '@/components/alerts/order-success'
+import CheckoutButton from '@/components/checkout-button'
 
 export default function Cart() {
-  const [products, setProducts] = useState(null);
-  const [productsTotal, setProductsTotal] = useState(0);
+  const cartFromContext = useContext(CartContext);
+  const authFromContext = useContext(AuthContext);
+
+  const [cartId, setCartId] = useState(null);
+  const [products, setProducts] = useState([]);
   const [activeAlert, setActiveAlert] = useState(false);
   const [orderNumber, setOrderNumber] = useState();
 
   const router = useRouter();
-
-  const cartFromContext = useContext(CartContext);
   
   const { translate } = useTranslation();
 
   const handleChangeAlert = useCallback(() => setActiveAlert(!activeAlert), [activeAlert]);
   
-  const discountTotal = 0;
-  const shippingTotal = 25;
-
   useEffect(() => {
-    if (!cartFromContext || !cartFromContext.cart) {
-      setProducts([]);
-      return;
-    };
+    const getCartAPI = async () => {
+      try {
+        const res = await fetch('/api/front/cart', {headers: {'Content-Type': 'application/json',}});
+        const cart = await res.json();
 
-    const user = firebaseAuth.currentUser;
-    if (user) {
-      const userId = user.uid;
-
-      const getProductsCartAPI = async (userId) => {
-        try {
-          const res = await fetch('/api/front/cart?userId='+userId);
-          const cart = await res.json();
-    
-          setProducts(cart.products);
-          setProductsTotal(cart.total);
-        } catch(e) {
-          console.log(e);
+        setProducts(cart ? cart.productsV2 : []);
+        if (cart) {
+          setCartId(cart.id);
         }
+      } catch(e) {
+        console.log(e);
       }
-      getProductsCartAPI(userId);
     }
-  }, [cartFromContext]);
+
+    getCartAPI();
+  }, [authFromContext.auth]);
+
+  const totalDiscounts = 0;
+  const totalShippingPrice = 25;
+  const totalLineItemsPrice = cartFromContext.cart.total;
 
   const clearCart = async () => {
-    const {cart: {id}, deleteCart} = cartFromContext;
+    const {deleteCart} = cartFromContext;
     deleteCart();
+    
     setProducts([]);
-
-    await deleteCartAPI(id);
+    await deleteCartAPI();
   };
 
-  const checkout = async () => {
-    const user = firebaseAuth.currentUser;
-    if (user) {
-      const userId = user.uid;
-
-      const total = +(productsTotal+shippingTotal-discountTotal).toFixed(2);
-
-      const order = await createOrderAPI(userId, {
-        lineItems: products,
-        financialStatus: 'pending',
-        fulfillmentStatus: 'pending_fulfillment',
-        totalShippingPrice: shippingTotal,
-        totalTax: 0,
-        totalLineItemsPrice: productsTotal, 
-        totalDiscounts: discountTotal,
-        subtotalPrice: productsTotal-discountTotal,
-        totalPrice: total,
-      });
-      if (order) {
-        clearCart();
-        setOrderNumber(order.orderNumber);
-        handleChangeAlert();
-      }
-    } else {
-      console.log('Авторизуйтесь, чтобы оформить заказ');
-    }
-  };
-
-  const createOrderAPI = async (userId, data) => {
-    const body = {userId, data};
-    const res = await fetch('/api/front/orders', {method: 'POST',  headers: {
-        'Content-Type': 'application/json',
-        }, body: JSON.stringify(body)});
-
-    return await res.json();
-  };
-  async function deleteCartAPI(cartId) {
-    const res = await fetch('/api/front/cart?cartId='+cartId, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
+  const deleteCartAPI = async () => {
+    const res = await fetch('/api/front/cart?id='+cartId, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
     return await res.json();
   }
 
-  if (!products) return;
+  const handleOrder = orderNumber => {
+    clearCart();
+    setOrderNumber(orderNumber);
+    handleChangeAlert();
+  };
   
-  if (products.length === 0) {
+  if (!products.length) {
     return (
       <>
         <Head>
@@ -181,20 +144,31 @@ export default function Cart() {
               <tbody>
                 <tr>
                   <th>{translate('products')}</th>
-                  <td>&#8362; {productsTotal}</td>
+                  <td>&#8362; {totalLineItemsPrice}</td>
                 </tr>
                 <tr>
                   <th>{translate('shipping')}</th>
-                  <td>&#8362; {shippingTotal}</td>
+                  <td>&#8362; {totalShippingPrice}</td>
                 </tr>
                 <tr>
                   <th>{translate('payment')}</th>
-                  <td>&#8362; {+(productsTotal + shippingTotal).toFixed(2)}</td>
+                  <td>&#8362; {+(totalLineItemsPrice + totalShippingPrice).toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <Button onClick={() => checkout()} primary size='large'>{translate('order')}</Button>
+          
+          <CheckoutButton handleOrder={handleOrder} data={{
+            lineItems: products,
+            financialStatus: 'pending',
+            fulfillmentStatus: 'pending_fulfillment',
+            totalShippingPrice,
+            totalTax: 0,
+            totalLineItemsPrice, 
+            totalDiscounts,
+            subtotalPrice: totalLineItemsPrice-totalDiscounts,
+            // totalPrice: total
+        }}/>
         </div>
       </div>
     </>

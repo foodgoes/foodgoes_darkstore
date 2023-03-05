@@ -1,17 +1,20 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useContext} from "react";
 
 import {getAdditionalUserInfo } from "firebase/auth";
 import {useForm} from "react-hook-form";
 
-import { useTranslation } from '../../hooks/useTranslation';
+import AuthContext from '@/context/auth-context';
+import { useTranslation } from '@/hooks/useTranslation';
 
 import Button from "../elements/button";
 
-export default function LoginCode({onClose}) {
+export default function LoginCode({onClose, fromPage=null}) {
     const { translate } = useTranslation();
     const { register, handleSubmit } = useForm();
 
     const inputBoxRef = useRef();
+
+    const {setAuth} = useContext(AuthContext);
 
     useEffect(() => {
         focusInput();
@@ -34,7 +37,7 @@ export default function LoginCode({onClose}) {
                       }, body: JSON.stringify(body)})
                       .then((res) => res.json())
                       .then((data) => {
-                        console.log('data', data)
+                        setAuth(!fromPage ? data : {...data, fromPage});
                     });
                 } else {
                     const body = {phoneNumber: user.phoneNumber};
@@ -43,7 +46,7 @@ export default function LoginCode({onClose}) {
                       }, body: JSON.stringify(body)})
                       .then((res) => res.json())
                       .then((data) => {
-                        console.log('data', data)
+                        setAuth(!fromPage ? data : {...data, fromPage});
                     });
                 }
 

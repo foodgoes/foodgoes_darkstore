@@ -5,10 +5,8 @@ import '../styles/globals.css'
 import { useEffect, useState} from 'react';
 import localFont from 'next/font/local';
 
-import {firebaseAuth} from '../utils/init-firebase';
-import { onAuthStateChanged } from "firebase/auth";
-
 import CartContext from '../context/cart-context';
+import AuthContext from '../context/auth-context';
 
 const roboto = localFont({
   src: [
@@ -32,57 +30,38 @@ const roboto = localFont({
 });
 
 function MyApp({ Component, pageProps }) {
-  const [isAuth, setAuth] = useState(null);
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState({total:0, products:[]});
+  const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, async user => {
-      setAuth(!!user);
+    const getUserAPI = async () => {
+      try {
+        const res = await fetch('/api/front/user', {headers: {'Content-Type': 'application/json',}});
+        const user = await res.json();
 
-      if (user && !cart) {
-        const cart = await getCartAPI(user.uid);
-        setCart(cart);
+        setAuth(user);
+      } catch(e) {
+        return null;
       }
-    });
+    };
+
+    getUserAPI();
   }, []);
 
-  const getCartAPI = async userId => {
-    try {
-      const res = await fetch('/api/front/cart?userId='+userId, {headers: {'Content-Type': 'application/json',}});
-      return await res.json();
-    } catch(e) {
-      return null;
-    }
-  };
-
-  const createCart = cart => {
-    setCart(cart);
-  };
-  const updateProductsCart = products => {
-    setCart(prevState => ({
-      ...prevState,
-      products
-    }));
-  };
-  const updateTotalCart = total => {
-    setCart(prevState => ({
-      ...prevState,
-      total
-    }));
-  }
-  const deleteCart = () => {
-    setCart(null);
-  };
+  const deleteCart = () => setCart({total:0, products:[]});
+  const updateCart = (products, total) => setCart(prevState => ({...prevState, products, total}));
 
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
     <main className={roboto.className}>
-      <CartContext.Provider value={{cart, createCart, updateProductsCart, deleteCart, updateTotalCart}}>
-        <Layout isAuth={isAuth}>
-            {getLayout(<Component {...pageProps} />)}
-        </Layout>
-      </CartContext.Provider>
+      <AuthContext.Provider value={{auth, setAuth}}>
+        <CartContext.Provider value={{cart, updateCart, deleteCart}}>
+          <Layout>
+              {getLayout(<Component {...pageProps} />)}
+          </Layout>
+        </CartContext.Provider>
+      </AuthContext.Provider>
     </main>
   );
 }

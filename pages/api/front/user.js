@@ -8,14 +8,9 @@ async function handler(req, res) {
   try {
     await dbConnect();
 
-    const {id: userId} = req.session.user;
-    if (!userId) {
+    const {id} = req.session.user;
+    if (!id) {
       throw('Error, auth.');
-    }
-
-    const {id} = req.query;
-    if (id !== userId) {
-      throw('User not match');
     }
 
     const user = await User.findById(id);

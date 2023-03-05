@@ -95,18 +95,7 @@ async function handleGETAsync(userId, query) {
 }
 async function handleBodyPOSTAsync(userId, body) {
   try {
-      const {userId: externalId, data} = body;
-
-      const user = await User.findOne({'providers.firebase.externalId': externalId});
-      if (!user) {
-        throw('User not exist');
-      }
-
-      if (user.id !== userId) {
-        throw('User not match');
-      }
-
-      const lineItems = data.lineItems.map(lineItem => ({
+      const lineItems = body.lineItems.map(lineItem => ({
         productId: lineItem.id,
         quantity: lineItem.quantity,
         price: lineItem.price,
@@ -120,14 +109,14 @@ async function handleBodyPOSTAsync(userId, body) {
         userId, 
         number: seq,
         orderNumber: 1000 + seq,
-        financialStatus: data.financialStatus,
-        fulfillmentStatus: data.fulfillmentStatus,
-        totalShippingPrice: data.totalShippingPrice,
-        totalTax: data.totalTax,
-        totalLineItemsPrice: data.totalLineItemsPrice, 
-        totalDiscounts: data.totalDiscounts,
-        subtotalPrice: data.subtotalPrice,
-        totalPrice: data.totalPrice,
+        financialStatus: body.financialStatus,
+        fulfillmentStatus: body.fulfillmentStatus,
+        totalShippingPrice: body.totalShippingPrice,
+        totalTax: body.totalTax,
+        totalLineItemsPrice: body.totalLineItemsPrice, 
+        totalDiscounts: body.totalDiscounts,
+        subtotalPrice: body.subtotalPrice,
+        totalPrice: body.totalPrice,
         lineItems,
       });
 

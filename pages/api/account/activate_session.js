@@ -16,9 +16,9 @@ async function handler(req, res) {
     };
     await req.session.save();
 
-    res.status(200).json({ ok: true });
+    res.status(200).json(user);
   } catch(e) {
-    res.status(500).json({ error: 'failed to signup' });
+    res.status(500).json(null);
   }
 }
 

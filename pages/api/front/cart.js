@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { withSessionRoute } from "../../../lib/withSession";
 import dbConnect from '../../../lib/dbConnect';
 import Cart from '../../../models/Cart';
@@ -10,28 +11,21 @@ async function handler(req, res) {
   try {
     await dbConnect();
 
-    const {id: userId} = req.session.user;
-    if (!userId) {
-      throw('Error, auth.');
-    }
+    const id = req.session.user ? req.session.user.id : null;
+    const {cart: token} = req.cookies;
 
     if (req.method === 'GET') {
-      const cart = await handleGETAsync(userId, req.query);
-      return res.status(200).json(cart);
-    }
-
-    if (req.method === 'POST') {
-      const cart = await handleBodyPOSTAsync(userId, req.body);
+      const cart = await handleGETAsync(id, token, req.query);
       return res.status(200).json(cart);
     }
 
     if (req.method === 'PUT') {
-      const cart = await handleBodyPUTAsync(userId, req.body);
+      const cart = await handleBodyPUTAsync(id, token, req.body);
       return res.status(200).json(cart);
     }
 
     if (req.method === 'DELETE') {
-      const cart = await handleBodyDELETEAsync(userId, req.query);
+      const cart = await handleBodyDELETEAsync(req.query);
       return res.status(200).json({deletedCarId: cart.id});
     }
 
@@ -41,100 +35,75 @@ async function handler(req, res) {
   }
 }
 
-async function handleGETAsync(userId, query) {
+async function handleGETAsync(userId, token) {
   try {
-      const {userId: externalId} = query;
+    if (!userId && !token) {
+      throw('cart error');
+    }
 
-      const user = await User.findOne({'providers.firebase.externalId': externalId});
-      if (!user) {
-        throw('User not exist');
-      }
+    const filter = userId ? {userId} : {token};
+    const cart = await Cart.findOne(filter);
+    if (!cart) {
+      throw('Cart not exist');
+    }
 
-      if (user.id !== userId) {
-        throw('User not match');
-      }
+    const productIds = cart.products.map(p => p.productId);
+    const products = await Product.find({'_id': {$in: productIds}});
 
-      const cart = await Cart.findOne({userId});
-      if (!cart) {
-        throw('Cart not exist');
-      }
+    const productsCart = products.map(product => ({
+      id: product.id,
+      productId: product.id,
+      title: product.title,
+      image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+      images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
+      price: product.price,
+      compareAtPrice: product.compareAtPrice,
+      brand: product.brand,
+      quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
+    }));
 
-      const productIds = cart.products.map(p => p.productId);
-      const products = await Product.find({'_id': {$in: productIds}});
-
-      const productsCart = products.map(product => ({
-        id: product.id,
-        productId: product.id,
-        title: product.title,
-        image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
-        images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
-        price: product.price,
-        compareAtPrice: product.compareAtPrice,
-        brand: product.brand,
-        quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
-      }));
-
-      return {
-        id: cart.id,
-        userId: cart.userId,
-        total: cart.total,
-        products: productsCart || []
-      };
+    return {
+      id: cart.id,
+      userId: cart.userId,
+      total: cart.total,
+      products: cart.products,
+      productsV2: productsCart || []
+    };
   } catch(e) {
-    console.log(e)
       throw e;
   }
 }
-async function handleBodyPOSTAsync(userId, body) {
+async function handleBodyPUTAsync(userId, token, body) {
   try {
-      const {userId: externalId, total, products} = body;
-
-      const user = await User.findOne({'providers.firebase.externalId': externalId});
-      if (!user) {
-        throw('User not exist');
-      }
-
-      if (user.id !== userId) {
-        throw('User not match');
-      }
-
-      const newCart = await Cart.create({userId, total, products});
-
-      return newCart;
-  } catch(e) {
-    console.log(e);
-      throw e;
-  }
-}
-async function handleBodyPUTAsync(userId, body) {
-  try {
-      let {cartId, total, products} = body;
+      let {total, products} = body;
 
       total = +total.toFixed(2);
 
-      const cart = await Cart.findOneAndUpdate({cartId, userId}, {total, products, updatedAt: Date.now()});
+      const newToken = token || uuidv4();
+
+      const filter = userId ? {userId} : {token};
+      const update = {token: userId ? uuidv4() : newToken, total, products, updatedAt: Date.now()};
+      const cart = await Cart.findOneAndUpdate(filter, update, {upsert: true, new: true});
       if (!cart) {
         throw('cart error');
       }
-
-      return cart;
+     return cart;
   } catch(e) {
     console.log(e)
-      throw e;
+    throw e;
   }
 }
-async function handleBodyDELETEAsync(userId, query) {
+async function handleBodyDELETEAsync(query) {
   try {
-      const {cartId} = query;
+    const {id} = query;
+    const cart = await Cart.findOneAndRemove({_id: id});
+    console.log(cart)
+    if (!cart) {
+      throw('cart error');
+    }
 
-      const cart = await Cart.findByIdAndRemove(cartId);
-      if (!cart) {
-        throw('cart error');
-      }
-
-      return cart;
+    return cart;
   } catch(e) {
-    console.log(e)
       throw e;
   }
 }
