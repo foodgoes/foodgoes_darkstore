@@ -21,11 +21,22 @@ async function handler(req, res) {
 
     if (req.method === 'PUT') {
       const cart = await handleBodyPUTAsync(id, token, req.body);
+      if (!cart.userId && !token) {
+        const d = new Date();
+        d.setTime(d.getTime() + (7*24*60*60*1000));
+        const expires = "expires="+ d.toUTCString();
+        res.setHeader('Set-Cookie', `cart=${cart.token}; ${expires}; path=/`);
+        setCookie('cart', token, { path: '/', maxAge: 604800 });
+      }
       return res.status(200).json(cart);
     }
 
     if (req.method === 'DELETE') {
       const cart = await handleBodyDELETEAsync(req.query);
+      if (!cart.userId) {
+        res.setHeader('Set-Cookie', 'cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
+      }
+
       return res.status(200).json({deletedCarId: cart.id});
     }
 
@@ -97,7 +108,6 @@ async function handleBodyDELETEAsync(query) {
   try {
     const {id} = query;
     const cart = await Cart.findOneAndRemove({_id: id});
-    console.log(cart)
     if (!cart) {
       throw('cart error');
     }

@@ -1,12 +1,10 @@
-import {useState, useEffect, useContext, useCallback} from 'react'
-import {useRouter} from 'next/router'
+import {useState, useEffect, useContext} from 'react'
 
 import Link from 'next/link'
 import Head from 'next/head'
 
 import styles from '../styles/Cart.module.css'
 import Button from '@/components/elements/button'
-import Modal from '@/components/elements/modal'
 import ProductViewList from '../components/product-view-list'
 
 import CartContext from '../context/cart-context'
@@ -16,7 +14,6 @@ import { useTranslation } from '../hooks/useTranslation';
 
 import TrashSVG from '../public/icons/trash'
 import ArrowLeftSVG from '../public/icons/arrow-left'
-import AlertOrderSuccess from '@/components/alerts/order-success'
 import CheckoutButton from '@/components/checkout-button'
 
 export default function Cart() {
@@ -25,24 +22,20 @@ export default function Cart() {
 
   const [cartId, setCartId] = useState(null);
   const [products, setProducts] = useState([]);
-  const [activeAlert, setActiveAlert] = useState(false);
-  const [orderNumber, setOrderNumber] = useState();
-
-  const router = useRouter();
   
   const { translate } = useTranslation();
-
-  const handleChangeAlert = useCallback(() => setActiveAlert(!activeAlert), [activeAlert]);
   
   useEffect(() => {
     const getCartAPI = async () => {
       try {
-        const res = await fetch('/api/front/cart', {headers: {'Content-Type': 'application/json',}});
+        const res = await fetch('/api/front/cart', {headers: {'Content-Type': 'application/json'}});
         const cart = await res.json();
 
-        setProducts(cart ? cart.productsV2 : []);
         if (cart) {
           setCartId(cart.id);
+          setProducts(cart.productsV2);
+        } else {
+          setProducts([]);
         }
       } catch(e) {
         console.log(e);
@@ -57,10 +50,7 @@ export default function Cart() {
   const totalLineItemsPrice = cartFromContext.cart.total;
 
   const clearCart = async () => {
-    const {deleteCart} = cartFromContext;
-    deleteCart();
-    
-    setProducts([]);
+    cartFromContext.deleteCart();
     await deleteCartAPI();
   };
 
@@ -68,34 +58,13 @@ export default function Cart() {
     const res = await fetch('/api/front/cart?id='+cartId, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
     return await res.json();
   }
-
-  const handleOrder = orderNumber => {
-    clearCart();
-    setOrderNumber(orderNumber);
-    handleChangeAlert();
-  };
   
-  if (!products.length) {
+  if (!cartFromContext.cart.products.length) {
     return (
       <>
         <Head>
           <title>{translate('metaTitleCart')}</title>
         </Head>
-        <Modal
-          open={activeAlert}
-          onClose={handleChangeAlert}
-          primaryAction={{
-            onAction: () =>  router.push({pathname: '/account/orders'}, undefined, { locale: router.locale }), 
-            content: translate('aboutOrder')
-          }}
-          secondaryActions={[{
-            onAction: () =>  router.push({pathname: '/'}, undefined, { locale: router.locale }), 
-            content: translate('btnInCatalog')
-          }]}
-        >
-          <AlertOrderSuccess orderNumber={orderNumber} />
-        </Modal>
-
         <div className='topBar'>
           <div className='infoBlock'>
             <div>
@@ -158,7 +127,7 @@ export default function Cart() {
             </table>
           </div>
           
-          <CheckoutButton handleOrder={handleOrder} data={{
+          <CheckoutButton clearCart={clearCart} data={{
             lineItems: products,
             financialStatus: 'pending',
             fulfillmentStatus: 'pending_fulfillment',
@@ -166,8 +135,8 @@ export default function Cart() {
             totalTax: 0,
             totalLineItemsPrice, 
             totalDiscounts,
-            subtotalPrice: totalLineItemsPrice-totalDiscounts,
-            // totalPrice: total
+            subtotalPrice: +(totalLineItemsPrice-totalDiscounts).toFixed(2),
+            totalPrice: +(totalLineItemsPrice+totalShippingPrice-totalDiscounts).toFixed(2)
         }}/>
         </div>
       </div>

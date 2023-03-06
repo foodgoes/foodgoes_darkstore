@@ -1,6 +1,5 @@
 import { useContext } from "react";
 
-import { useCookies } from 'react-cookie';
 import styles from '../styles/BuyButton.module.css'
 
 import MinusSVG from '../public/icons/minus'
@@ -9,16 +8,13 @@ import MinusSmallSVG from '../public/icons/minus-small'
 import PlusSmallSVG from '../public/icons/plus-small'
 
 import CartContext from '../context/cart-context'
-import AuthContext from '../context/auth-context'
 import { useTranslation } from '../hooks/useTranslation';
 
 import Button from './elements/button'
 
 export default function BuyButton({disabled, productId, price, primary=false, secondary=false, size="medium"}) {
     const cartFromContext = useContext(CartContext);
-    const authFromContext = useContext(AuthContext);
     const { translate } = useTranslation();
-    const [cookies, setCookie] = useCookies();
 
     const buy = async (productId, price=0, action=null) => {
         try {
@@ -27,19 +23,13 @@ export default function BuyButton({disabled, productId, price, primary=false, se
             }
 
             const {cart, updateCart} = cartFromContext;
-            const {auth} = authFromContext;
-            const {cart: cookieCart} = cookies;
-
             const product = cart.products.find(p => p.productId === productId);
             if (!product) {
                 const total = +(cart.total+price).toFixed(2);
                 const products = cart.products.concat({productId, quantity: 1});
 
                 updateCart(products, total);
-                const {token} = await updateCartAPI(products, total);
-                if (!auth && !cookieCart) {
-                    setCookie('cart', token, { path: '/', maxAge: 604800 });
-                }
+                await updateCartAPI(products, total);
             } else {
                 const quantity = action === 'inc' ? product.quantity + 1 : product.quantity - 1;
 
@@ -60,10 +50,7 @@ export default function BuyButton({disabled, productId, price, primary=false, se
                 total = +total.toFixed(2);
     
                 updateCart(products, total);
-                const {token} = await updateCartAPI(products, total);
-                if (!auth && !cookieCart) {
-                    setCookie('cart', token, { path: '/', maxAge: 604800 });
-                }
+                await updateCartAPI(products, total);
             }
         } catch(e) {
             console.log(e);

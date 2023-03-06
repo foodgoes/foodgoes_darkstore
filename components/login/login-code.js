@@ -8,13 +8,13 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 import Button from "../elements/button";
 
-export default function LoginCode({onClose, fromPage=null}) {
+export default function LoginCode({onClose, actionAfterLogin=null}) {
     const { translate } = useTranslation();
     const { register, handleSubmit } = useForm();
 
     const inputBoxRef = useRef();
 
-    const {setAuth} = useContext(AuthContext);
+    const {setAuth, setActionAfterLogin} = useContext(AuthContext);
 
     useEffect(() => {
         focusInput();
@@ -32,22 +32,24 @@ export default function LoginCode({onClose, fromPage=null}) {
                 const {isNewUser} = getAdditionalUserInfo(result);
                 if (isNewUser) {
                     const body = {provider: 'firebase', id: user.uid, phoneNumber: user.phoneNumber};
-                    fetch('/api/account/signup', {method: 'POST',  headers: {
+                    const res = await fetch('/api/account/signup', {method: 'POST',  headers: {
                         'Content-Type': 'application/json',
-                      }, body: JSON.stringify(body)})
-                      .then((res) => res.json())
-                      .then((data) => {
-                        setAuth(!fromPage ? data : {...data, fromPage});
-                    });
+                        }, body: JSON.stringify(body)});
+
+                    const data = await res.json();
+                    
+                    setAuth(data);
+                    setActionAfterLogin(actionAfterLogin);
                 } else {
                     const body = {phoneNumber: user.phoneNumber};
-                    fetch('/api/account/activate_session', {method: 'POST',  headers: {
+                    const res = await fetch('/api/account/activate_session', {method: 'POST',  headers: {
                         'Content-Type': 'application/json',
-                      }, body: JSON.stringify(body)})
-                      .then((res) => res.json())
-                      .then((data) => {
-                        setAuth(!fromPage ? data : {...data, fromPage});
-                    });
+                        }, body: JSON.stringify(body)});
+
+                    const data = await res.json();
+
+                    setAuth(data);
+                    setActionAfterLogin(actionAfterLogin);
                 }
 
                 onClose();

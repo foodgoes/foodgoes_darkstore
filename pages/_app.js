@@ -32,6 +32,7 @@ const roboto = localFont({
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({total:0, products:[]});
   const [auth, setAuth] = useState(null);
+  const [actionAfterLogin, setActionAfterLogin] = useState(null);
 
   useEffect(() => {
     const getUserAPI = async () => {
@@ -55,7 +56,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <main className={roboto.className}>
-      <AuthContext.Provider value={{auth, setAuth}}>
+      <AuthContext.Provider value={{auth, setAuth, actionAfterLogin, setActionAfterLogin}}>
         <CartContext.Provider value={{cart, updateCart, deleteCart}}>
           <Layout>
               {getLayout(<Component {...pageProps} />)}

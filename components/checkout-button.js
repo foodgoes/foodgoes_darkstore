@@ -1,5 +1,5 @@
 import {useContext, useCallback, useState, useEffect} from "react";
-import { useCookies } from 'react-cookie';
+import {useRouter} from 'next/router'
 import { useTranslation } from '../hooks/useTranslation';
 
 import Button from "./elements/button";
@@ -8,35 +8,41 @@ import AuthContext from '../context/auth-context'
 import Login from "./login/login";
 import Modal from "./elements/modal";
 
-export default function CheckoutButton({data, handleOrder}) {
+import AlertOrderSuccess from "./alerts/order-success";
+
+export default function CheckoutButton({data, clearCart}) {
   const authFromContext = useContext(AuthContext);
 
   const [active, setActive] = useState(false);
+  const [activeAlert, setActiveAlert] = useState(false);
+  const [orderNumber, setOrderNumber] = useState();
+
+  const router = useRouter();
 
   const { translate } = useTranslation();
-  const [cookies, setCookie, removeCookie] = useCookies();
 
-  const handleChange = useCallback(() => {
-    setActive(!active)
-  }, [active]);
+  const handleChangeAlert = useCallback(() => setActiveAlert(!activeAlert), [activeAlert]);
+  const handleChange = useCallback(() => setActive(!active), [active]);
 
   useEffect(() => {
-    if (!authFromContext.auth) return;
-    if (authFromContext.auth.fromPage === 'checkout') {
-      checkout(); 
+    if (!authFromContext.actionAfterLogin) return;
+
+    if (authFromContext.actionAfterLogin === 'checkout') {
+      checkout();
     }
-  }, [authFromContext.auth]);
+  }, [authFromContext.actionAfterLogin]);
 
   const checkout = async () => {
-    const {auth} = authFromContext;
-    const {totalLineItemsPrice, totalShippingPrice, totalDiscounts} = data;
-    
+    const {auth} = authFromContext;    
     if (auth) {
-      const total = +(totalLineItemsPrice+totalShippingPrice-totalDiscounts).toFixed(2);
-      const order = await createOrderAPI({...data, totalPrice: total});
+      const order = await createOrderAPI({...data});
       if (order) {
-        handleOrder(order.orderNumber);
-        removeCookie('cart');
+        setOrderNumber(order.orderNumber);
+        handleChangeAlert();
+
+        clearCart();
+
+        authFromContext.setActionAfterLogin(null);
       }
     } else {
       handleChange();
@@ -58,8 +64,23 @@ export default function CheckoutButton({data, handleOrder}) {
           onClose={handleChange}
           title={translate('loginTitle')}
       >
-          <Login onClose={handleChange} fromPage={'checkout'} />
+          <Login onClose={handleChange} actionAfterLogin={'checkout'} />
       </Modal>
+
+      <Modal
+          open={activeAlert}
+          onClose={handleChangeAlert}
+          primaryAction={{
+            onAction: () =>  router.push({pathname: '/account/orders'}, undefined, { locale: router.locale }), 
+            content: translate('aboutOrder')
+          }}
+          secondaryActions={[{
+            onAction: () =>  router.push({pathname: '/'}, undefined, { locale: router.locale }), 
+            content: translate('btnInCatalog')
+          }]}
+        >
+          <AlertOrderSuccess orderNumber={orderNumber} />
+        </Modal>
 
       <Button onClick={checkout} primary size='large'>{translate('order')}</Button>
     </>
