@@ -1,6 +1,5 @@
 import {useState, useCallback, useEffect, useRef, useContext} from 'react'
 
-import { useRouter } from 'next/router';
 import Link from 'next/link'
 
 import styles from '../styles/Navbar.module.css'
@@ -21,6 +20,7 @@ import LocalesList from './locales-list';
 
 import CartContext from '@/context/cart-context'
 import AuthContext from '@/context/auth-context';
+import Search from '@/components/search';
 
 export default function Navbar() {
   const [active, setActive] = useState(false);
@@ -29,7 +29,6 @@ export default function Navbar() {
 
   const btnRef = useRef();
 
-  const router = useRouter();
   const { translate } = useTranslation();
 
   const {cart} = useContext(CartContext);
@@ -49,40 +48,6 @@ export default function Navbar() {
 
     return () => document.body.removeEventListener('click', closeDropDown);
   }, []);
-
-  const queue = [];
-  const handleKeyUpSearch = event => {
-    try {
-      queue.forEach(element => clearTimeout(element));
-
-      const timeoutId = setTimeout(async () => {
-        let q = event.target.value;
-        q = q.trim().toLowerCase();
-
-        if (q === '') {
-          return;
-        }
-        if (q.length < 3) {
-          return;
-        }
-        if (q.length > 25) {
-          return;
-        }
-
-        const pathname = '/search';
-
-        if (router.pathname !== pathname) {
-          router.push({pathname, query: {text: q}}, undefined, { locale: router.locale });
-        } else {
-          router.replace({pathname, query: {text: q}}, undefined, { locale: router.locale });
-        }
-      }, 1500);
-
-      queue.push(timeoutId);
-    } catch(e) {
-      return;
-    }
-  };
 
   const logout = () => {
       signOut(firebaseAuth).then(() => {
@@ -122,7 +87,7 @@ export default function Navbar() {
         </div>
 
         <div className={styles.search}>
-          <input type="text" placeholder={translate('search')} onKeyUp={handleKeyUpSearch} />
+          <Search/>
         </div>
 
         <div className={styles.buttons}>
@@ -161,7 +126,7 @@ export default function Navbar() {
       </div>
       <div className={styles.headerMob}>
         <div className={styles.search + ' ' + styles.searchMob}>
-          <input type="text" placeholder={translate('search')} onKeyUp={handleKeyUpSearch} />
+          <Search />
         </div>
       </div>
     </>
