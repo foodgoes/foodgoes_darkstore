@@ -26,7 +26,6 @@ async function handler(req, res) {
         d.setTime(d.getTime() + (7*24*60*60*1000));
         const expires = "expires="+ d.toUTCString();
         res.setHeader('Set-Cookie', `cart=${cart.token}; ${expires}; path=/`);
-        setCookie('cart', token, { path: '/', maxAge: 604800 });
       }
       return res.status(200).json(cart);
     }
@@ -37,7 +36,7 @@ async function handler(req, res) {
         res.setHeader('Set-Cookie', 'cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
       }
 
-      return res.status(200).json({deletedCarId: cart.id});
+      return res.status(200).json({deletedCartId: cart.id});
     }
 
     res.status(200).json(null);

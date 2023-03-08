@@ -3,6 +3,36 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
+const ShippingAddress = new Schema({
+    address1: String,
+    address2: String,
+    city: String,
+    company: String,
+    firstName: String,
+    lastName: String,
+    latitude: Number,
+    longitude: Number,
+    phone: String,
+    zip: String,
+    countryCode: String,
+    provinceCode: String,
+    country: String,
+    province: String
+});
+ShippingAddress.set('toObject', { virtuals: true });
+ShippingAddress.virtual('name').get(function() {
+    let displayName = '';
+
+    if (this.firstName || this.lastName) {
+        const name = [];
+        if (this.firstName) name.push(this.firstName);
+        if (this.lastName) name.push(this.lastName);
+        displayName = name.join(' ');
+    }
+
+    return displayName;
+});
+
 const LineItem = new Schema({
     productId: {
         type: ObjectId,
@@ -59,6 +89,10 @@ const OrderSchema = new Schema({
     },
     number: Number,
     orderNumber: Number,
+    token: {
+        type: String,
+        unique: true
+    },
     totalShippingPrice: {
         type: Number,
         default: 0
@@ -95,6 +129,7 @@ const OrderSchema = new Schema({
         default: null
     },
     lineItems: [LineItem],
+    shippingAddress: ShippingAddress,
     createdAt: {
         type: Date,
         default: Date.now

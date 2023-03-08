@@ -46,5 +46,7 @@
   "totalDiscounts": "Скидка",
   "alertDiscountFirstOrder": "Минус [discount] на первый заказ",
   "aboutOrder": "Подробно о заказе",
-  "orderTitle": "Заказ"
+  "orderTitle": "Заказ",
+  "enterDeliveryAddress": "Укажите адрес доставки",
+  "enterYourDeliveryAddress": "Укажите ваш адрес"
 }

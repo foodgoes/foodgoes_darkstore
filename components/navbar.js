@@ -1,29 +1,33 @@
 import {useState, useCallback, useEffect, useRef, useContext} from 'react'
-
 import Link from 'next/link'
-
-import styles from '../styles/Navbar.module.css'
-
-import { useTranslation } from '../hooks/useTranslation';
 
 import { signOut } from "firebase/auth";
 
-import Modal from './elements/modal'
-import Button from './elements/button'
-import Login from './login/login'
+import styles from '@/styles/Navbar.module.css'
 
-import {firebaseAuth} from '../utils/init-firebase';
-import AccountSVG from '../public/icons/account'
-import CartSVG from '../public/icons/cart'
-import GlobeSVG from '../public/icons/globe'
-import LocalesList from './locales-list';
+import { useTranslation } from '@/hooks/useTranslation';
 
-import CartContext from '@/context/cart-context'
 import AuthContext from '@/context/auth-context';
+import CartContext from '@/context/cart-context';
+import LocationContext from '@/context/location-context';
+
+import Modal from '@/components/elements/modal'
+import Button from '@/components/elements/button'
+import Login from '@/components/login/login'
+import LocalesList from '@/components/modals/locales-list';
+import Address from '@/components/modals/address';
 import Search from '@/components/search';
+import DeliveryAddress from '@/components/delivery-address';
+
+import {firebaseAuth} from '@/utils/init-firebase';
+
+import AccountSVG from '@/public/icons/account'
+import CartSVG from '@/public/icons/cart'
+import GlobeSVG from '@/public/icons/globe'
 
 export default function Navbar() {
   const [active, setActive] = useState(false);
+  const [activeAddress, setActiveAddress] = useState(false);
   const [activeLocales, setActiveLocales] = useState(false);
   const [accountMenu, setAccountMenu] = useState(false);
 
@@ -33,7 +37,9 @@ export default function Navbar() {
 
   const {cart} = useContext(CartContext);
   const {auth, setAuth} = useContext(AuthContext);
-
+  const {location} = useContext(LocationContext);
+  
+  const handleChangeAddress = useCallback(() => setActiveAddress(!activeAddress), [activeAddress]);
   const handleChange = useCallback(() => setActive(!active), [active]);
   const handleChangeLocales = useCallback(() => setActiveLocales(!activeLocales), [activeLocales]);
 
@@ -81,6 +87,14 @@ export default function Navbar() {
           <Login onClose={handleChange} />
       </Modal>
 
+      <Modal
+          open={activeAddress}
+          onClose={handleChangeAddress}
+          title={translate('enterYourDeliveryAddress')}
+      >
+          <Address onClose={handleChangeAddress} />
+      </Modal>
+
       <div className={styles.header}>
         <div>
             <Link className={styles.logo} href="/">FoodGoes</Link>
@@ -88,6 +102,10 @@ export default function Navbar() {
 
         <div className={styles.search}>
           <Search/>
+        </div>
+        
+        <div>
+          <DeliveryAddress location={location} handleChangeAddress={handleChangeAddress} />
         </div>
 
         <div className={styles.buttons}>

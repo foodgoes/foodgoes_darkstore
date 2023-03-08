@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
-import Button from '../components/elements/button';
+import Button from '@/components/elements/button';
 
-import styles from '../styles/LocalesList.module.css'
+import styles from '@/styles/LocalesList.module.css'
 
 export default function LocalesList({onClose}) {
     const router = useRouter();

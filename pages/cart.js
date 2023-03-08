@@ -50,8 +50,8 @@ export default function Cart() {
   const totalLineItemsPrice = cartFromContext.cart.total;
 
   const clearCart = async () => {
-    cartFromContext.deleteCart();
     await deleteCartAPI();
+    cartFromContext.deleteCart();
   };
 
   const deleteCartAPI = async () => {
@@ -64,7 +64,7 @@ export default function Cart() {
       <>
         <Head>
           <title>{translate('metaTitleCart')}</title>
-        </Head>
+        </Head>        
         <div className='topBar'>
           <div className='infoBlock'>
             <div>
@@ -127,17 +127,7 @@ export default function Cart() {
             </table>
           </div>
           
-          <CheckoutButton clearCart={clearCart} data={{
-            lineItems: products,
-            financialStatus: 'pending',
-            fulfillmentStatus: 'pending_fulfillment',
-            totalShippingPrice,
-            totalTax: 0,
-            totalLineItemsPrice, 
-            totalDiscounts,
-            subtotalPrice: +(totalLineItemsPrice-totalDiscounts).toFixed(2),
-            totalPrice: +(totalLineItemsPrice+totalShippingPrice-totalDiscounts).toFixed(2)
-        }}/>
+          <CheckoutButton clearCart={clearCart} />
         </div>
       </div>
     </>

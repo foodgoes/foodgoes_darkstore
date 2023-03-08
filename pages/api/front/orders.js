@@ -1,9 +1,13 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { withSessionRoute } from "../../../lib/withSession";
 import dbConnect from '../../../lib/dbConnect';
+import Cart from '../../../models/Cart';
 import Order from '../../../models/Order';
 import User from '../../../models/User';
-import {getFullDate} from '../../../utils/date';
 import Product from "@/models/Product";
+import Location from "@/models/Location";
+import {getFullDate} from '../../../utils/date';
 
 import {getNextSequence} from '../../../lib/counter';
 
@@ -17,6 +21,8 @@ async function handler(req, res) {
     if (!userId) {
       throw('Error, auth.');
     }
+
+    const {cart: token, location: tokenLocation} = req.cookies;
     
     if (req.method === 'GET') {
       const orders = await handleGETAsync(userId, req.query);
@@ -24,7 +30,7 @@ async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      const order = await handleBodyPOSTAsync(userId, req.body);
+      const order = await handleBodyPOSTAsync(userId, token, tokenLocation, req.body);
       return res.status(200).json(order);
     }
 
@@ -93,34 +99,76 @@ async function handleGETAsync(userId, query) {
       throw e;
   }
 }
-async function handleBodyPOSTAsync(userId, body) {
+async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
   try {
-      const lineItems = body.lineItems.map(lineItem => ({
-        productId: lineItem.id,
-        quantity: lineItem.quantity,
-        price: lineItem.price,
-        title: lineItem.title,
-        brand: lineItem.brand,
-      }));
+    const guestLogged = body.guestLogged;
 
-      const seq = await getNextSequence('orderId');
+    const filterCart = !guestLogged ? {userId} : {token};
+    const cart = await Cart.findOne(filterCart);
+    if (!cart) {
+      throw('error. Cart not found');
+    }
 
-      const newOrder = await Order.create({
-        userId, 
-        number: seq,
-        orderNumber: 1000 + seq,
-        financialStatus: body.financialStatus,
-        fulfillmentStatus: body.fulfillmentStatus,
-        totalShippingPrice: body.totalShippingPrice,
-        totalTax: body.totalTax,
-        totalLineItemsPrice: body.totalLineItemsPrice, 
-        totalDiscounts: body.totalDiscounts,
-        subtotalPrice: body.subtotalPrice,
-        totalPrice: body.totalPrice,
-        lineItems,
-      });
+    const filterLocation = !guestLogged ? {userId} : {token: tokenLocation};
+    const location = await Location.findOne(filterLocation);
+    if (!location) {
+      throw('error. Location not found');
+    }
 
-      return newOrder;
+    if (guestLogged) {
+      const location = await Location.findOne({userId});
+      if (!location) {
+        await Location.findOneAndUpdate({token: tokenLocation}, {userId}, {new: true});
+      }
+    }
+
+    const productIds = cart.products.map(p => p.productId);
+    const products = await Product.find({'_id': {$in: productIds}});
+
+    let totalLineItemsPrice = 0;
+    let totalTax = 0;
+    let totalShippingPrice = 25;
+    let totalDiscounts = 0;
+    let subtotalPrice = +(totalLineItemsPrice - totalDiscounts).toFixed(2);
+    let totalPrice = +(totalLineItemsPrice + totalShippingPrice - totalDiscounts).toFixed(2);
+
+    const lineItems = products.map(product => {
+      const quantity = cart.products.find(p => String(p.productId) === product.id).quantity;
+
+      totalLineItemsPrice += product.price*quantity;
+
+      return {
+        productId: product.id,
+        title: product.title,
+        brand: product.brand,
+        price: product.price,
+        quantity
+      };
+    });
+
+    const shippingAddress = location.address;
+
+    const seq = await getNextSequence('orderId');
+    const tokenOrder = uuidv4();
+
+    const newOrder = await Order.create({
+      userId, 
+      number: seq,
+      orderNumber: 1000 + seq,
+      token: tokenOrder,
+      financialStatus: 'pending',
+      fulfillmentStatus: 'pending_fulfillment',
+      lineItems,
+      shippingAddress,
+      totalShippingPrice,
+      totalTax,
+      totalLineItemsPrice, 
+      totalDiscounts,
+      subtotalPrice,
+      totalPrice,
+    });
+
+    return newOrder;
   } catch(e) {
     console.log(e);
       throw e;

@@ -1,12 +1,11 @@
-import Layout from '../components/layout'
-
-import '../styles/globals.css'
-
 import { useEffect, useState} from 'react';
 import localFont from 'next/font/local';
 
-import CartContext from '../context/cart-context';
-import AuthContext from '../context/auth-context';
+import Layout from '@/components/layout'
+import '@/styles/globals.css'
+import AuthContext from '@/context/auth-context';
+import LocationContext from '@/context/location-context';
+import CartContext from '@/context/cart-context';
 
 const roboto = localFont({
   src: [
@@ -30,8 +29,9 @@ const roboto = localFont({
 });
 
 function MyApp({ Component, pageProps }) {
-  const [cart, setCart] = useState({total:0, products:[]});
   const [auth, setAuth] = useState(null);
+  const [location, setLocation] = useState({address: null});
+  const [cart, setCart] = useState({total:0, products:[]});
   const [actionAfterLogin, setActionAfterLogin] = useState(null);
 
   useEffect(() => {
@@ -49,6 +49,7 @@ function MyApp({ Component, pageProps }) {
     getUserAPI();
   }, []);
 
+  const updateAddress = (address) => setLocation(prevState => ({...prevState, address}));
   const deleteCart = () => setCart({total:0, products:[]});
   const updateCart = (products, total) => setCart(prevState => ({...prevState, products, total}));
 
@@ -57,11 +58,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <main className={roboto.className}>
       <AuthContext.Provider value={{auth, setAuth, actionAfterLogin, setActionAfterLogin}}>
-        <CartContext.Provider value={{cart, updateCart, deleteCart}}>
-          <Layout>
-              {getLayout(<Component {...pageProps} />)}
-          </Layout>
-        </CartContext.Provider>
+        <LocationContext.Provider value={{location, updateAddress}}>
+          <CartContext.Provider value={{cart, updateCart, deleteCart}}>
+            <Layout>
+                {getLayout(<Component {...pageProps} />)}
+            </Layout>
+          </CartContext.Provider>
+        </LocationContext.Provider>
       </AuthContext.Provider>
     </main>
   );

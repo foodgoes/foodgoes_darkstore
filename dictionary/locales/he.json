@@ -46,5 +46,7 @@
   "totalDiscounts": "Discount",
   "alertDiscountFirstOrder": "Minus [discount] on the first order",
   "aboutOrder": "About order",
-  "orderTitle": "Order"
+  "orderTitle": "Order",
+  "enterDeliveryAddress": "Enter a delivery address",
+  "enterYourDeliveryAddress": "Enter your delivery address"
 }
