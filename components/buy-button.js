@@ -1,57 +1,84 @@
-import { useContext } from "react";
+import { useContext, useState, useCallback, useEffect } from "react";
+import { createPortal } from 'react-dom';
 
-import styles from '../styles/BuyButton.module.css'
+import styles from '@/styles/BuyButton.module.css'
 
-import MinusSVG from '../public/icons/minus'
-import PlusSVG from '../public/icons/plus'
-import MinusSmallSVG from '../public/icons/minus-small'
-import PlusSmallSVG from '../public/icons/plus-small'
+import MinusSVG from '@/public/icons/minus'
+import PlusSVG from '@/public/icons/plus'
+import MinusSmallSVG from '@/public/icons/minus-small'
+import PlusSmallSVG from '@/public/icons/plus-small'
 
-import CartContext from '../context/cart-context'
-import { useTranslation } from '../hooks/useTranslation';
+import CartContext from '@/context/cart-context';
+import LocationContext from "@/context/location-context";
+import { useTranslation } from '@/hooks/useTranslation';
 
-import Button from './elements/button'
+import Button from './elements/button';
+import Modal from "./elements/modal";
+import Address from "./modals/address";
 
 export default function BuyButton({disabled, productId, price, primary=false, secondary=false, size="medium"}) {
+    const [activeAddress, setActiveAddress] = useState(false);
+
     const cartFromContext = useContext(CartContext);
+    const locationFromContext = useContext(LocationContext);
+    
     const { translate } = useTranslation();
 
-    const buy = async (productId, price=0, action=null) => {
+    const handleChangeAddress = useCallback(() => setActiveAddress(!activeAddress), [activeAddress]);
+
+    useEffect(() => {
+        if (locationFromContext.productIdAfterLocation !== productId) return;
+
+        buy(productId, price);
+      }, [locationFromContext.productIdAfterLocation]);
+
+    const buy = async (productId, price=0, action='inc') => {
         try {
             if (!productId) {
                 throw 'Invalid productId';
             }
 
+            const {location, setProductIdAfterLocation} = locationFromContext;
             const {cart, updateCart} = cartFromContext;
-            const product = cart.products.find(p => p.productId === productId);
-            if (!product) {
-                const total = +(cart.total+price).toFixed(2);
-                const products = cart.products.concat({productId, quantity: 1});
 
-                updateCart(products, total);
-                await updateCartAPI(products, total);
-            } else {
-                const quantity = action === 'inc' ? product.quantity + 1 : product.quantity - 1;
-
-                const products = (function(products, productId, quantity) {
-                    if (quantity < 1) {
-                        return products.filter(p => p.productId !== productId);
-                    } else {
-                        return products.map(p => {
-                            return {
-                                ...p,
-                                quantity: p.productId === productId ? quantity: p.quantity
-                            };
-                        });
-                    }
-                })(cart.products, productId, quantity);
-    
-                let total = cart.total + (action ? price : -price);
-                total = +total.toFixed(2);
-    
-                updateCart(products, total);
-                await updateCartAPI(products, total);
+            if (!location.address) {
+                handleChangeAddress();
+                return;
             }
+
+            const total = (function(total, price, action) {
+                if (action === 'inc') total = total + price;
+                if (action === 'dec') total = total - price;
+                return +(total.toFixed(2));
+            })(cart.total, price, action);
+
+            const products = (function(products, productId, action) {
+                const product = products.find(p => p.productId === productId);
+
+                if (!product) {
+                    return products.concat({productId, quantity: 1});
+                }
+
+                const quantity = (function(quantity, action) {
+                    if (action === 'inc') return quantity + 1;
+                    if (action === 'dec') return quantity - 1;
+                    return quantity;
+                })(product.quantity, action);
+
+                if (quantity < 1) {
+                    return products.filter(p => p.productId !== productId);
+                }
+
+                return products.map(p => ({
+                    ...p,
+                    quantity: p.productId === productId ? quantity : p.quantity
+                }));
+            })(cart.products, productId, action);
+
+            updateCart(products, total);
+            await updateCartAPI(products, total);
+
+            setProductIdAfterLocation(null);
         } catch(e) {
             console.log(e);
             return;
@@ -72,10 +99,10 @@ export default function BuyButton({disabled, productId, price, primary=false, se
         return (
             <div className={styles.wrapper}>
                 <div className={styles.container + (size ? ' ' + styles[size] : '')}>
-                    <Button onClick={() => buy(productId, price)} secondary>
+                    <Button onClick={() => buy(productId, price, 'dec')} secondary>
                         {size !== 'small' ? <MinusSVG /> : <MinusSmallSVG />}</Button>
                     <span className={styles.quantity}>{productInCart.quantity}</span>
-                    <Button onClick={() => buy(productId, price, 'inc')} secondary>
+                    <Button onClick={() => buy(productId, price)} secondary>
                         {size !== 'small' ? <PlusSVG /> : <PlusSmallSVG />}
                     </Button>
                 </div>
@@ -84,11 +111,24 @@ export default function BuyButton({disabled, productId, price, primary=false, se
     }
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <Button onClick={() => buy(productId, price)} size={size}
-                disabled={disabled} secondary={secondary} primary={primary} fullWidth><span>{translate('buy')}</span></Button>
+        <>
+            {activeAddress && createPortal(
+                <Modal
+                    open={activeAddress}
+                    onClose={handleChangeAddress}
+                    title={translate('enterYourDeliveryAddress')}
+                >
+                    <Address onClose={handleChangeAddress} productIdAfterLocation={productId} />
+                </Modal>,
+                document.body
+            )}
+
+            <div className={styles.wrapper}>
+                <div className={styles.container}>
+                    <Button onClick={() => buy(productId, price)} size={size}
+                    disabled={disabled} secondary={secondary} primary={primary} fullWidth><span>{translate('buy')}</span></Button>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

@@ -27,17 +27,24 @@ export default function CheckoutButton({clearCart}) {
   }, [authFromContext.actionAfterLogin]);
 
   const checkout = async () => {
-    const {auth, setActionAfterLogin, actionAfterLogin} = authFromContext;    
-    if (auth) {
-      const order = await createOrderAPI(actionAfterLogin);
-      if (order) {
-        clearCart();
-        setActionAfterLogin(null);
-
-        router.push({pathname: '/orders/'+order.orderNumber}, undefined, { locale: router.locale });
+    try {
+      const {auth, setActionAfterLogin, actionAfterLogin} = authFromContext;
+      
+      if (!auth) {
+        handleChange();
+        return;
       }
-    } else {
-      handleChange();
+    
+      const order = await createOrderAPI(actionAfterLogin);
+      if (!order) {
+        throw('Error create order.')
+      }
+
+      clearCart();
+      setActionAfterLogin(null);
+      router.push({pathname: '/orders/'+order.orderNumber}, undefined, { locale: router.locale });
+    } catch(e) {
+      console.log(e);
     }
   };
 
@@ -57,7 +64,7 @@ export default function CheckoutButton({clearCart}) {
           onClose={handleChange}
           title={translate('loginTitle')}
       >
-          <Login onClose={handleChange} actionAfterLogin={'checkout'} />
+          <Login onClose={handleChange} actionAfterLogin='checkout' />
       </Modal>
 
       <Button onClick={checkout} primary size='large'>{translate('order')}</Button>

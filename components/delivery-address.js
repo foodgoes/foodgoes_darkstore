@@ -9,7 +9,8 @@ export default function DeliveryAddress({location, handleChangeAddress}) {
     return (
         <div className={styles.addressButton}>
             <Button primary={!location.address} onClick={handleChangeAddress}>
-                <NavigationSVG /> <span className={styles.text}>{location.address?.address1 || translate('enterDeliveryAddress')}</span></Button>
+                <NavigationSVG /> <span className={styles.text}>{location.address?.address1 || translate('enterDeliveryAddress')}</span>
+            </Button>
         </div>
     );
 }

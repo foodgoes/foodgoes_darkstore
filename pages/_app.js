@@ -1,5 +1,4 @@
 import { useEffect, useState} from 'react';
-import localFont from 'next/font/local';
 
 import Layout from '@/components/layout'
 import '@/styles/globals.css'
@@ -7,32 +6,12 @@ import AuthContext from '@/context/auth-context';
 import LocationContext from '@/context/location-context';
 import CartContext from '@/context/cart-context';
 
-const roboto = localFont({
-  src: [
-    {
-      path: '../fonts/roboto/Roboto-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/roboto/Roboto-Medium.ttf',
-      weight: '500',
-      style: 'normal'
-    },
-    {
-      path: '../fonts/roboto/Roboto-Bold.ttf',
-      weight: '700',
-      style: 'normal'
-    }
-  ],
-  variable: '--roboto-font',
-});
-
 function MyApp({ Component, pageProps }) {
   const [auth, setAuth] = useState(null);
   const [location, setLocation] = useState({address: null});
   const [cart, setCart] = useState({total:0, products:[]});
   const [actionAfterLogin, setActionAfterLogin] = useState(null);
+  const [productIdAfterLocation, setProductIdAfterLocation] = useState(null);
 
   useEffect(() => {
     const getUserAPI = async () => {
@@ -56,9 +35,9 @@ function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <main className={roboto.className}>
+    <main>
       <AuthContext.Provider value={{auth, setAuth, actionAfterLogin, setActionAfterLogin}}>
-        <LocationContext.Provider value={{location, updateAddress}}>
+        <LocationContext.Provider value={{location, updateAddress, productIdAfterLocation, setProductIdAfterLocation}}>
           <CartContext.Provider value={{cart, updateCart, deleteCart}}>
             <Layout>
                 {getLayout(<Component {...pageProps} />)}

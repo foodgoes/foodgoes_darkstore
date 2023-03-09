@@ -3,8 +3,8 @@ import Button from '@/components/elements/button';
 
 import LocationContext from '@/context/location-context';
 
-export default function Address({onClose}) {
-    const {location, updateAddress} = useContext(LocationContext);
+export default function Address({onClose, productIdAfterLocation=null}) {
+    const {location, updateAddress, setProductIdAfterLocation} = useContext(LocationContext);
     const [address, setAddress] = useState(location.address?.address1 || '');
 
     const handleChange = event => {
@@ -14,6 +14,7 @@ export default function Address({onClose}) {
     const handleClick = async () => {
         await updateLocationAPI(address);
         updateAddress({address1: address});
+        setProductIdAfterLocation(productIdAfterLocation);
         onClose();
     };
 
