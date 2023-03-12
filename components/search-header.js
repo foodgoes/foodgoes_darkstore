@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from '@/hooks/useTranslation';
+import SearchSVG from '@/public/icons/search';
+import styles from '@/styles/SearchHeader.module.css';
 
 export default function Search() {
     const router = useRouter();
@@ -39,5 +41,10 @@ export default function Search() {
         }
     };
 
-    return <input type="text" placeholder={translate('search')} onKeyUp={handleKeyUpSearch} />;
+    return (
+        <div className={styles.search}>
+            <span className={styles.icon}><SearchSVG /></span>
+            <input type="text" placeholder={translate('search')} onKeyUp={handleKeyUpSearch} />
+        </div>
+    );
 }

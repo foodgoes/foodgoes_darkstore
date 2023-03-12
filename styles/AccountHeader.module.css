@@ -1,0 +1,27 @@
+  .auth {
+    display: inline-block;
+    margin-left: 16px;
+  }
+  
+  .account {
+    position: relative;
+  }
+  
+  .accountMenu {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 0;
+    margin: 0;
+    right: 0;
+    width: 160px;
+  
+    border-radius: 32px;
+    box-shadow: 0 8px 20px hsl(40deg 3% 45% / 20%);
+    padding-bottom: 24px;
+    padding-top: 24px;
+  }
+  
+  .accountMenu ul {
+    list-style: none;
+  }

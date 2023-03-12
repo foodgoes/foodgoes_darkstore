@@ -1,0 +1,25 @@
+.addressButton {
+    margin-left: 16px;
+}
+.addressButton button {
+    width: 256px;
+    min-width: 256px;
+    overflow: hidden;
+    transition-duration: .15s;
+    transition-property: box-shadow;
+    transition-timing-function: ease-in-out;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.addressButton svg {
+    min-width: 24px;
+    transform: rotate(45deg);
+  }
+.text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 13px;
+}
