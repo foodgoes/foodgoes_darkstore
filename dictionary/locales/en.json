@@ -15,7 +15,7 @@
   "aboutProduct": "About",
   "vendor": "Vendor",
   "total": "Total",
-  "shippingTime": "Shipping [time] minutes",
+  "shippingTime": "Shipping [time] hours",
   "products": "Products",
   "shipping": "Shipping",
   "payment": "Payment",
@@ -44,9 +44,9 @@
   "totalLineItemsPrice": "Products",
   "totalShippingPrice": "Shipping",
   "totalDiscounts": "Discount",
-  "alertDiscountFirstOrder": "Minus [discount] on the first order",
   "aboutOrder": "About order",
   "orderTitle": "Order",
   "enterDeliveryAddress": "Enter a delivery address",
-  "enterYourDeliveryAddress": "Enter your delivery address"
+  "enterYourDeliveryAddress": "Enter your delivery address",
+  "discount": "Discount"
 }

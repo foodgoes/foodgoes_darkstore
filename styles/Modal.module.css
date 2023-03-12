@@ -15,7 +15,7 @@
   top: 0;
   bottom: 0;
   z-index: 501;
-  max-width: 500px;
+  max-width: 400px;
   margin: 100px auto;
 }
 
@@ -27,7 +27,7 @@
   overflow: hidden;
   position: relative;
   border-radius: 32px;
-  padding: 32px;
+  padding: 16px;
 }
 
 .header {

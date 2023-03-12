@@ -37,7 +37,7 @@ export default function Navbar() {
 
   const {cart} = useContext(CartContext);
   const {auth, setAuth} = useContext(AuthContext);
-  const {location} = useContext(LocationContext);
+  const {location} = useContext(LocationContext);  
   
   const handleChangeAddress = useCallback(() => setActiveAddress(!activeAddress), [activeAddress]);
   const handleChange = useCallback(() => setActive(!active), [active]);

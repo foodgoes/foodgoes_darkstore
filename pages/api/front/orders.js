@@ -1,15 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { withSessionRoute } from "../../../lib/withSession";
-import dbConnect from '../../../lib/dbConnect';
-import Cart from '../../../models/Cart';
-import Order from '../../../models/Order';
-import User from '../../../models/User';
+import { withSessionRoute } from "@/lib/withSession";
+import dbConnect from '@/lib/dbConnect';
+import {getNextSequence} from '@/lib/counter';
+import Cart from '@/models/Cart';
+import Order from '@/models/Order';
+import User from '@/models/User';
 import Product from "@/models/Product";
 import Location from "@/models/Location";
-import {getFullDate} from '../../../utils/date';
+import Discount from "@/models/Discount";
+import {getFullDate} from '@/utils/date';
 
-import {getNextSequence} from '../../../lib/counter';
 
 export default withSessionRoute(handler);
 
@@ -40,17 +41,11 @@ async function handler(req, res) {
   }
 }
 
-async function handleGETAsync(userId, query) {
+async function handleGETAsync(userId) {
   try {
-      const {userId: externalId} = query;
-
-      const user = await User.findOne({'providers.firebase.externalId': externalId});
+      const user = await User.findById(userId);
       if (!user) {
         throw('User not exist');
-      }
-
-      if (user.id !== userId) {
-        throw('User not match');
       }
 
       const output = [];
@@ -126,12 +121,7 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
     const products = await Product.find({'_id': {$in: productIds}});
 
     let totalLineItemsPrice = 0;
-    let totalTax = 0;
-    let totalShippingPrice = 25;
-    let totalDiscounts = 0;
-    let subtotalPrice = +(totalLineItemsPrice - totalDiscounts).toFixed(2);
-    let totalPrice = +(totalLineItemsPrice + totalShippingPrice - totalDiscounts).toFixed(2);
-
+    
     const lineItems = products.map(product => {
       const quantity = cart.products.find(p => String(p.productId) === product.id).quantity;
 
@@ -145,6 +135,13 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
         quantity
       };
     });
+
+    totalLineItemsPrice = +totalLineItemsPrice.toFixed(2);
+    const totalTax = 0;
+    const {totalDiscounts, discount} = await computeDiscount(userId);
+    const totalShippingPrice = 25;
+    const subtotalPrice = +(totalLineItemsPrice - totalDiscounts).toFixed(2);
+    const totalPrice = +(totalLineItemsPrice + totalShippingPrice - totalDiscounts).toFixed(2);
 
     const shippingAddress = location.address;
 
@@ -160,6 +157,7 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
       fulfillmentStatus: 'pending_fulfillment',
       lineItems,
       shippingAddress,
+      discounts: [discount],
       totalShippingPrice,
       totalTax,
       totalLineItemsPrice, 
@@ -171,6 +169,75 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
     return newOrder;
   } catch(e) {
     console.log(e);
+      throw e;
+  }
+}
+
+async function computeDiscount(userId) {
+  try {
+    const data = await Discount.find(
+      {status: 'active', startedAt: {$lt: new Date()}, finishedAt: {$gt: new Date()}}, null, 
+      {skip: 0, limit: 30}).sort([['startedAt', 'desc']]);
+
+    const discounts = [];
+    for (let doc of data) {
+      let isValidDiscount = false;
+      const {conditions} = doc;
+
+      for (let condition of conditions) {
+        if (condition.orderCountEqual !== undefined && condition.orderCountEqual !== null) {
+          const orderCount = await Order.countDocuments({userId});
+          if (orderCount === condition.orderCountEqual) {
+            isValidDiscount = true;
+          }
+        }
+      }
+
+      if (!isValidDiscount) {
+        continue;
+      }
+
+      const discount = {
+        id: doc.id,
+        title: doc.title,
+        previewDescription: doc.previewDescription,
+        description: doc.description,
+        ruleSet: doc.ruleSet,
+        percentage: doc.percentage,
+        subjectType: doc.subjectType,
+        conditions: doc.conditions
+      };
+
+      discounts.push(discount);
+    }
+    const discount = discounts[0];
+
+    const cart = await Cart.findOne({userId});
+    const productIds = cart.products.map(p => String(p.productId));
+    const products = await Product.find({'_id': {$in: productIds}});
+
+    let totalDiscounts = 0;
+    for (let product of products) {
+      const index = productIds.indexOf(product.id);
+      if (index === -1) {
+        continue;
+      }
+      const quantity = cart.products[index].quantity;
+      
+      const {ruleSet} = discount;
+      for (let rule of ruleSet.rules) {
+          const {column, relation, condition} = rule;
+          if (column === 'compare_at_price' && relation === 'equals' && parseFloat(condition) === product.compareAtPrice) {
+            totalDiscounts += (discount.percentage * (product.price*quantity)) / 100;
+          }
+      }
+    }
+
+    totalDiscounts = +totalDiscounts.toFixed(2);
+
+    return {totalDiscounts, discount};
+  } catch(e) {
+    console.log(e)
       throw e;
   }
 }

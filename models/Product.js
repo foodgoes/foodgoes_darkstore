@@ -100,6 +100,14 @@ const ProductSchema = new Schema({
     images: {
         type: Array,
         default: []
+    },
+    forAdult: {
+        type: Boolean,
+        default: false
+    },
+    excludeDiscount: {
+        type: Boolean,
+        default: false
     }
 });
 

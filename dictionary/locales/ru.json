@@ -15,7 +15,7 @@
   "aboutProduct": "О товаре",
   "vendor": "Производитель, страна",
   "total": "Итого",
-  "shippingTime": "Доставка [time] мин",
+  "shippingTime": "Доставка [time] часов",
   "products": "Товары",
   "shipping": "Доставка",
   "payment": "К оплате",
@@ -44,9 +44,9 @@
   "totalLineItemsPrice": "Продуктов",
   "totalShippingPrice": "Доставка",
   "totalDiscounts": "Скидка",
-  "alertDiscountFirstOrder": "Минус [discount] на первый заказ",
   "aboutOrder": "Подробно о заказе",
   "orderTitle": "Заказ",
   "enterDeliveryAddress": "Укажите адрес доставки",
-  "enterYourDeliveryAddress": "Укажите ваш адрес"
+  "enterYourDeliveryAddress": "Укажите ваш адрес",
+  "discount": "Скидка"
 }

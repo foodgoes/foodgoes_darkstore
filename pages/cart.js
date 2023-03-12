@@ -5,10 +5,11 @@ import Head from 'next/head'
 
 import styles from '../styles/Cart.module.css'
 import Button from '@/components/elements/button'
-import ProductViewList from '../components/product-view-list'
+import ProductViewList from '@/components/product-view-list'
 
-import CartContext from '../context/cart-context'
-import AuthContext from '../context/auth-context'
+import CartContext from '@/context/cart-context'
+import AuthContext from '@/context/auth-context'
+import DiscountContext from '@/context/discount-context'
 
 import { useTranslation } from '../hooks/useTranslation';
 
@@ -19,6 +20,7 @@ import CheckoutButton from '@/components/checkout-button'
 export default function Cart() {
   const cartFromContext = useContext(CartContext);
   const authFromContext = useContext(AuthContext);
+  const {totalDiscounts} = useContext(DiscountContext);
 
   const [cartId, setCartId] = useState(null);
   const [products, setProducts] = useState([]);
@@ -45,7 +47,6 @@ export default function Cart() {
     getCartAPI();
   }, [authFromContext.auth]);
 
-  const totalDiscounts = 0;
   const totalShippingPrice = 25;
   const totalLineItemsPrice = cartFromContext.cart.total;
 
@@ -107,7 +108,7 @@ export default function Cart() {
           <div className={styles.totals}>
             <div className={styles.top}>
               <h2 className={styles.subheading}>{translate('total')}</h2>
-              <span className={styles.deliveryInfo}>{translate('shippingTime').replace('[time]', '25-45')}</span>
+              <span className={styles.deliveryInfo}>{translate('shippingTime').replace('[time]', '3-5')}</span>
             </div>
             <table>
               <tbody>
@@ -115,13 +116,19 @@ export default function Cart() {
                   <th>{translate('products')}</th>
                   <td>&#8362; {totalLineItemsPrice}</td>
                 </tr>
+                {totalDiscounts > 0 && (
+                  <tr>
+                    <th>{translate('discount')}</th>
+                    <td>&#8362; {totalDiscounts}</td>
+                  </tr>
+                )}
                 <tr>
                   <th>{translate('shipping')}</th>
                   <td>&#8362; {totalShippingPrice}</td>
                 </tr>
                 <tr>
                   <th>{translate('payment')}</th>
-                  <td>&#8362; {+(totalLineItemsPrice + totalShippingPrice).toFixed(2)}</td>
+                  <td>&#8362; {+(totalLineItemsPrice - totalDiscounts + totalShippingPrice).toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>

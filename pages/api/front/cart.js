@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { withSessionRoute } from "../../../lib/withSession";
-import dbConnect from '../../../lib/dbConnect';
-import Cart from '../../../models/Cart';
-import User from '../../../models/User';
-import Product from '../../../models/Product';
+import { withSessionRoute } from "@/lib/withSession";
+import dbConnect from '@/lib/dbConnect';
+import Cart from '@/models/Cart';
+import Discount from '@/models/Discount';
+import Product from '@/models/Product';
+import Order from '@/models/Order';
 
 export default withSessionRoute(handler);
 
@@ -20,7 +21,7 @@ async function handler(req, res) {
     }
 
     if (req.method === 'PUT') {
-      const cart = await handleBodyPUTAsync(id, token, req.body);
+      const cart = await handleBodyPUTAsync(id, token, req.body, req.headers);
       if (!cart.userId && !token) {
         const d = new Date();
         d.setTime(d.getTime() + (7*24*60*60*1000));
@@ -70,6 +71,8 @@ async function handleGETAsync(userId, token) {
       compareAtPrice: product.compareAtPrice,
       brand: product.brand,
       quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
+      excludeDiscount: product.excludeDiscount,
+      forAdult: product.forAdult
     }));
 
     return {
@@ -83,7 +86,7 @@ async function handleGETAsync(userId, token) {
       throw e;
   }
 }
-async function handleBodyPUTAsync(userId, token, body) {
+async function handleBodyPUTAsync(userId, token, body, headers) {
   try {
       let {total, products} = body;
 
@@ -97,7 +100,8 @@ async function handleBodyPUTAsync(userId, token, body) {
       if (!cart) {
         throw('cart error');
       }
-     return cart;
+
+      return cart;
   } catch(e) {
     console.log(e)
     throw e;

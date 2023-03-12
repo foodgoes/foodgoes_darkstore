@@ -10,6 +10,8 @@ import PlusSmallSVG from '@/public/icons/plus-small'
 
 import CartContext from '@/context/cart-context';
 import LocationContext from "@/context/location-context";
+import DiscountContext from "@/context/discount-context";
+
 import { useTranslation } from '@/hooks/useTranslation';
 
 import Button from './elements/button';
@@ -21,6 +23,7 @@ export default function BuyButton({disabled, productId, price, primary=false, se
 
     const cartFromContext = useContext(CartContext);
     const locationFromContext = useContext(LocationContext);
+    const discountFromContext = useContext(DiscountContext);
     
     const { translate } = useTranslation();
 
@@ -40,6 +43,7 @@ export default function BuyButton({disabled, productId, price, primary=false, se
 
             const {location, setProductIdAfterLocation} = locationFromContext;
             const {cart, updateCart} = cartFromContext;
+            const {updateTotalDiscounts} = discountFromContext;
 
             if (!location.address) {
                 handleChangeAddress();
@@ -51,7 +55,7 @@ export default function BuyButton({disabled, productId, price, primary=false, se
                 if (action === 'dec') total = total - price;
                 return +(total.toFixed(2));
             })(cart.total, price, action);
-
+            
             const products = (function(products, productId, action) {
                 const product = products.find(p => p.productId === productId);
 
@@ -78,6 +82,9 @@ export default function BuyButton({disabled, productId, price, primary=false, se
             updateCart(products, total);
             await updateCartAPI(products, total);
 
+            const {totalDiscounts} = await computeDiscountAPI();
+            updateTotalDiscounts(totalDiscounts);
+
             setProductIdAfterLocation(null);
         } catch(e) {
             console.log(e);
@@ -90,6 +97,14 @@ export default function BuyButton({disabled, productId, price, primary=false, se
         const res = await fetch('/api/front/cart', {method: 'PUT',  headers: {
             'Content-Type': 'application/json',
             }, body: JSON.stringify(body)});
+
+        return await res.json();
+    };
+
+    const computeDiscountAPI = async () => {
+        const res = await fetch('/api/front/compute-discount', {method: 'GET',  headers: {
+            'Content-Type': 'application/json'
+            }});
 
         return await res.json();
     };

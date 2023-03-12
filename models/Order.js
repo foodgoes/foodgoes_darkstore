@@ -3,6 +3,78 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
+const Condition = new Schema({
+    orderCountEqual: Number,
+    totalLineItemsPriceMin: Number,
+    everyDayOfWeek: Number
+});
+Condition.set('toObject', { virtuals: true });
+Condition.set('toJSON', { virtuals: true });
+
+const Rule = new Schema({
+    column: String,
+    relation: String,
+    condition: String
+});
+Rule.set('toObject', { virtuals: true });
+Rule.set('toJSON', { virtuals: true });
+
+const Discount = new Schema({
+    title: {
+        en: {
+            type: String,
+            maxlength: 255,
+            required: true
+        },
+        he: {
+            type: String,
+            maxlength: 255,
+            required: true
+        },
+        ru: {
+            type: String,
+            maxlength: 255,
+            required: true
+        },
+    },
+    description: {
+        en: {
+            type: String,
+            maxlength: 660,
+          },
+        he: {
+            type: String,
+            maxlength: 660,
+          },
+        ru: {
+            type: String,
+            maxlength: 660,
+          }
+    },
+    previewDescription: {
+        en: {
+            type: String,
+            maxlength: 660,
+          },
+        he: {
+            type: String,
+            maxlength: 660,
+          },
+        ru: {
+            type: String,
+            maxlength: 660,
+          }
+    },
+    ruleSet: {
+        rules: [Rule]
+    },
+    percentage: Number,
+    subjectType: String,
+    conditions: [Condition]
+});
+Discount.set('toObject', { virtuals: true });
+Discount.set('toJSON', { virtuals: true });
+
 const ShippingAddress = new Schema({
     address1: String,
     address2: String,
@@ -130,6 +202,7 @@ const OrderSchema = new Schema({
     },
     lineItems: [LineItem],
     shippingAddress: ShippingAddress,
+    discounts: [Discount],
     createdAt: {
         type: Date,
         default: Date.now

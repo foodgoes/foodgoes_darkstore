@@ -14,12 +14,10 @@ export default function Modal(props) {
                     <div className={styles.overlay} onClick={onClose}></div>
                     <div className={styles.modal}>
                         <div className={styles.container}>
-                            {title && (
-                                <div className={styles.header}>
-                                    <div><h2>{title}</h2></div>
-                                    <Button plain onClick={onClose}><CloseSVG /></Button>
-                                </div>
-                            )}
+                            <div className={styles.header}>
+                                <div>{title && <h2>{title}</h2>}</div>
+                                <Button plain onClick={onClose}><CloseSVG /></Button>
+                            </div>
                             {children && (
                                 <div className={styles.content}>{children}</div>
                             )}

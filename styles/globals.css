@@ -52,6 +52,12 @@ button {
   font-family: var(--roboto-font);
 }
 
+h4.heading {
+  line-height: 31px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
 .heading {
   font-size: 48px;
   font-weight: 700;
