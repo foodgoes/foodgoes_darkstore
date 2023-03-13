@@ -11,40 +11,54 @@ import DiscountContext from '@/context/discount-context';
 export default function Discounts() {
     const {discounts} = useContext(DiscountContext);
     const [activeDiscount, setActiveDiscount] = useState(false);
+    const [discount, setDiscount] = useState(false);
     const { locale } = useRouter();
     const { translate } = useTranslation();
 
-    const handleChangeDiscount = useCallback(() => setActiveDiscount(!activeDiscount), [activeDiscount]);
+    const handleChangeDiscount = useCallback(discount => {
+        setDiscount(discount);
+        setActiveDiscount(!activeDiscount),
+    [activeDiscount];
+    });
 
     return (
-        <div>
-            {discounts.products.map(discount => (
-                <div key={discount.id}>
-                    <Modal
-                        open={activeDiscount}
-                        onClose={handleChangeDiscount}
-                    >
-                        <div className={styles.modalContent}>
-                            <img src='/images/percentage.png' className={styles.modalImage} />
-                            <div className={styles.modalContent}>
-                                <h4 className={'heading ' + styles.modalTitle}>{discount.title[locale]}</h4>
-                                <p className={styles.modalDesc}>{discount.description[locale]}</p>
-                            </div>
-                            <Button primary={true} fullWidth={true} size='large' onClick={handleChangeDiscount}>
-                                {translate('clear')}
-                            </Button>
-                        </div>
-                    </Modal>
-
-                    <div className={styles.alert} onClick={handleChangeDiscount}>
-                        <div className={styles.leftSide}>
-                            <div className={styles.icon}><OfferSVG stroke='#ff5b37' width='48' height='48' /></div>
-                            <div className={styles.text}>{discount.previewDescription[locale]}</div>
-                        </div>
-                        <div className={styles.icon}><ChevronRightSVG width='48' height='48' /></div>
-                    </div> 
+        <>
+            
+            <Modal
+                open={activeDiscount}
+                onClose={() => handleChangeDiscount(null)}
+            >
+                <div className={styles.modalContent}>
+                    <img src='/images/percentage.png' className={styles.modalImage} />
+                    <div className={styles.modalContent}>
+                    {discount && (
+                        <>
+                            <h4 className={'heading ' + styles.modalTitle}>{discount.title[locale]}</h4>
+                            <p className={styles.modalDesc}>{discount.description[locale]}</p>
+                        </>
+                    )}
+                    </div>
+                    <Button primary={true} fullWidth={true} size='large' onClick={() => handleChangeDiscount(null)}>
+                        {translate('clear')}
+                    </Button>
                 </div>
-            ))}
-        </div>
+            </Modal>
+         
+            
+
+            <div>
+                {discounts.products.map(discount => (
+                    <div key={discount.id}>
+                        <div className={styles.alert} onClick={() => handleChangeDiscount(discount)}>
+                            <div className={styles.leftSide}>
+                                <div className={styles.icon}><OfferSVG stroke='#ff5b37' width='48' height='48' /></div>
+                                <div className={styles.text}>{discount.previewDescription[locale]}</div>
+                            </div>
+                            <div className={styles.icon}><ChevronRightSVG width='48' height='48' /></div>
+                        </div> 
+                    </div>
+                ))}
+            </div>
+        </>
     );
 }
