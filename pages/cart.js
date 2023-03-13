@@ -134,7 +134,7 @@ export default function Cart() {
             </table>
           </div>
           
-          <CheckoutButton clearCart={clearCart} />
+          <CheckoutButton clearCart={clearCart} totalPrice={+(totalLineItemsPrice - totalDiscounts + totalShippingPrice).toFixed(2)} />
         </div>
       </div>
     </>

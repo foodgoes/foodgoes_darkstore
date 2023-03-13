@@ -52,5 +52,6 @@
   "ok": "Ok",
   "clear": "It's Clear",
   "hours": "hours",
-  "delivery": "Delivery"
+  "delivery": "Delivery",
+  "minTotalPrice": "Minimum total price"
 }

@@ -28,6 +28,10 @@
     border: 0;
 }
 
+.buttonDisabled {
+
+}
+
 .buttonFullWidth {
     width: 100%;
 }

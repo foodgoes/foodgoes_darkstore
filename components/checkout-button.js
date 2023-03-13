@@ -1,14 +1,16 @@
 import {useContext, useCallback, useState, useEffect} from "react";
 import {useRouter} from 'next/router'
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '@/hooks/useTranslation';
 
 import Button from "./elements/button";
-import AuthContext from '../context/auth-context'
+import AuthContext from '@/context/auth-context'
 
 import Login from "./login/login";
 import Modal from "./elements/modal";
 
-export default function CheckoutButton({clearCart}) {
+import styles from '@/styles/CheckoutButton.module.css';
+
+export default function CheckoutButton({clearCart, totalPrice}) {
   const authFromContext = useContext(AuthContext);
 
   const [active, setActive] = useState(false);
@@ -17,6 +19,8 @@ export default function CheckoutButton({clearCart}) {
   const { translate } = useTranslation();
 
   const handleChange = useCallback(() => setActive(!active), [active]);
+
+  const minTotalPrice = 50;
 
   useEffect(() => {
     if (!authFromContext.actionAfterLogin) return;
@@ -67,7 +71,11 @@ export default function CheckoutButton({clearCart}) {
           <Login onClose={handleChange} actionAfterLogin='checkout' />
       </Modal>
 
-      <Button onClick={checkout} primary size='large'>{translate('order')}</Button>
+      <div className={styles.minTotalPrice}>
+        <span>{translate('minTotalPrice')} &#8362; 50</span>
+      </div>
+
+      <Button disabled={totalPrice < minTotalPrice} onClick={checkout} primary size='large'>{translate('order')}</Button>
     </>
   )
 }

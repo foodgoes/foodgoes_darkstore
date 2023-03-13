@@ -148,6 +148,12 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
     const seq = await getNextSequence('orderId');
     const tokenOrder = uuidv4();
 
+    
+    const minTotalPrice = 50;
+    if (totalPrice < minTotalPrice) {
+      throw("Error, minimum total price is " + minTotalPrice);
+    }
+
     const newOrder = await Order.create({
       userId, 
       number: seq,

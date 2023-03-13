@@ -1,10 +1,13 @@
 import styles from '../../styles/Button.module.css'
 
 export default function Button({children, ...props}) {
-    const {onClick, plain, url, external=false, fullWidth=false, submit, primary, secondary, size="medium"} = props;
+    const {onClick, plain, url, disabled=false, external=false, fullWidth=false, submit, primary, secondary, size="medium"} = props;
 
     let className = styles.button;
 
+    if (disabled) {
+        className += ' ' + styles.buttonDisabled;
+    }
     if (plain) {
         className += ' ' + styles.buttonPlain;
     }
@@ -27,6 +30,7 @@ export default function Button({children, ...props}) {
 
     return <button 
         type={submit ? 'submit' : 'button'}
+        disabled={disabled}
         className={className} 
         onClick={onClick}
         >{children}</button>
