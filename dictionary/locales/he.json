@@ -48,5 +48,6 @@
   "orderTitle": "Order",
   "enterDeliveryAddress": "Enter a delivery address",
   "enterYourDeliveryAddress": "Enter your delivery address",
-  "discount": "Discount"
+  "discount": "Discount",
+  "ok": "Ok"
 }

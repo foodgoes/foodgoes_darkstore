@@ -48,5 +48,6 @@
   "orderTitle": "Заказ",
   "enterDeliveryAddress": "Укажите адрес доставки",
   "enterYourDeliveryAddress": "Укажите ваш адрес",
-  "discount": "Скидка"
+  "discount": "Скидка",
+  "ok": "Ок"
 }

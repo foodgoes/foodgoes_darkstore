@@ -1,21 +1,42 @@
-import {useState, useContext} from 'react';
+import {useContext, useEffect, useRef} from 'react';
+import {useForm} from 'react-hook-form';
 import Button from '@/components/elements/button';
-
 import LocationContext from '@/context/location-context';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Address({onClose, productIdAfterLocation=null}) {
     const {location, updateAddress, setProductIdAfterLocation} = useContext(LocationContext);
-    const [address, setAddress] = useState(location.address?.address1 || '');
+    const { translate } = useTranslation();
 
-    const handleChange = event => {
-        setAddress(event.target.value);
-    };
+    const inputBoxRef = useRef();
+    const {register, handleSubmit} = useForm({
+        defaultValues: {
+          address: location.address?.address1 || ''
+        }
+    });
 
-    const handleClick = async () => {
-        await updateLocationAPI(address);
-        updateAddress({address1: address});
-        setProductIdAfterLocation(productIdAfterLocation);
-        onClose();
+    useEffect(() => {
+        focusInput();
+    }, []);
+
+    const focusInput = () => inputBoxRef.current.querySelector('input').focus();
+
+    const onSubmit = async data => {
+        try {
+            let {address} = data;
+            
+            address = address.trim();
+            if (!address) {
+                throw('Error, empty address');
+            }
+
+            await updateLocationAPI(address);
+            updateAddress({address1: address});
+            setProductIdAfterLocation(productIdAfterLocation);
+            onClose();
+        } catch(e) {
+            console.log(e);
+        }
     };
 
     const updateLocationAPI = async address => {
@@ -29,8 +50,12 @@ export default function Address({onClose, productIdAfterLocation=null}) {
 
     return (
         <div>
-            <input type="text" onChange={handleChange} value={address} />
-            <Button primary={true} onClick={handleClick}>OK</Button>
+            <form onSubmit={handleSubmit(onSubmit)} className="form">
+                <div className="input-box" ref={inputBoxRef}>
+                    <input type='input' {...register("address", { required: true })} />
+                </div>
+                <Button fullWidth primary submit>{translate('ok')}</Button>
+            </form>
         </div> 
     )
 }

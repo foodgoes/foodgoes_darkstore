@@ -1,4 +1,3 @@
-
 .search {
   align-items: center;
   border-radius: 16px;
@@ -26,4 +25,16 @@
 }
 .search input:focus {
   border-color: #d2d0cc;
+}
+
+@media only screen and (max-width: 1050px) {
+  .search {
+    margin-left: 0px;
+    max-width: unset;
+  }
+  .search input {
+    max-width: unset;
+    min-width: unset;
+    width: 100%;
+  }
 }

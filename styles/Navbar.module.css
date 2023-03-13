@@ -17,19 +17,29 @@
   font-weight: 500;
 }
 
-.searchMob {
+.searchMob, .addressMob {
   display: none;
 }
 
-@media only screen and (max-width: 980px) {
+@media only screen and (max-width: 1050px) {
   .search {
     display: none;
   }
   .searchMob {
     display: block;
     margin: 15px;
-  }  
+  }
   .searchMob input {
     min-width: 100%;
-  }  
+  }
+}
+
+@media only screen and (max-width: 670px) {
+  .address {
+    display: none;
+  }
+  .addressMob {
+    margin: 15px;
+    display: block;
+  }
 }

@@ -67,7 +67,12 @@ async function handleGETAsync(userId, token) {
 }
 async function handleBodyPUTAsync(userId, token, body) {
   try {
-      let {address: address1} = body;
+      let {address: address1 = ''} = body;
+
+      address1 = address1.trim();
+      if (!address1) {
+        throw('Error, empty address');
+      }
 
       const newToken = token || uuidv4();
 

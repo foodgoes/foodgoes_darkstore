@@ -13,7 +13,7 @@ export default function DeliveryAddressHeader() {
     const handleChangeAddress = useCallback(() => setActiveAddress(!activeAddress), [activeAddress]);
 
     const {location} = useContext(LocationContext);
-    const { translate } = useTranslation();   
+    const { translate } = useTranslation();
 
     return (
         <>

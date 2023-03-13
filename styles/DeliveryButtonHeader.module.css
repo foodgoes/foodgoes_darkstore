@@ -23,3 +23,12 @@
     white-space: nowrap;
     margin-left: 13px;
 }
+
+@media only screen and (max-width: 670px) {
+    .addressButton {
+      margin-left: 0px;
+    }
+    .addressButton button {
+        width: 100%;
+    }
+  }
