@@ -49,5 +49,8 @@
   "enterDeliveryAddress": "Enter a delivery address",
   "enterYourDeliveryAddress": "Enter your delivery address",
   "discount": "Discount",
-  "ok": "Ok"
+  "ok": "Ok",
+  "clear": "It's Clear",
+  "hours": "hours",
+  "delivery": "Delivery"
 }

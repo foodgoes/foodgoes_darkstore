@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styles from '@/styles/Alert.module.css'
 import OfferSVG from '@/public/icons/offer'
 import ChevronRightSVG from '@/public/icons/chevron-right';
-
+import { useTranslation } from '@/hooks/useTranslation';
 import Modal from './elements/modal';
 import Button from './elements/button';
 import DiscountContext from '@/context/discount-context';
@@ -12,6 +12,7 @@ export default function Discounts() {
     const {discounts} = useContext(DiscountContext);
     const [activeDiscount, setActiveDiscount] = useState(false);
     const { locale } = useRouter();
+    const { translate } = useTranslation();
 
     const handleChangeDiscount = useCallback(() => setActiveDiscount(!activeDiscount), [activeDiscount]);
 
@@ -29,7 +30,9 @@ export default function Discounts() {
                                 <h4 className={'heading ' + styles.modalTitle}>{discount.title[locale]}</h4>
                                 <p className={styles.modalDesc}>{discount.description[locale]}</p>
                             </div>
-                            <Button primary={true} fullWidth={true} size='large' onClick={handleChangeDiscount}>Понятно</Button>
+                            <Button primary={true} fullWidth={true} size='large' onClick={handleChangeDiscount}>
+                                {translate('clear')}
+                            </Button>
                         </div>
                     </Modal>
 

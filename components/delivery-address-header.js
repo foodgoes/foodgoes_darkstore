@@ -28,10 +28,16 @@ export default function DeliveryAddressHeader() {
                 document.body
             )}
 
-            <div className={styles.addressButton}>
-                <Button primary={!location.address} onClick={handleChangeAddress}>
-                    <NavigationSVG /> <span className={styles.text}>{location.address?.address1 || translate('enterDeliveryAddress')}</span>
-                </Button>
+            <div className={styles.delivery}>
+                <div className={styles.addressButton}>
+                    <Button primary={!location.address} onClick={handleChangeAddress}>
+                        <NavigationSVG /> <span className={styles.text}>{location.address?.address1 || translate('enterDeliveryAddress')}</span>
+                    </Button>
+                </div>
+                <div className={styles.deliveryInfo}>
+                    <div className={styles.deliveryTime}>3-5 {translate('hours')}</div>
+                    <div className={styles.deliveryPrice}>{translate('delivery')} &#8362;25</div>
+                </div>
             </div>
         </>
     );

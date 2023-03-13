@@ -1,4 +1,4 @@
-.addressButton {
+.delivery {
     margin-left: 16px;
 }
 .addressButton button {
@@ -24,11 +24,49 @@
     margin-left: 13px;
 }
 
-@media only screen and (max-width: 670px) {
-    .addressButton {
-      margin-left: 0px;
-    }
-    .addressButton button {
-        width: 100%;
-    }
+.delivery {
+  display: flex;
+  flex-direction: row;
+}
+.deliveryInfo {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-left: 16px;
+  white-space: nowrap;
+}
+.deliveryTime {
+  font-size: 16px;
+  font-weight: 500;
+}
+.deliveryPrice {
+  font-size: 13px;
+  color: #9e9b98;
+}
+
+@media only screen and (max-width: 800px) {
+  .delivery {
+    margin-left: 0px;
   }
+  .addressButton button {
+      width: 100%;
+  }
+}
+
+@media only screen and (max-width: 580px) {
+  .delivery {
+    flex-direction: column-reverse;
+
+  }
+  .deliveryInfo {
+    flex-direction: row;
+    margin-bottom: 4px;
+  }
+  .deliveryTime {
+    line-height: 19px;
+  }
+  .deliveryPrice {
+    margin-left: 13px;
+    line-height: 19px;
+  }
+}

@@ -49,5 +49,8 @@
   "enterDeliveryAddress": "Укажите адрес доставки",
   "enterYourDeliveryAddress": "Укажите ваш адрес",
   "discount": "Скидка",
-  "ok": "Ок"
+  "ok": "Ок",
+  "clear": "Понятно",
+  "hours": "часов",
+  "delivery": "Доставка"
 }
