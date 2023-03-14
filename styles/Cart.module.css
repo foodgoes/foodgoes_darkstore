@@ -86,6 +86,10 @@
     margin-bottom: 8px;
 }
 
+.totalDiscounts {
+    color: #fc5230;
+}
+
 @media only screen and (max-width: 980px) {
     .container {
       grid-template: "wrapper" "products";

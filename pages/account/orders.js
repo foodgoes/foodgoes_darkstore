@@ -36,11 +36,7 @@ export default function Orders() {
   useEffect(() => {
     async function getOrdersAPI() {
       try {
-        const user = firebaseAuth.currentUser;
-
-        if (!user) return;
-
-        const res = await fetch(`/api/front/orders?userId=${user.uid}`);
+        const res = await fetch('/api/front/orders');
         const orders = await res.json();
   
         setOrders(orders);
@@ -50,7 +46,7 @@ export default function Orders() {
     }
 
     getOrdersAPI();
-  }, [firebaseAuth.currentUser]);
+  }, []);
 
   return (
     <>

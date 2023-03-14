@@ -114,21 +114,21 @@ export default function Cart() {
               <tbody>
                 <tr>
                   <th>{translate('products')}</th>
-                  <td>&#8362; {totalLineItemsPrice}</td>
+                  <td>&#8362;{totalLineItemsPrice}</td>
                 </tr>
                 {totalDiscounts > 0 && (
                   <tr>
                     <th>{translate('discount')}</th>
-                    <td>&#8362; {totalDiscounts}</td>
+                    <td><span className={styles.totalDiscounts}>−&#8362;{totalDiscounts}</span></td>
                   </tr>
                 )}
                 <tr>
                   <th>{translate('shipping')}</th>
-                  <td>&#8362; {totalShippingPrice}</td>
+                  <td>&#8362;{totalShippingPrice}</td>
                 </tr>
                 <tr>
                   <th>{translate('payment')}</th>
-                  <td>&#8362; {+(totalLineItemsPrice - totalDiscounts + totalShippingPrice).toFixed(2)}</td>
+                  <td>&#8362;{+(totalLineItemsPrice - totalDiscounts + totalShippingPrice).toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>

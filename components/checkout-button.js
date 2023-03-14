@@ -72,7 +72,7 @@ export default function CheckoutButton({clearCart, totalPrice}) {
       </Modal>
 
       <div className={styles.minTotalPrice}>
-        <span>{translate('minTotalPrice')} &#8362; 50</span>
+        <span>{translate('minTotalPrice')} &#8362;50</span>
       </div>
 
       <Button disabled={totalPrice < minTotalPrice} onClick={checkout} primary size='large'>{translate('order')}</Button>
