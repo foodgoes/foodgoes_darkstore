@@ -16,6 +16,27 @@
     padding: 16px 0 17px;
 }
 
+
+
+.baseLink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+    height: 50px;
+}
+.baseLinkImg {
+    height: 48px;
+    margin-right: 4px;
+    padding: 4px;
+    width: 48px;
+}
+.baseLinkTitle {
+    display: flex;
+    align-items: center;
+}
+
 .links1 {
     font-weight: 500;
 }
@@ -51,7 +72,6 @@
 }
 
 .links li div {
-    padding: 15px 0 16px;
     font-weight: 500;
     cursor: pointer;
 }
@@ -59,6 +79,7 @@
     color: #9e9b98;
 }
 .sublinks {
+    padding-left: 52px;
     padding-bottom: 16px;
 }
 .sublinks li {

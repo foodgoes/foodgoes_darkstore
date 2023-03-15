@@ -8,7 +8,7 @@ import { useTranslation } from '../hooks/useTranslation';
 
 import ChevronLeftSVG from '../public/icons/chevron-left'
 
-export default function Sidebar({categories, slug}) {
+export default function Sidebar({categories, slug, slug2}) {
     const [link, setLink] = useState();
     
     const { locale } = useRouter();
@@ -27,7 +27,10 @@ export default function Sidebar({categories, slug}) {
 
     const catalog = categories.map((c, i) => (
         <li key={i}>
-            <div onClick={() => toggleLinks(c.id)}>{c.title[locale]}</div>
+            <div onClick={() => toggleLinks(c.id)} className={styles.baseLink}>
+                <div className={styles.baseLinkImg}>{c.image && <img src={c.image} />}</div>
+                <div className={styles.baseLinkTitle}>{c.title[locale]}</div>
+            </div>
             {link && link.id === c.id && (
                 <>
                     {link.links.length > 0 && (
@@ -42,9 +45,13 @@ export default function Sidebar({categories, slug}) {
 
     const catalogMob = categories.map((c, i) => (
         <li key={i} className={link && styles.hidden}>            
-           {!link && <div onClick={() => toggleLinks(c.id)}>{c.title[locale]}</div>}
+           {!link && <div onClick={() => toggleLinks(c.id)}>
+                {c.title[locale]}
+            </div>}
         </li>
     ));
+
+    const category = categories.filter(c => c.links.some(l => l.handle === slug));
 
     return (
         <>
@@ -58,20 +65,21 @@ export default function Sidebar({categories, slug}) {
 
                 {slug && (
                     <>
-                        {categories.map(c => (
+                        {category.map(c => (
                             <ul className={styles.links1} key={c.id}>
                                 {
                                     c.links?.map((l1, i1) => (
                                         <li key={i1}>
-                                            <Link href={`/category/${l1.handle}`} className={l1.handle === slug ? ' ' +styles.currentLink : ''}>{l1.title[locale]}</Link>
+                                            <Link href={`/category/${l1.handle}`} className={slug === l1.handle && !slug2 ? styles.currentLink : ''}>{l1.title[locale]}</Link>
                                             {l1.handle === slug && (
                                                 <ul className={styles.links2}>
                                                     {l1.links?.map((l2, i2) => (
-                                                        <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`}>{l2.title[locale]}</Link></li>
+                                                        <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`} className={l2.handle === slug2 ? ' ' +styles.currentLink : ''}>{l2.title[locale]}</Link></li>
                                                     ))}
                                                 </ul>
                                             )}
                                         </li>
+                                        
                                     ))
                                 }
                             </ul>
@@ -97,16 +105,16 @@ export default function Sidebar({categories, slug}) {
 
                 {slug && (
                     <>
-                        {categories.map(c => (
+                        {category.map(c => (
                             <ul className={styles.links1} key={c.id}>
                                 {
                                     c.links?.map((l1, i1) => (
                                         <li key={i1}>
-                                            <Link href={`/category/${l1.handle}`} className={l1.handle === slug ? ' ' +styles.currentLink : ''}>{l1.title[locale]}</Link>
+                                            <Link href={`/category/${l1.handle}`} className={slug === l1.handle && !slug2 ? styles.currentLink : ''}>{l1.title[locale]}</Link>
                                             {l1.handle === slug && (
                                                 <ul className={styles.links2}>
                                                     {l1.links?.map((l2, i2) => (
-                                                        <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`}>{l2.title[locale]}</Link></li>
+                                                        <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`} className={l2.handle === slug2 ? ' ' +styles.currentLink : ''}>{l2.title[locale]}</Link></li>
                                                     ))}
                                                 </ul>
                                             )}

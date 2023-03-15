@@ -32,7 +32,7 @@ function NestedLayoutCategory({children, categories, slug, slug2}) {
         });
 
         return links;
-    }
+    };
 
     const links = getCategoriesBySlug(slug, slug2, categories);
     

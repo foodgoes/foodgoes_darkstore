@@ -51,6 +51,10 @@ Link.set('toObject', { virtuals: true });
 Link.set('toJSON', { virtuals: true });
 
 const CategorySchema = new Schema({
+    image: {
+        type: String,
+        default: null
+    },
     title: {
         en: {
             type: String,
