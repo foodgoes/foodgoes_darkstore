@@ -48,7 +48,7 @@ const Product = ({product}) => {
                     </>
                 ) : <span className={styles.price}>&#8362;{product.price}</span>}
             </div>
-            <div><BuyButton disabled={!product.quantity} price={product.compareAtPrice || product.price} productId={productId} primary size="large"/></div>
+            <div><BuyButton disabled={false} price={product.compareAtPrice || product.price} productId={productId} primary size="large"/></div>
           </div>
 
           <section className={styles.section}>
