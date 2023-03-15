@@ -111,6 +111,14 @@
     object-fit: contain;
 }
 
+.shortInfo {
+    color: #9e9b98;
+    margin-top: 12px;
+    text-align: left;
+    line-height: 26px;
+    font-size: 20px;
+}
+
 @media only screen and (max-width: 980px) {
     .container {
         flex-direction: column;

@@ -20,10 +20,15 @@ async function handler(req, res) {
       title: product.title,
       image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
       images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
+      brand: product.brand,
+      vendor: product.vendor,
+      description: product.description,
       price: product.price,
       compareAtPrice: product.compareAtPrice,
-      brand: product.brand,
-      description: product.description
+      pricePerUnit: product.pricePerUnit,
+      weight: product.weight,
+      weightPerUnit: product.weightPerUnit,
+      weightUnit: product.weightUnit,
     });
   } catch(e) {
     res.status(200).json(null);

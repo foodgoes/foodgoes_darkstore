@@ -54,14 +54,18 @@ async function handler(req, res) {
               images,
               price: product.price,
               compareAtPrice: product.compareAtPrice,
+              pricePerUnit: product.pricePerUnit,
               brand: product.brand,
               quantity: product.quantity,
+              weight: product.weight,
+              weightPerUnit: product.weightPerUnit,
+              weightUnit: product.weightUnit
             });
           });
         }
       }
     } else {
-      const data = await Product.find({status: 'active'}, null, {skip: 0, limit: 30}).sort([['sort', 'asc']]);
+      const data = await Product.find({status: 'active'}, null, {skip: 0, limit: 50}).sort([['sort', 'asc']]);
       data.forEach(product => {
         const images = product.images.map(img => process.env.UPLOAD_PRODUCTS+img);
 
@@ -71,9 +75,13 @@ async function handler(req, res) {
           image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
           images,
           price: product.price,
+          pricePerUnit: product.pricePerUnit,
           compareAtPrice: product.compareAtPrice,
           brand: product.brand,
           quantity: product.quantity,
+          weight: product.weight,
+          weightPerUnit: product.weightPerUnit,
+          weightUnit: product.weightUnit
         });
       });
     }

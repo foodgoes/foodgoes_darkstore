@@ -26,6 +26,9 @@ const Product = ({product}) => {
         <div className='infoBlock'>
           <div>
             <h1 className='heading'>{product.title[locale]}</h1>
+            <span className={styles.shortInfo}>
+              {product.weight} {product.weightUnit} &#8226; {product.pricePerUnit.toFixed(2)}&#8362;/{product.weightPerUnit}{product.weightUnit}
+            </span>
           </div>
         </div>
       </div>
@@ -40,13 +43,13 @@ const Product = ({product}) => {
             <div className={styles.priceBlock}>
                 {product.compareAtPrice ? (
                     <>
-                        <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice}</span>
+                        <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
                         <span className={styles.oldPriceWithLine}>
-                            <span className={styles.oldPrice}>&#8362;{product.price}</span>
+                            <span className={styles.oldPrice}>&#8362;{product.price.toFixed(2)}</span>
                             <span className={styles.line}></span>
                         </span>
                     </>
-                ) : <span className={styles.price}>&#8362;{product.price}</span>}
+                ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
             </div>
             <div><BuyButton disabled={false} price={product.compareAtPrice || product.price} productId={productId} primary size="large"/></div>
           </div>
@@ -54,7 +57,7 @@ const Product = ({product}) => {
           <section className={styles.section}>
             <div className={styles.titleSection}><span><h2>{translate('aboutProduct')}</h2></span></div>
             <div className={styles.contentSection}>
-              {product.description && (
+              {product.description && product.description[locale] && (
                 <div className={styles.blockContentSection}>
                   <span className={styles.label}>{translate('compound')}</span>
                   <p>{product.description[locale]}</p>
@@ -66,7 +69,7 @@ const Product = ({product}) => {
                   <p>{product.vendor[locale]}</p>
                 </div>
               )}
-              {product.brand && (
+              {product.brand && product.brand[locale] && (
                 <div className={styles.blockContentSection}>
                   <span className={styles.label}>{translate('brand')}</span>
                   <p>{product.brand[locale]}</p>

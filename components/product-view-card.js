@@ -19,16 +19,17 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                     <div className={styles.priceBlock}>
                         {product.compareAtPrice ? (
                             <>
-                                <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice}</span>
+                                <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
                                 <span className={styles.oldPriceWithLine}>
-                                    <span className={styles.oldPrice}>&#8362;{product.price}</span>
+                                    <span className={styles.oldPrice}>&#8362;{product.price.toFixed(2)}</span>
                                     <span className={styles.line}></span>
                                 </span>
                             </>
-                        ) : <span className={styles.price}>&#8362;{product.price}</span>}
+                        ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
                     </div>
                     
                     <h3 className={styles.title}>{product.title[locale]}</h3>
+                    <span className={styles.weightInfo}>{product.weight} {product.weightUnit}</span>
                 </div>
                 {!disabledBuy && <BuyButton productId={product.id} price={product.compareAtPrice || product.price} disabled={!product.quantity} secondary/>}
             </div>

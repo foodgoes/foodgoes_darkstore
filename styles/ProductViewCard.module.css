@@ -115,3 +115,9 @@
 
     cursor: pointer;
 }
+
+.weightInfo {
+    margin-top: 4px;
+    color: #9e9b98;
+    display: block;
+}

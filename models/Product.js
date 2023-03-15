@@ -78,6 +78,12 @@ const ProductSchema = new Schema({
         maxlength: 15,
         default: 0.00
     },
+    pricePerUnit: {
+        type: Number,
+        min: 0.00,
+        maxlength: 15,
+        default: 0.00
+    },
     sort: Number,
     createdAt: {
         type: Date,
@@ -101,13 +107,27 @@ const ProductSchema = new Schema({
         type: Array,
         default: []
     },
-    forAdult: {
+    forAdults: {
         type: Boolean,
         default: false
     },
     excludeDiscount: {
         type: Boolean,
         default: false
+    },
+    weight: {
+        type: Number,
+        default: 0
+    },
+    weightPerUnit: {
+        type: Number,
+        default: 0
+    },
+    weightUnit: {
+        type: String,
+        required: true,
+        enum: ['g', 'kg', 'oz', 'lb', 'pc'],
+        default: 'g'
     }
 });
 
