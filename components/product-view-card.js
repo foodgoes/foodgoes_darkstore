@@ -27,9 +27,9 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                             </>
                         ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
                     </div>
-                    
+
                     <h3 className={styles.title}>{product.title[locale]}</h3>
-                    <span className={styles.weightInfo}>{product.weight} {product.weightUnit}</span>
+                    <span className={styles.weightInfo}>{product.displayAmount} {product.unit}</span>
                 </div>
                 {!disabledBuy && <BuyButton productId={product.id} price={product.compareAtPrice || product.price} disabled={!product.quantity} secondary/>}
             </div>

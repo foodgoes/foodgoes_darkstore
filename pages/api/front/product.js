@@ -27,8 +27,10 @@ async function handler(req, res) {
       compareAtPrice: product.compareAtPrice,
       pricePerUnit: product.pricePerUnit,
       weight: product.weight,
-      weightPerUnit: product.weightPerUnit,
       weightUnit: product.weightUnit,
+      unit: product.unit,
+      amountPerUnit: product.amountPerUnit,
+      displayAmount: product.displayAmount
     });
   } catch(e) {
     res.status(200).json(null);

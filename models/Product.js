@@ -115,20 +115,27 @@ const ProductSchema = new Schema({
         type: Boolean,
         default: false
     },
+    weightUnit: {
+        type: String,
+        required: true,
+        enum: ['g', 'kg', 'oz', 'lb'],
+        default: 'g'
+    },
     weight: {
         type: Number,
         default: 0
     },
-    weightPerUnit: {
+    unit: {
+        type: String,
+        required: true,
+        enum: ['g', 'kg', 'oz', 'lb', 'pc', 'ml'],
+        default: 'g'
+    },
+    amountPerUnit: {
         type: Number,
         default: 0
     },
-    weightUnit: {
-        type: String,
-        required: true,
-        enum: ['g', 'kg', 'oz', 'lb', 'pc'],
-        default: 'g'
-    }
+    displayAmount: String
 });
 
 ProductSchema.set('toObject', { virtuals: true });

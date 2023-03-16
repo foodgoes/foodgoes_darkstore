@@ -27,7 +27,7 @@ const Product = ({product}) => {
           <div>
             <h1 className='heading'>{product.title[locale]}</h1>
             <span className={styles.shortInfo}>
-              {product.weight} {product.weightUnit} &#8226; {product.pricePerUnit.toFixed(2)}&#8362;/{product.weightPerUnit}{product.weightUnit}
+              {product.displayAmount} {product.unit} &#8226; {product.pricePerUnit.toFixed(2)}&#8362;/{product.amountPerUnit}{product.unit}
             </span>
           </div>
         </div>
