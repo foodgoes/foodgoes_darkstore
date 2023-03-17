@@ -19,9 +19,9 @@ export default function ProductViewList({product, disabledBuy=false}) {
                     <div className={styles.priceBlock}>
                         {product.compareAtPrice ? (
                             <>
-                                <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice}</span>
+                                <span className={styles.compareAtPrice}>&#8362;{product.price}</span>
                                 <span className={styles.oldPriceWithLine}>
-                                    <span className={styles.oldPrice}>&#8362;{product.price}</span>
+                                    <span className={styles.oldPrice}>&#8362;{product.compareAtPrice}</span>
                                     <span className={styles.line}></span>
                                 </span>
                             </>
@@ -30,7 +30,7 @@ export default function ProductViewList({product, disabledBuy=false}) {
                 </div>
             </div>
             <div className={styles.quantityBlock}>
-                {!disabledBuy && <BuyButton productId={product.id} price={product.compareAtPrice || product.price} disabled={!product.quantity} size='small' />}
+                {!disabledBuy && <BuyButton productId={product.id} price={product.product.price} disabled={!product.quantity} size='small' />}
                 {disabledBuy && (
                     <div className={styles.quantity}><span>{product.quantity}</span></div>
                 )}

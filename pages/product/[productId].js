@@ -43,15 +43,15 @@ const Product = ({product}) => {
             <div className={styles.priceBlock}>
                 {product.compareAtPrice ? (
                     <>
-                        <span className={styles.compareAtPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
+                        <span className={styles.compareAtPrice}>&#8362;{product.price.toFixed(2)}</span>
                         <span className={styles.oldPriceWithLine}>
-                            <span className={styles.oldPrice}>&#8362;{product.price.toFixed(2)}</span>
+                            <span className={styles.oldPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
                             <span className={styles.line}></span>
                         </span>
                     </>
                 ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
             </div>
-            <div><BuyButton disabled={false} price={product.compareAtPrice || product.price} productId={productId} primary size="large"/></div>
+            <div><BuyButton disabled={false} price={product.price} productId={productId} primary size="large"/></div>
           </div>
 
           <section className={styles.section}>

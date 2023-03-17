@@ -13,7 +13,7 @@ export default function CartHeader() {
     return (
         <div className={styles.cart}>
             <Link className={styles.cartButton} href="/cart">
-              <Button primary={!!cart?.total}><CartSVG />{cart?.total ? '\u20AA' + cart.total : translate('cart')}</Button>
+              <Button primary={!!cart?.total}><CartSVG />{cart?.total ? '\u20AA' + cart.total.toFixed(2) : translate('cart')}</Button>
             </Link>
         </div>
     );
