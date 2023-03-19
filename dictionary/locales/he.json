@@ -13,7 +13,7 @@
   "next": "Next",
   "code": "Code",
   "aboutProduct": "About",
-  "vendor": "Vendor",
+  "manufacturer": "Manufacturer",
   "total": "Total",
   "shippingTime": "Shipping [time] hours",
   "products": "Products",
@@ -31,7 +31,7 @@
   "modalLocalesTitle": "Choose language",
   "breadcrumbsHome": "Home",
   "brand": "Brand",
-  "compound": "Compound",
+  "ingredients": "Ingredients",
   "btnInCatalog": "Catalog",
   "metaTitleCart": "Cart in FoodGoes",
   "cancelled": "Cancelled",
@@ -54,5 +54,7 @@
   "hours": "hours",
   "delivery": "Delivery",
   "minTotalPrice": "Minimum total price",
-  "description": "Description"
+  "description": "Description",
+  "country": "Country",
+  "disclaimer": "Disclaimer"
 }

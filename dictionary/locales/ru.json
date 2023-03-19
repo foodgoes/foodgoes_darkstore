@@ -13,7 +13,7 @@
   "next": "Дальше",
   "code": "Код",
   "aboutProduct": "О товаре",
-  "vendor": "Производитель, страна",
+  "manufacturer": "Производитель",
   "total": "Итого",
   "shippingTime": "Доставка [time] часов",
   "products": "Товары",
@@ -31,7 +31,7 @@
   "modalLocalesTitle": "Выберите язык",
   "breadcrumbsHome": "Главная",
   "brand": "Бренд",
-  "compound": "Состав",
+  "ingredients": "Состав",
   "btnInCatalog": "В каталог",
   "metaTitleCart": "Корзина в FoodGoes",
   "cancelled": "Отменен",
@@ -54,5 +54,7 @@
   "hours": "часов",
   "delivery": "Доставка",
   "minTotalPrice": "Минимальная сумма заказа",
-  "description": "Описание"
+  "description": "Описание",
+  "country": "Страна",
+  "disclaimer": "Дисклеймер"
 }

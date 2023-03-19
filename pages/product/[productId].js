@@ -14,6 +14,10 @@ const Product = ({product}) => {
 
   const { productId } = query;
 
+  let brandAndManif = '';
+  brandAndManif += product.brand && product.brand[locale] ? product.brand[locale] : '';
+  brandAndManif += product.manufacturer && product.manufacturer[locale] ? ', ' + product.manufacturer[locale] : '';
+
   return (
     <>
       <Head>
@@ -57,22 +61,40 @@ const Product = ({product}) => {
           <section className={styles.section}>
             <div className={styles.titleSection}><span><h2>{translate('aboutProduct')}</h2></span></div>
             <div className={styles.contentSection}>
+              {brandAndManif && (
+                <div className={styles.blockContentSection}>
+                  <span className={styles.label}>{translate('brand')}, {translate('manufacturer')}</span>
+                  <p>{brandAndManif}</p>
+                </div>
+              )}
+              {product.country && product.country[locale] && (
+                <div className={styles.blockContentSection}>
+                  <span className={styles.label}>{translate('country')}</span>
+                  <p>{product.country[locale]}</p>
+                </div>
+              )}
               {product.description && product.description[locale] && (
                 <div className={styles.blockContentSection}>
                   <span className={styles.label}>{translate('description')}</span>
                   <p>{product.description[locale]}</p>
                 </div>
               )}
-              {product.vendor && (
+              {product.ingredients && product.ingredients[locale] && (
                 <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('vendor')}</span>
-                  <p>{product.vendor[locale]}</p>
+                  <span className={styles.label}>{translate('ingredients')}</span>
+                  <p>{product.ingredients[locale]}</p>
                 </div>
               )}
-              {product.brand && product.brand[locale] && (
+              {product.shelfLife && product.shelfLife[locale] && (
                 <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('brand')}</span>
-                  <p>{product.brand[locale]}</p>
+                  <span className={styles.label}>{translate('shelfLife')}</span>
+                  <p>{product.shelfLife[locale]}</p>
+                </div>
+              )}
+              {product.disclaimer && product.disclaimer[locale] && (
+                <div className={styles.blockContentSection}>
+                  <span className={styles.label}>{translate('disclaimer')}</span>
+                  <p>{product.disclaimer[locale]}</p>
                 </div>
               )}
             </div>

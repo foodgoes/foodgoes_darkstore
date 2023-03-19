@@ -20,20 +20,6 @@ const ProductSchema = new Schema({
             required: true
         },
     },
-    brand: {
-        en: {
-            type: String,
-            maxlength: 100
-        },
-        he: {
-            type: String,
-            maxlength: 100
-        },
-        ru: {
-            type: String,
-            maxlength: 100
-        }
-    },
     descriptionHtml: {
         en: {
             type: String,
@@ -135,7 +121,96 @@ const ProductSchema = new Schema({
         type: Number,
         default: 0
     },
-    displayAmount: String
+    displayAmount: String,
+    country: {
+        en: {
+            type: String,
+            maxlength: 100,
+          },
+        he: {
+            type: String,
+            maxlength: 100,
+          },
+        ru: {
+            type: String,
+            maxlength: 100,
+          }
+    },
+    disclaimer: {
+        en: {
+            type: String,
+            maxlength: 660,
+          },
+        he: {
+            type: String,
+            maxlength: 660,
+          },
+        ru: {
+            type: String,
+            maxlength: 660,
+          }
+    },
+    ingredients: {
+        en: {
+            type: String,
+            maxlength: 660,
+          },
+        he: {
+            type: String,
+            maxlength: 660,
+          },
+        ru: {
+            type: String,
+            maxlength: 660,
+          }
+    },
+    brand: {
+        en: {
+            type: String,
+            maxlength: 100
+        },
+        he: {
+            type: String,
+            maxlength: 100
+        },
+        ru: {
+            type: String,
+            maxlength: 100
+        }
+    },
+    manufacturer: {
+        en: {
+            type: String,
+            maxlength: 300,
+          },
+        he: {
+            type: String,
+            maxlength: 300,
+          },
+        ru: {
+            type: String,
+            maxlength: 300,
+          }
+    },
+    shelfLife: {
+        en: {
+            type: String,
+            maxlength: 300,
+          },
+        he: {
+            type: String,
+            maxlength: 300,
+          },
+        ru: {
+            type: String,
+            maxlength: 300,
+          }
+    },
+    currencyCode: {
+        type: String,
+        required: true,
+        default: 'ILS'
+    }
 });
 
 ProductSchema.set('toObject', { virtuals: true });

@@ -20,17 +20,23 @@ async function handler(req, res) {
       title: product.title,
       image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
       images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
-      brand: product.brand,
-      vendor: product.vendor,
       description: product.description,
       price: product.price,
       compareAtPrice: product.compareAtPrice,
       pricePerUnit: product.pricePerUnit,
+      currencyCode: product.currencyCode,
       weight: product.weight,
       weightUnit: product.weightUnit,
       unit: product.unit,
       amountPerUnit: product.amountPerUnit,
-      displayAmount: product.displayAmount
+      displayAmount: product.displayAmount,
+      country: product.country,
+      disclaimer: product.disclaimer,
+      ingredients: product.ingredients,
+      manufacturer: product.manufacturer,
+      brand: product.brand,
+      shelfLife: product.shelfLife,
+      currencyCode: product.currencyCode,
     });
   } catch(e) {
     res.status(200).json(null);
