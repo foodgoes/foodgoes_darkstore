@@ -9,12 +9,17 @@
   align-items: center;
   height: 80px;
   border-bottom: 1px solid #eaeaea;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .logo {
   font-size: 22px;
   font-weight: 500;
+}
+
+.search {
+  width: 100%;
+  margin-left: 16px;
 }
 
 .searchMob, .addressMob {

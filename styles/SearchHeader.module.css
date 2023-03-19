@@ -3,7 +3,7 @@
   border-radius: 16px;
   display: flex;
   position: relative;
-  margin-left: 16px;
+  width: 100%;
 }
 .search .icon {
   position: absolute;
@@ -13,8 +13,7 @@
 }
 .search input {
   display: block;
-  max-width: 407px;
-  min-width: 407px;
+  width: 100%;
   border: 1px solid transparent;
   padding: 0px 20px 0px 48px;
   height: 48px;

@@ -5,12 +5,14 @@ import DeliveryAddressHeader from '@/components/delivery-address-header';
 import CartHeader from '@/components/cart-header';
 import LocaleSwitcherHeader from '@/components/locale-switcher-header';
 import AccountHeader from './account-header';
+import Catalogue from './catalogue';
 
 export default function Navbar() {
   return (
     <>
       <div className={styles.header}>
         <div><Link className={styles.logo} href="/">FoodGoes</Link></div>
+        <Catalogue />
         <div className={styles.search}><SearchHeader /></div>
         <div className={styles.address}><DeliveryAddressHeader /></div>
         <CartHeader />

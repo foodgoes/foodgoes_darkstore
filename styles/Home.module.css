@@ -1,7 +1,6 @@
 .wrapper {
-  grid-template: "menu main" auto/minmax(270px,auto) minmax(660px,auto);
+  grid-template: "menu main" auto/minmax(316px,auto) minmax(880px,auto);
   display: grid;
-  margin: 0 15px;
 }
 
 .main {
@@ -28,6 +27,12 @@
   align-items: center;
   box-sizing: border-box;
   display: flex;
+}
+
+@media only screen and (max-width: 1196px) {
+  .wrapper {
+    grid-template: "" "main";
+  }
 }
 
 @media only screen and (max-width: 980px) {

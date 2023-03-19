@@ -4,9 +4,9 @@ import styles from '../styles/Sidebar.module.css'
 import { useState } from 'react';
 import {useRouter} from 'next/router'
 
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '@/hooks/useTranslation';
 
-import ChevronLeftSVG from '../public/icons/chevron-left'
+import ChevronLeftSVG from '@/public/icons/chevron-left'
 
 export default function Sidebar({categories, slug, slug2}) {
     const [link, setLink] = useState();
