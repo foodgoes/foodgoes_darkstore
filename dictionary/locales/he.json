@@ -53,5 +53,6 @@
   "clear": "It's Clear",
   "hours": "hours",
   "delivery": "Delivery",
-  "minTotalPrice": "Minimum total price"
+  "minTotalPrice": "Minimum total price",
+  "description": "Description"
 }

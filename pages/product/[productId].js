@@ -59,7 +59,7 @@ const Product = ({product}) => {
             <div className={styles.contentSection}>
               {product.description && product.description[locale] && (
                 <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('compound')}</span>
+                  <span className={styles.label}>{translate('description')}</span>
                   <p>{product.description[locale]}</p>
                 </div>
               )}
