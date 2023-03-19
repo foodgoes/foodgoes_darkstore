@@ -61,7 +61,7 @@
   }
 }
 
-@media only screen and (max-width:376px) {
+@media only screen and (max-width:442px) {
   .addressButton button {
     width: 48px;
     min-width: 48px;

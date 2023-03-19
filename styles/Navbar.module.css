@@ -62,18 +62,9 @@
   .searchMob input {
     min-width: 100%;
   }
-
-  /* .address {
-    display: none;
-  }
-  .addressMob {
-    margin: 0px 15px 15px 0;
-    margin-left: 0;
-    display: block;
-  } */
 }
 
-@media only screen and (max-width: 426px) {
+@media only screen and (max-width: 715px) {
   .address {
     display: none;
   }
@@ -84,7 +75,7 @@
   }
 }
 
-@media only screen and (max-width:376px) {
+@media only screen and (max-width:442px) {
   .headerMob {
     display: none;
   }

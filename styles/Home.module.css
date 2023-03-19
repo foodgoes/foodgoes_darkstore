@@ -37,23 +37,22 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 900px) {
   .wrapper {
-    grid-template: "menu" "main" auto/fit-content(658px);
+    grid-template: "menu" "main" auto/minmax(658px,auto);
     justify-content: center;
   }
 }
 
-@media only screen and (max-width: 426px) {
+@media only screen and (max-width: 673px) {
   .wrapper {
-    grid-template: "menu" "main" auto/fit-content(400px);
+    grid-template: "menu" "main" auto/minmax(442px,auto);
     justify-content: center;
   }
 }
-
-@media only screen and (max-width: 376px) {
+@media only screen and (max-width: 484px) {
   .wrapper {
-    grid-template: "menu" "main" auto/fit-content(350px);
+    grid-template: "menu" "main" auto/fit-content(370px);
     justify-content: center;
   }
 }
