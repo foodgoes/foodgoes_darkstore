@@ -5,6 +5,7 @@
 
 .main {
   grid-area: main;
+  justify-content: center;
 }
 
 .alert {
@@ -29,14 +30,30 @@
   display: flex;
 }
 
-@media only screen and (max-width: 1196px) {
+@media only screen and (max-width: 1200px) {
   .wrapper {
-    grid-template: "" "main";
+    grid-template: "menu" "main" auto/minmax(880px,auto);
+    justify-content: center;
   }
 }
 
-@media only screen and (max-width: 980px) {
+@media only screen and (max-width: 768px) {
   .wrapper {
-    grid-template: "menu" "main";
+    grid-template: "menu" "main" auto/fit-content(658px);
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 426px) {
+  .wrapper {
+    grid-template: "menu" "main" auto/fit-content(400px);
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 376px) {
+  .wrapper {
+    grid-template: "menu" "main" auto/fit-content(350px);
+    justify-content: center;
   }
 }

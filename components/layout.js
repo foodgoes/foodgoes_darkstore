@@ -99,8 +99,8 @@ export default function Layout({ children }) {
       <Navbar />
       <div className={styles.container}>
         {children}
-        <Footer />
       </div>
+      <Footer />
     </>
   )
 }

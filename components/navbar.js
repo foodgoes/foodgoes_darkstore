@@ -11,18 +11,30 @@ export default function Navbar() {
   return (
     <>
       <div className={styles.header}>
-        <div><Link className={styles.logo} href="/">FoodGoes</Link></div>
-        <Catalogue />
+        <div className={styles.logoMenu}>
+          <Link className={styles.logo} href="/">FoodGoes</Link>
+          <Catalogue />
+        </div>
+
         <div className={styles.search}><SearchHeader /></div>
         <div className={styles.address}><DeliveryAddressHeader /></div>
-        <CartHeader />
-        <LocaleSwitcherHeader />
-        <AccountHeader />
+
+        <div className={styles.buttons}>
+          <div className={styles.cart}><CartHeader /></div>
+          <LocaleSwitcherHeader />
+          <AccountHeader />
+        </div>
       </div>
 
       <div className={styles.headerMob}>
-        <div className={styles.addressMob}><DeliveryAddressHeader /></div>
         <div className={styles.searchMob}><SearchHeader /></div>
+        <div className={styles.addressMob}><DeliveryAddressHeader /></div>
+      </div>
+
+      <div className={styles.headerMobS}>
+        <SearchHeader />
+        <DeliveryAddressHeader />
+        <CartHeader />
       </div>
     </>
   )

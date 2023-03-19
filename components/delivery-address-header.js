@@ -34,10 +34,6 @@ export default function DeliveryAddressHeader() {
                         <NavigationSVG /> <span className={styles.text}>{location.address?.address1 || translate('enterDeliveryAddress')}</span>
                     </Button>
                 </div>
-                <div className={styles.deliveryInfo}>
-                    <div className={styles.deliveryTime}>3-5 {translate('hours')}</div>
-                    <div className={styles.deliveryPrice}>{translate('delivery')} &#8362;25</div>
-                </div>
             </div>
         </>
     );

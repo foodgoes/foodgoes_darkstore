@@ -64,3 +64,10 @@
   font-weight: 500;
   display: block;
 }
+
+@media only screen and (max-width:376px) {
+  .catalogueMenu {
+    right: -123px;
+    left: unset;
+  }
+}
