@@ -3,6 +3,7 @@ import styles from '@/styles/Home.module.css'
 import Sidebar from '@/components/sidebar'
 import Catalog from '@/components/catalog';
 import Discounts from '@/components/discounts';
+import Banners from '@/components/banners';
 
 export default function Home({categories, products}) {  
   return (
@@ -10,6 +11,7 @@ export default function Home({categories, products}) {
       <Sidebar categories={categories} />
 
       <div className={styles.main}>
+        <Banners />
         <Discounts />
         <Catalog products={products} />
       </div>

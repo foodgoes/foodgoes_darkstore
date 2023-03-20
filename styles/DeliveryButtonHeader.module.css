@@ -44,31 +44,12 @@
   color: #9e9b98;
 }
 
-@media only screen and (max-width: 580px) {
-  .delivery {
-    flex-direction: column;
-  }
-  .deliveryInfo {
-    flex-direction: row;
-    margin-bottom: 4px;
-  }
-  .deliveryTime {
-    line-height: 19px;
-  }
-  .deliveryPrice {
-    margin-left: 13px;
-    line-height: 19px;
-  }
-}
-
 @media only screen and (max-width:442px) {
   .addressButton button {
     width: 48px;
     min-width: 48px;
   }
   .deliveryInfo {
-    margin-top: 4px;
-    margin-bottom: 0;
-    margin-left: 0;
+      display: none;
   }
 }

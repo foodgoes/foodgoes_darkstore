@@ -54,7 +54,7 @@ export default function Catalogue() {
         setLink(prev => prev && prev.id === categoryId ? null : {id: categoryId, links});
     };
 
-      const catalog = catalogue.map((c, i) => (
+      const catalog = catalogue.filter(c => !c.hidden).map((c, i) => (
         <li key={i}>
             <div onClick={() => toggleLinks(c.id)} className={styles.baseLink}>
                 <div className={styles.baseLinkImg}>{c.image && <img src={c.image} />}</div>

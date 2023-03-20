@@ -41,11 +41,7 @@ const Link = new Schema({
         type: String,
         default: null
     },
-    type: {
-        type: String,
-        default: 'http'
-    },
-    links: [],
+    links: []
 });
 Link.set('toObject', { virtuals: true });
 Link.set('toJSON', { virtuals: true });
@@ -83,6 +79,10 @@ const CategorySchema = new Schema({
         default: Date.now
     },
     enabled: {
+        type: Boolean,
+        default: false
+    },
+    hidden: {
         type: Boolean,
         default: false
     }

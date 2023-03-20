@@ -14,7 +14,8 @@ async function handler(req, res) {
         id: category.id,
         title: category.title,
         image: category.image ? process.env.UPLOAD_CATEGORIES+category.image : null,
-        links: category.links
+        links: category.links,
+        hidden: category.hidden
       };
     });
 

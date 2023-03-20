@@ -25,7 +25,7 @@ export default function Sidebar({categories, slug, slug2}) {
         setLink(prev => prev && prev.id === categoryId ? null : {id: categoryId, links});
     };
 
-    const catalog = categories.map((c, i) => (
+    const catalog = categories.filter(c => !c.hidden).map((c, i) => (
         <li key={i}>
             <div onClick={() => toggleLinks(c.id)} className={styles.baseLink}>
                 <div className={styles.baseLinkImg}>{c.image && <img src={c.image} />}</div>
