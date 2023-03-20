@@ -10,7 +10,7 @@
 }
 .banner {
     display: inline-block;
-    grid-row-start: 3;
+    grid-row-start: 1;
 }
 .bannerImg {
     border-radius: 28px;
@@ -42,6 +42,9 @@
   }
 
   @media only screen and (max-width: 484px) {
+    .banners {
+        margin-top: 0;
+    }
     .bannerImg {
         width: 145px;
         height: 145px;
