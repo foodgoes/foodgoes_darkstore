@@ -20,20 +20,6 @@ const ProductSchema = new Schema({
             required: true
         },
     },
-    descriptionHtml: {
-        en: {
-            type: String,
-            default: '',
-          },
-        he: {
-            type: String,
-            default: '',
-          },
-        ru: {
-            type: String,
-            default: '',
-          }
-    },
     description: {
         en: {
             type: String,
