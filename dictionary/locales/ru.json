@@ -56,5 +56,6 @@
   "minTotalPrice": "Минимальная сумма заказа",
   "description": "Описание",
   "country": "Страна",
-  "disclaimer": "Дисклеймер"
+  "disclaimer": "Дисклеймер",
+  "notAvailable": "Нет в наличии"
 }

@@ -114,10 +114,29 @@ const LineItem = new Schema({
         type: Number,
         maxlength: 4,
     },
+    unitCost: {
+        type: Number,
+        min: 0.00,
+        maxlength: 15,
+        default: 0.00
+    },
     price: {
         type: Number,
+        min: 0.00,
         maxlength: 15,
-        default: 0
+        default: 0.00
+    },
+    compareAtPrice: {
+        type: Number,
+        min: 0.00,
+        maxlength: 15,
+        default: 0.00
+    },
+    pricePerUnit: {
+        type: Number,
+        min: 0.00,
+        maxlength: 15,
+        default: 0.00
     },
     title: {
         en: {
@@ -150,6 +169,27 @@ const LineItem = new Schema({
             maxlength: 100
         }
     },
+    weightUnit: {
+        type: String,
+        required: true,
+        enum: ['g', 'kg', 'oz', 'lb'],
+        default: 'g'
+    },
+    weight: {
+        type: Number,
+        default: 0
+    },
+    unit: {
+        type: String,
+        required: true,
+        enum: ['g', 'kg', 'oz', 'lb', 'pc', 'ml', 'L'],
+        default: 'g'
+    },
+    amountPerUnit: {
+        type: Number,
+        default: 0
+    },
+    displayAmount: String,
 });
 LineItem.set('toObject', { virtuals: true });
 LineItem.set('toJSON', { virtuals: true });

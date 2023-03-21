@@ -37,6 +37,7 @@ async function handler(req, res) {
       brand: product.brand,
       shelfLife: product.shelfLife,
       currencyCode: product.currencyCode,
+      availableForSale: product.availableForSale,
     });
   } catch(e) {
     res.status(200).json(null);

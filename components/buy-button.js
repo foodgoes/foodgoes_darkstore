@@ -125,6 +125,16 @@ export default function BuyButton({disabled, productId, price, primary=false, se
         );
     }
 
+    if (disabled) {
+       return (
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <Button size={size} disabled={disabled} secondary={secondary} fullWidth><span>{translate('notAvailable')}</span></Button>
+            </div>
+        </div>
+       );
+    }
+
     return (
         <>
             {activeAddress && createPortal(

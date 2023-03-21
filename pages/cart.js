@@ -47,7 +47,7 @@ export default function Cart() {
     getCartAPI();
   }, [authFromContext.auth, cartFromContext.cart.products.length]);
 
-  const totalShippingPrice = 25;
+  const totalShippingPrice = 30;
   const totalLineItemsPrice = cartFromContext.cart.total;
 
   const clearCart = async () => {

@@ -132,6 +132,14 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
         title: product.title,
         brand: product.brand,
         price: product.price,
+        unitCost: product.unitCost,
+        compareAtPrice: product.compareAtPrice,
+        pricePerUnit: product.pricePerUnit,
+        weightUnit: product.weightUnit,
+        weight: product.weight,
+        unit: product.unit,
+        amountPerUnit: product.amountPerUnit,
+        displayAmount: product.displayAmount,
         quantity
       };
     });
@@ -139,7 +147,7 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
     totalLineItemsPrice = +totalLineItemsPrice.toFixed(2);
     const totalTax = 0;
     const {totalDiscounts, discount} = await computeDiscount(userId);
-    const totalShippingPrice = 25;
+    const totalShippingPrice = 30;
     const subtotalPrice = +(totalLineItemsPrice - totalDiscounts).toFixed(2);
     const totalPrice = +(totalLineItemsPrice + totalShippingPrice - totalDiscounts).toFixed(2);
 
@@ -218,6 +226,10 @@ async function computeDiscount(userId) {
     }
     const discount = discounts[0];
 
+    if (!discount) {
+      return {totalDiscounts: 0, discount: null};
+    }
+
     const cart = await Cart.findOne({userId});
     const productIds = cart.products.map(p => String(p.productId));
     const products = await Product.find({'_id': {$in: productIds}});
@@ -230,7 +242,6 @@ async function computeDiscount(userId) {
       }
       const quantity = cart.products[index].quantity;
       
-      const {ruleSet} = discount;
       for (let rule of ruleSet.rules) {
           const {column, relation, condition} = rule;
           if (column === 'compare_at_price' && relation === 'equals' && parseFloat(condition) === product.compareAtPrice) {

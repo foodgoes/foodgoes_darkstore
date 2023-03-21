@@ -56,5 +56,6 @@
   "minTotalPrice": "Minimum total price",
   "description": "Description",
   "country": "Country",
-  "disclaimer": "Disclaimer"
+  "disclaimer": "Disclaimer",
+  "notAvailable": "Not available"
 }

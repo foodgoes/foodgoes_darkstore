@@ -47,7 +47,8 @@ async function handler(req, res) {
       weightUnit: product.weightUnit,
       unit: product.unit,
       amountPerUnit: product.amountPerUnit,
-      displayAmount: product.displayAmount
+      displayAmount: product.displayAmount,
+      availableForSale: product.availableForSale
     }));
 
     const count = await Product.countDocuments(filter);

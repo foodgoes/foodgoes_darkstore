@@ -38,6 +38,12 @@ const ProductSchema = new Schema({
         type: String,
         maxlength: 510
     },
+    unitCost: {
+        type: Number,
+        min: 0.00,
+        maxlength: 15,
+        default: 0.00
+    },
     price: {
         type: Number,
         min: 0.00,
@@ -100,7 +106,7 @@ const ProductSchema = new Schema({
     unit: {
         type: String,
         required: true,
-        enum: ['g', 'kg', 'oz', 'lb', 'pc', 'ml'],
+        enum: ['g', 'kg', 'oz', 'lb', 'pc', 'ml', 'L'],
         default: 'g'
     },
     amountPerUnit: {
@@ -196,6 +202,10 @@ const ProductSchema = new Schema({
         type: String,
         required: true,
         default: 'ILS'
+    },
+    availableForSale: {
+        type: Boolean,
+        default: true
     }
 });
 

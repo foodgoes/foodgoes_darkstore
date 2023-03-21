@@ -31,7 +31,8 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                     <h3 className={styles.title}>{product.title[locale]}</h3>
                     <span className={styles.weightInfo}>{product.displayAmount} {product.unit}</span>
                 </div>
-                {!disabledBuy && <BuyButton productId={product.id} price={product.compareAtPrice || product.price} disabled={!product.quantity} secondary/>}
+                {!disabledBuy && <BuyButton disabled={!product.availableForSale} 
+                productId={product.id} price={product.compareAtPrice || product.price} secondary/>}
             </div>
         </div>
     );

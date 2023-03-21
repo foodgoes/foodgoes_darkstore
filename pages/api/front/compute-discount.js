@@ -66,6 +66,10 @@ async function handleGETAsync(userId) {
     const discount = discounts[0];
 
     const cart = await Cart.findOne({userId});
+    if (!cart) {
+      throw('cart is empty');
+    }
+
     const productIds = cart.products.map(p => String(p.productId));
     const products = await Product.find({'_id': {$in: productIds}});
 
@@ -90,7 +94,6 @@ async function handleGETAsync(userId) {
 
     return {totalDiscounts};
   } catch(e) {
-    console.log(e)
       throw e;
   }
 }
