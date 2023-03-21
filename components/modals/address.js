@@ -3,6 +3,7 @@ import {useForm} from 'react-hook-form';
 import Button from '@/components/elements/button';
 import LocationContext from '@/context/location-context';
 import { useTranslation } from '@/hooks/useTranslation';
+import styles from "@/styles/Address.module.css";
 
 export default function Address({onClose, productIdAfterLocation=null}) {
     const {location, updateAddress, setProductIdAfterLocation} = useContext(LocationContext);
@@ -56,6 +57,8 @@ export default function Address({onClose, productIdAfterLocation=null}) {
                 </div>
                 <Button fullWidth primary submit>{translate('ok')}</Button>
             </form>
+
+            <img className={styles.mapImg} src="/images/delivery_zones.jpg" />
         </div> 
     )
 }

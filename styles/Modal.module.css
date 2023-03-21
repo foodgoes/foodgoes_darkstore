@@ -1,6 +1,5 @@
 .overlay {
-  background-color: rgba(0, 0, 0, 0.5);  
-  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
   bottom: 0;
   left: 0;
   right: 0;
@@ -11,13 +10,25 @@
 }
 
 .modal {
-  position: fixed;
+  /* position: fixed;
   left: 0;
   right: 0;
   top: 0;
   z-index: 501;
   max-width: 400px;
+  margin: 100px auto; */
+
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 501;
   margin: 100px auto;
+  max-height: calc(100vh - 104px);
+  overflow: auto;
+  display: inline-flex;
+  justify-content: center;
+  max-width: 690px;
 }
 
 .container {
@@ -29,6 +40,8 @@
   position: relative;
   border-radius: 32px;
   padding: 16px;
+  max-height: calc(100vh - 104px);
+  overflow: auto;
 }
 
 .header {
