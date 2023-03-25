@@ -223,7 +223,21 @@ const ProductSchema = new Schema({
     availableForSale: {
         type: Boolean,
         default: true
-    }
+    },
+    searchKeywords: {
+        en: {
+            type: String,
+            maxlength: 300,
+          },
+        he: {
+            type: String,
+            maxlength: 300,
+          },
+        ru: {
+            type: String,
+            maxlength: 300,
+          }
+    },
 });
 
 ProductSchema.set('toObject', { virtuals: true });
