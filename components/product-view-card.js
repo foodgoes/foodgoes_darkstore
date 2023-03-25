@@ -3,6 +3,7 @@ import styles from '../styles/ProductViewCard.module.css'
 import Link from 'next/link';
 import BuyButton from './buy-button';
 import { useRouter } from 'next/router';
+import PlaceholderSVG from '@/public/icons/placeholder';
 
 export default function ProductViewCard({product, disabledBuy=false}) {
     const { locale } = useRouter();
@@ -13,7 +14,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
 
             <div className={styles.wrapper}>
                 <div>
-                    {product.image && <img src={product.image} />}
+                    {product.image ? <img src={product.image} /> : <PlaceholderSVG />}
                 </div>
                 <div className={styles.info}>
                     <div className={styles.priceBlock}>
@@ -32,7 +33,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                     <span className={styles.weightInfo}>{product.displayAmount} {product.unit}</span>
                 </div>
                 {!disabledBuy && <BuyButton disabled={!product.availableForSale} 
-                productId={product.id} price={product.compareAtPrice || product.price} secondary/>}
+                productId={product.id} price={product.price} secondary/>}
             </div>
         </div>
     );

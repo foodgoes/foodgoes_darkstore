@@ -72,7 +72,7 @@ async function handleGETAsync(userId, token) {
       brand: product.brand,
       quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
       excludeDiscount: product.excludeDiscount,
-      forAdults: product.forAdults
+      ageRestricted: product.ageRestricted
     }));
 
     return {

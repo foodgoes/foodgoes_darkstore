@@ -20,6 +20,23 @@ const ProductSchema = new Schema({
             required: true
         },
     },
+    subTitle: {
+        en: {
+            type: String,
+            maxlength: 255,
+            required: true
+        },
+        he: {
+            type: String,
+            maxlength: 255,
+            required: true
+        },
+        ru: {
+            type: String,
+            maxlength: 255,
+            required: true
+        },
+    },
     description: {
         en: {
             type: String,
@@ -85,7 +102,7 @@ const ProductSchema = new Schema({
         type: Array,
         default: []
     },
-    forAdults: {
+    ageRestricted: {
         type: Boolean,
         default: false
     },

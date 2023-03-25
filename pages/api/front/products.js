@@ -43,7 +43,7 @@ async function handler(req, res) {
           const collection = await Collection.findById(currentLinks.nestedLink.subjectId);
           const {title, productIds} = collection;
 
-          const dataProducts = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 200}).sort([['sort', 'asc']]);
+          const dataProducts = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 400}).sort([['sort', 'asc']]);
           dataProducts.forEach(product => {
             const images = product.images.map(img => process.env.UPLOAD_PRODUCTS+img);
 
@@ -68,7 +68,7 @@ async function handler(req, res) {
         }
       }
     } else {
-      const data = await Product.find({status: 'active'}, null, {skip: 0, limit: 200}).sort([['sort', 'asc']]);
+      const data = await Product.find({status: 'active'}, null, {skip: 0, limit: 400}).sort([['sort', 'asc']]);
       data.forEach(product => {
         const images = product.images.map(img => process.env.UPLOAD_PRODUCTS+img);
 

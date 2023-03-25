@@ -21,7 +21,7 @@ const Product = ({product}) => {
   return (
     <>
       <Head>
-        <title>{`${product.title[locale]} — купить с доставкой из FoodGoes`}</title>
+        <title>{`${product.subTitle[locale]} — купить с доставкой из FoodGoes`}</title>
       </Head>
       <div className='topBar'>
         <div className='breadcrumbs'>
@@ -29,7 +29,7 @@ const Product = ({product}) => {
         </div>
         <div className='infoBlock'>
           <div>
-            <h1 className='heading'>{product.title[locale]}</h1>
+            <h1 className='heading'>{product.subTitle[locale]}</h1>
             <span className={styles.shortInfo}>
               {product.displayAmount} {product.unit} &#8226; {product.pricePerUnit}&#8362;/{product.amountPerUnit}{product.unit}
             </span>
