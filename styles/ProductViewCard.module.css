@@ -121,3 +121,10 @@
     color: #9e9b98;
     display: block;
 }
+
+.wrapperImg {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}

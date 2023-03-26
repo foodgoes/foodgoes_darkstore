@@ -13,7 +13,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
             <Link href={'/product/' + product.id} className={styles.link}></Link>
 
             <div className={styles.wrapper}>
-                <div>
+                <div className={styles.wrapperImg}>
                     {product.image ? <img src={product.image} /> : <PlaceholderSVG />}
                 </div>
                 <div className={styles.info}>
