@@ -68,12 +68,12 @@ export default function Sidebar({categories, slug, slug2}) {
                         {category.map(c => (
                             <ul className={styles.links1} key={c.id}>
                                 {
-                                    c.links?.map((l1, i1) => (
+                                    c.links.map((l1, i1) => (
                                         <li key={i1}>
                                             <Link href={`/category/${l1.handle}`} className={slug === l1.handle && !slug2 ? styles.currentLink : ''}>{l1.title[locale]}</Link>
                                             {l1.handle === slug && (
                                                 <ul className={styles.links2}>
-                                                    {l1.links?.map((l2, i2) => (
+                                                    {l1.links.map((l2, i2) => (
                                                         <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`} className={l2.handle === slug2 ? ' ' +styles.currentLink : ''}>{l2.title[locale]}</Link></li>
                                                     ))}
                                                 </ul>
@@ -108,12 +108,12 @@ export default function Sidebar({categories, slug, slug2}) {
                         {category.map(c => (
                             <ul className={styles.links1} key={c.id}>
                                 {
-                                    c.links?.map((l1, i1) => (
+                                    c.links.map((l1, i1) => (
                                         <li key={i1}>
                                             <Link href={`/category/${l1.handle}`} className={slug === l1.handle && !slug2 ? styles.currentLink : ''}>{l1.title[locale]}</Link>
                                             {l1.handle === slug && (
                                                 <ul className={styles.links2}>
-                                                    {l1.links?.map((l2, i2) => (
+                                                    {l1.links.map((l2, i2) => (
                                                         <li key={i2}><Link href={`/category/${l1.handle}/${l2.handle}`} className={l2.handle === slug2 ? ' ' +styles.currentLink : ''}>{l2.title[locale]}</Link></li>
                                                     ))}
                                                 </ul>

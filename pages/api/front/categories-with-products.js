@@ -31,7 +31,11 @@ async function handler(req, res) {
       for (let link of baseLink.links) {
         if (link.subjectId) {
           const collection = await Collection.findById(link.subjectId);
-        
+
+          if (!collection) {
+            continue;
+          }
+
           const {title, productIds} = collection;
           const productsData = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['sort', 'asc']]);
 
