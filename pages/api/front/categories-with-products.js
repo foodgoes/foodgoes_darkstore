@@ -37,7 +37,7 @@ async function handler(req, res) {
           }
 
           const {title, productIds} = collection;
-          const productsData = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['sort', 'asc']]);
+          const productsData = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['availableForSale', 'desc'], ['sort', 'asc']]);
 
           const products = productsData.map(product => ({
             id: product.id,
