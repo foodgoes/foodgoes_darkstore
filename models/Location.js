@@ -29,8 +29,7 @@ const LocationSchema = new Schema({
     deactivatedAt: Date,
     createdAt: {
         type: Date,
-        default: Date.now,
-        expires: 604800
+        default: Date.now
     },
     updatedAt: {
         type: Date,

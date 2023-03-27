@@ -25,8 +25,7 @@ const BannerSchema = new Schema({
     sort: Number,
     createdAt: {
         type: Date,
-        default: Date.now,
-        expires: 604800
+        default: Date.now
     },
     updatedAt: {
         type: Date,
