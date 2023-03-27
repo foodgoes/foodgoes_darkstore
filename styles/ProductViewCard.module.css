@@ -1,21 +1,29 @@
 .product {
-    display: flex;
-    flex-direction: column;
     border-radius: 24px;
-    background-color: #f8f7f5;
-    position: relative;
-    overflow: hidden;
+    display: flex;
     height: 100%;
+    position: relative;
 }
 
 .wrapper {
-    overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
+    position: relative;
+    flex-grow: 1;
 }
-.wrapper:hover {
+
+.container {
+    background-color: #f8f7f5;
+    border-radius: 24px;
+
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+.container:hover {
     background-color: #f1f0ed;
 }
 
@@ -25,8 +33,15 @@
     object-fit: contain;
 }
 
-.info {
+.containerInfo {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.priceTitle {
+    flex: 1 0;
     box-sizing: border-box;
+    min-height: 99px;
     padding: 0 12px 16px;
 }
 
@@ -69,6 +84,10 @@
     word-break: break-word;
     font-size: 16px;
     font-weight: 400;
+
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
 }
 
 .link {
@@ -77,6 +96,7 @@
     position: absolute;
     right: 0;
     top: 0;
+    z-index: 1;
 }
 
 .buyBtn {
@@ -123,8 +143,21 @@
 }
 
 .wrapperImg {
-    display: flex;
-    justify-content: center;
+    height: 0;
+    padding-top: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.postionImage {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.image {
     height: 100%;
-    align-items: center;
+    width: 100%;
 }
