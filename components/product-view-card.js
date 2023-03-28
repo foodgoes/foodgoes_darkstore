@@ -3,10 +3,11 @@ import styles from '../styles/ProductViewCard.module.css'
 import Link from 'next/link';
 import BuyButton from './buy-button';
 import { useRouter } from 'next/router';
-import PlaceholderSVG from '@/public/icons/placeholder';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ProductViewCard({product, disabledBuy=false}) {
     const { locale } = useRouter();
+    const {translate} = useTranslation();
 
     return (
         <div className={styles.product}>
@@ -37,7 +38,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                                 ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
                             </div>
                             <h3 className={styles.title}>{product.title[locale]}</h3>
-                            <span className={styles.weightInfo}>{product.displayAmount} {product.unit}</span>
+                            <span className={styles.weightInfo}>{product.displayAmount} {translate(product.unit)}</span>
                         </div>
                         <div>
                             {!disabledBuy && <BuyButton disabled={!product.availableForSale} 

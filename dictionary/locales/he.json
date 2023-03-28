@@ -57,5 +57,10 @@
   "description": "Description",
   "country": "Country",
   "disclaimer": "Disclaimer",
-  "notAvailable": "Not available"
+  "notAvailable": "Not available",
+  "kg": "kg",
+  "g": "g",
+  "L": "L",
+  "ml": "ml",
+  "pc": "pc."
 }

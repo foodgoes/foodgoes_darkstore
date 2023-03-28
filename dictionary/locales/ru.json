@@ -57,5 +57,10 @@
   "description": "Описание",
   "country": "Страна",
   "disclaimer": "Дисклеймер",
-  "notAvailable": "Нет в наличии"
+  "notAvailable": "Нет в наличии",
+  "kg": "кг",
+  "g": "г",
+  "L": "л",
+  "ml": "мл",
+  "pc": "шт."
 }

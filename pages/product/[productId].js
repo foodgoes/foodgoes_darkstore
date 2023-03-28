@@ -31,7 +31,7 @@ const Product = ({product}) => {
           <div>
             <h1 className='heading'>{product.subTitle[locale]}</h1>
             <span className={styles.shortInfo}>
-              {product.displayAmount} {product.unit} &#8226; {product.pricePerUnit}&#8362;/{product.amountPerUnit}{product.unit}
+              {product.displayAmount} {translate(product.unit)} &#8226; {product.pricePerUnit}&#8362;/{product.amountPerUnit}{translate(product.unit)}
             </span>
           </div>
         </div>
