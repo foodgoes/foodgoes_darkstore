@@ -18,7 +18,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                         <div className={styles.wrapperImg}>
                             <div className={styles.postionImage}>
                                 <div className={styles.image}>
-                                    {product.image ? <img src={product.image} /> : <PlaceholderSVG />}
+                                    <img src={product.image ? product.image : '/images/placeholder.svg'} />
                                 </div>
                             </div>
                         </div>
