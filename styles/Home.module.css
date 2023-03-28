@@ -1,6 +1,7 @@
 .wrapper {
   grid-template: "menu main" auto/minmax(316px,auto) minmax(880px,auto);
   display: grid;
+  justify-content: center;
 }
 
 .main {

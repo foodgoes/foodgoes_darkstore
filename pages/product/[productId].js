@@ -23,82 +23,83 @@ const Product = ({product}) => {
       <Head>
         <title>{`${product.subTitle[locale]} — купить с доставкой из FoodGoes`}</title>
       </Head>
-      <div className='topBar'>
-        <div className='breadcrumbs'>
-          <Link href="/">{translate('breadcrumbsHome')}</Link>
-        </div>
-        <div className='infoBlock'>
-          <div>
-            <h1 className='heading'>{product.subTitle[locale]}</h1>
-            <span className={styles.shortInfo}>
-              {product.displayAmount} {translate(product.unit)} &#8226; {product.pricePerUnit}&#8362;/{product.amountPerUnit}{translate(product.unit)}
-            </span>
+      <div className={styles.wrapper}>
+        <div className='topBar'>
+          <div className='breadcrumbs'>
+            <Link href="/">{translate('breadcrumbsHome')}</Link>
+          </div>
+          <div className='infoBlock'>
+            <div>
+              <h1 className='heading'>{product.subTitle[locale]}</h1>
+              <span className={styles.shortInfo}>
+                {product.displayAmount} {translate(product.unit)} &#8226; {product.pricePerUnit}&#8362;/{product.amountPerUnit}{translate(product.unit)}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    
-      <div className={styles.container}>
-        <div className={styles.imagesContainer}>
-          <div className={styles.mainImage}><img src={product.image} /></div>
-        </div>
-
-        <div className={styles.aboutProduct}>
-          <div className={styles.priceAndBtnBlock}>
-            <div className={styles.priceBlock}>
-                {product.compareAtPrice ? (
-                    <>
-                        <span className={styles.compareAtPrice}>&#8362;{product.price.toFixed(2)}</span>
-                        <span className={styles.oldPriceWithLine}>
-                            <span className={styles.oldPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
-                            <span className={styles.line}></span>
-                        </span>
-                    </>
-                ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
-            </div>
-            <div><BuyButton disabled={!product.availableForSale} price={product.price} productId={productId} primary size="large"/></div>
+        <div className={styles.container}>
+          <div className={styles.imagesContainer}>
+            <div className={styles.mainImage}><img src={product.image} /></div>
           </div>
 
-          <section className={styles.section}>
-            <div className={styles.titleSection}><span><h2>{translate('aboutProduct')}</h2></span></div>
-            <div className={styles.contentSection}>
-              {brandAndManif && (
-                <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('brand')}, {translate('manufacturer')}</span>
-                  <p>{brandAndManif}</p>
-                </div>
-              )}
-              {product.country && product.country[locale] && (
-                <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('country')}</span>
-                  <p>{product.country[locale]}</p>
-                </div>
-              )}
-              {product.description && product.description[locale] && (
-                <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('description')}</span>
-                  <p>{product.description[locale]}</p>
-                </div>
-              )}
-              {product.ingredients && product.ingredients[locale] && (
-                <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('ingredients')}</span>
-                  <p>{product.ingredients[locale]}</p>
-                </div>
-              )}
-              {product.shelfLife && product.shelfLife[locale] && (
-                <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('shelfLife')}</span>
-                  <p>{product.shelfLife[locale]}</p>
-                </div>
-              )}
-              {product.disclaimer && product.disclaimer[locale] && (
-                <div className={styles.blockContentSection}>
-                  <span className={styles.label}>{translate('disclaimer')}</span>
-                  <p>{product.disclaimer[locale]}</p>
-                </div>
-              )}
+          <div className={styles.aboutProduct}>
+            <div className={styles.priceAndBtnBlock}>
+              <div className={styles.priceBlock}>
+                  {product.compareAtPrice ? (
+                      <>
+                          <span className={styles.compareAtPrice}>&#8362;{product.price.toFixed(2)}</span>
+                          <span className={styles.oldPriceWithLine}>
+                              <span className={styles.oldPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
+                              <span className={styles.line}></span>
+                          </span>
+                      </>
+                  ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
+              </div>
+              <div><BuyButton disabled={!product.availableForSale} price={product.price} productId={productId} primary size="large"/></div>
             </div>
-          </section>
+
+            <section className={styles.section}>
+              <div className={styles.titleSection}><span><h2>{translate('aboutProduct')}</h2></span></div>
+              <div className={styles.contentSection}>
+                {brandAndManif && (
+                  <div className={styles.blockContentSection}>
+                    <span className={styles.label}>{translate('brand')}, {translate('manufacturer')}</span>
+                    <p>{brandAndManif}</p>
+                  </div>
+                )}
+                {product.country && product.country[locale] && (
+                  <div className={styles.blockContentSection}>
+                    <span className={styles.label}>{translate('country')}</span>
+                    <p>{product.country[locale]}</p>
+                  </div>
+                )}
+                {product.description && product.description[locale] && (
+                  <div className={styles.blockContentSection}>
+                    <span className={styles.label}>{translate('description')}</span>
+                    <p>{product.description[locale]}</p>
+                  </div>
+                )}
+                {product.ingredients && product.ingredients[locale] && (
+                  <div className={styles.blockContentSection}>
+                    <span className={styles.label}>{translate('ingredients')}</span>
+                    <p>{product.ingredients[locale]}</p>
+                  </div>
+                )}
+                {product.shelfLife && product.shelfLife[locale] && (
+                  <div className={styles.blockContentSection}>
+                    <span className={styles.label}>{translate('shelfLife')}</span>
+                    <p>{product.shelfLife[locale]}</p>
+                  </div>
+                )}
+                {product.disclaimer && product.disclaimer[locale] && (
+                  <div className={styles.blockContentSection}>
+                    <span className={styles.label}>{translate('disclaimer')}</span>
+                    <p>{product.disclaimer[locale]}</p>
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </>

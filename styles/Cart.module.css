@@ -1,6 +1,12 @@
+.wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+}
+
 .container {
     display: grid;
-    grid-template: "products wrapper" auto/minmax(560px,auto) minmax(370px,auto);
+    grid-template: "products wrapperTotals" auto/minmax(560px,auto) minmax(370px,auto);
     margin: 0 15px;
 }
 
@@ -25,8 +31,8 @@
 .products {
     grid-area: products;
 }
-.wrapper {
-    grid-area: wrapper;
+.wrapperTotals {
+    grid-area: wrapperTotals;
     margin-left: 72px;
     display: flex;
     flex-direction: column;
@@ -52,32 +58,32 @@
     margin-right: 8px;
 }
 
-.wrapper table {
+.wrapperTotals table {
     width: 100%;
 }
-.wrapper table th {
+.wrapperTotals table th {
     font-weight: 400;
     text-align: left;
 }
-.wrapper table td {
+.wrapperTotals table td {
     text-align: right;
     font-weight: 500;
 }
-.wrapper table tr {
+.wrapperTotals table tr {
     display: flex;
     justify-content: space-between;
     min-height: 36px;
     align-items: center;
     padding: 8px 0;
 }
-.wrapper table tr:last-child {
+.wrapperTotals table tr:last-child {
     border-top: 1px solid hsla(30,3%,53%,.2);
     height: 52px;
     margin-top: 8px;
     padding: 0;
 }
 
-.wrapper table tr:last-child th, .wrapper table tr:last-child td {
+.wrapperTotals table tr:last-child th, .wrapperTotals table tr:last-child td {
     font-weight: 500;
     font-size: 20px;
 }
@@ -92,9 +98,9 @@
 
 @media only screen and (max-width: 980px) {
     .container {
-      grid-template: "wrapper" "products";
+      grid-template: "wrapperTotals" "products";
     }
-    .wrapper {
+    .wrapperTotals {
         margin-left: 0;
     }
     .products {

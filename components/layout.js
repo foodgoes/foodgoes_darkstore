@@ -97,9 +97,7 @@ export default function Layout({ children }) {
       </Head>
 
       <Navbar />
-      <div className={styles.container}>
-        {children}
-      </div>
+      {children}
       <Footer />
     </>
   )

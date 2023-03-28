@@ -43,7 +43,7 @@ export default function Sidebar({categories, slug, slug2}) {
         </li>
     ));
 
-    const catalogMob = categories.map((c, i) => (
+    const catalogMob = categories.filter(c => !c.hidden).map((c, i) => (
         <li key={i} className={link && styles.hidden}>            
            {!link && <div onClick={() => toggleLinks(c.id)}>
                 {c.title[locale]}
