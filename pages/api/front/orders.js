@@ -35,9 +35,9 @@ async function handler(req, res) {
       return res.status(200).json(order);
     }
 
-    res.status(200).json(null);
+    res.status(200).json([]);
   } catch(e) {
-    res.status(200).json(null);
+    res.status(200).json([]);
   }
 }
 
@@ -58,7 +58,8 @@ async function handleGETAsync(userId) {
         const products = await Product.find({'_id': {$in: productIds}});
 
         const lineItems = order.lineItems.map(item => {
-          const images = products.find(p => p.id === String(item.productId)).images;
+          const product = products.find(p => p.id === String(item.productId));
+          const images = product ? product.images.map(img => process.env.UPLOAD_PRODUCTS + img) : [];
 
           return {
             id: item.id,
@@ -67,8 +68,8 @@ async function handleGETAsync(userId) {
             price: item.price,
             quantity: item.quantity,
             productId: item.productId,
-            images: images.map(img => process.env.UPLOAD_PRODUCTS+img),
-            image: images.length ? process.env.UPLOAD_PRODUCTS+images[0] : null
+            images,
+            image: images.length ? images[0] : null
           };
         });
 
@@ -90,7 +91,6 @@ async function handleGETAsync(userId) {
 
       return output;
   } catch(e) {
-    console.log(e);
       throw e;
   }
 }
@@ -182,7 +182,6 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
 
     return newOrder;
   } catch(e) {
-    console.log(e);
       throw e;
   }
 }
@@ -254,7 +253,6 @@ async function computeDiscount(userId) {
 
     return {totalDiscounts, discount};
   } catch(e) {
-    console.log(e)
       throw e;
   }
 }

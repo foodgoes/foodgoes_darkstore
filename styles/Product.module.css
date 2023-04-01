@@ -95,9 +95,16 @@
     margin-top: 16px;
 }
 
+.blockContentSection p:lang(he) {
+    direction: rtl;
+}
+
 .imagesContainer {
     flex-shrink: 0;
     margin-right: 32px;
+    height: 464px;
+    position: relative;
+    width: 464px;
 }
 .mainImage {
     margin: 0 auto;

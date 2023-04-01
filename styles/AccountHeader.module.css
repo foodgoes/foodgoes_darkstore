@@ -1,6 +1,7 @@
   .auth {
     display: inline-block;
     margin-left: 16px;
+    white-space: nowrap;
   }
   
   .account {
