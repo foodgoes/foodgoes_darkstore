@@ -138,9 +138,3 @@
         width: 100%;
     }
 }
-
-@media only screen and (max-width: 768px) and (min-width: 426px) {
-    .sidebarMob {
-        min-width: 658px;
-    }
-}

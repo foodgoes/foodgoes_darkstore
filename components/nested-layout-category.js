@@ -41,26 +41,27 @@ function NestedLayoutCategory({children, categories, slug, slug2}) {
             <Head>
                 <title>FoodGoes - Category</title>
             </Head>
-            <div className='topBar'>
-                <div className='breadcrumbs'>
-                    <Link href="/">{translate('breadcrumbsHome')}</Link>
-                    {links.map((l,i) => (
-                        <div key={i}>
-                            <ChevronRightSVG stroke='#9e9b98' />
-                            <Link href={`/category/${l.handle}`}>{l.title[locale]}</Link>
+            
+            <div className={styles.wrapper}>
+                <div className='topBar'>
+                    <div className='breadcrumbs'>
+                        <Link href="/">{translate('breadcrumbsHome')}</Link>
+                        {links.map((l,i) => (
+                            <div key={i}>
+                                <ChevronRightSVG stroke='#9e9b98' />
+                                <Link href={`/category/${l.handle}`}>{l.title[locale]}</Link>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='infoBlock'>
+                        <div>
+                            <h1 className='heading'>
+                                {links.length === 1 && links[0].title[locale]}
+                                {links.length > 1 &&links[1].title[locale]}
+                            </h1>
                         </div>
-                    ))}
-                </div>
-                <div className='infoBlock'>
-                    <div>
-                        <h1 className='heading'>
-                            {links.length === 1 && links[0].title[locale]}
-                            {links.length > 1 &&links[1].title[locale]}
-                        </h1>
                     </div>
                 </div>
-            </div>
-            <div className={styles.wrapper}>
                 <Sidebar categories={categories} slug={slug} slug2={slug2} />
                 <div className={styles.main}>{children}</div>
             </div>

@@ -1,11 +1,12 @@
 .wrapper {
-  grid-template: "menu main" auto/minmax(316px,auto) minmax(880px,auto);
+  grid-template: "title title title" "menu main main" auto/minmax(316px,auto) minmax(880px,auto);
   display: grid;
-  margin: 0 15px;
+  justify-content: center;
 }
 
 .main {
   grid-area: main;
+  justify-content: center;
 }
 
 .section:not(:first-child) {
@@ -20,28 +21,21 @@
 
 @media only screen and (max-width: 1200px) {
   .wrapper {
-    grid-template: "menu" "main" auto/minmax(880px,auto);
+    grid-template: "title title" "menu menu" "main main" auto/minmax(538px,auto);
     justify-content: center;
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 555px) {
   .wrapper {
-    grid-template: "menu" "main" auto/fit-content(658px);
+    grid-template: "title" "menu" "main" auto/minmax(375px,auto);
     justify-content: center;
   }
 }
 
-@media only screen and (max-width: 426px) {
+@media only screen and (max-width: 400px) {
   .wrapper {
-    grid-template: "menu" "main" auto/fit-content(400px);
-    justify-content: center;
-  }
-}
-
-@media only screen and (max-width: 376px) {
-  .wrapper {
-    grid-template: "menu" "main" auto/fit-content(350px);
+    grid-template: "title" "menu" "main" auto/minmax(370px,auto);
     justify-content: center;
   }
 }
