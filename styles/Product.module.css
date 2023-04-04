@@ -125,6 +125,7 @@
 }
 
 .shortInfo {
+    display: inline-block;
     color: #9e9b98;
     margin-top: 12px;
     text-align: left;

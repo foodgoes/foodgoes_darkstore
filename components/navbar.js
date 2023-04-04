@@ -6,13 +6,16 @@ import CartHeader from '@/components/cart-header';
 import LocaleSwitcherHeader from '@/components/locale-switcher-header';
 import AccountHeader from './account-header';
 import Catalogue from './catalogue';
+import LogoSVG from '@/public/icons/logo';
 
 export default function Navbar() {
   return (
     <>
       <div className={styles.header}>
         <div className={styles.logoMenu}>
-          <Link className={styles.logo} href="/">FoodGoes</Link>
+          <Link className={styles.logo} href="/">
+            <LogoSVG />
+          </Link>
           <Catalogue />
         </div>
 

@@ -13,8 +13,8 @@
 }
 
 .logo {
-  font-size: 22px;
-  font-weight: 500;
+  display: flex;
+  margin-top: 5px;
 }
 
 .search {

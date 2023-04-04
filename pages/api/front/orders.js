@@ -146,7 +146,8 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
 
     totalLineItemsPrice = +totalLineItemsPrice.toFixed(2);
     const totalTax = 0;
-    const {totalDiscounts, discount} = await computeDiscount(userId);
+    // const {totalDiscounts, discount} = await computeDiscount(userId);
+    const totalDiscounts = 0;
     const totalShippingPrice = 30;
     const subtotalPrice = +(totalLineItemsPrice - totalDiscounts).toFixed(2);
     const totalPrice = +(totalLineItemsPrice + totalShippingPrice - totalDiscounts).toFixed(2);
@@ -155,7 +156,6 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
 
     const seq = await getNextSequence('orderId');
     const tokenOrder = uuidv4();
-
     
     const minTotalPrice = 50;
     if (totalPrice < minTotalPrice) {
@@ -171,7 +171,7 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
       fulfillmentStatus: 'pending_fulfillment',
       lineItems,
       shippingAddress,
-      discounts: [discount],
+      discounts: [],
       totalShippingPrice,
       totalTax,
       totalLineItemsPrice, 
