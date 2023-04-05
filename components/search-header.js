@@ -13,27 +13,27 @@ export default function Search() {
             queue.forEach(element => clearTimeout(element));
 
             const timeoutId = setTimeout(async () => {
-            let q = event.target.value;
-            q = q.trim().toLowerCase();
+                let q = event.target.value;
+                q = q.trim().toLowerCase();
 
-            if (q === '') {
-                return;
-            }
-            if (q.length < 3) {
-                return;
-            }
-            if (q.length > 25) {
-                return;
-            }
+                if (q === '') {
+                    return;
+                }
+                if (q.length < 3) {
+                    return;
+                }
+                if (q.length > 25) {
+                    return;
+                }
 
-            const pathname = '/search';
+                const pathname = '/search';
 
-            if (router.pathname !== pathname) {
-                router.push({pathname, query: {text: q}}, undefined, { locale: router.locale });
-            } else {
-                router.replace({pathname, query: {text: q}}, undefined, { locale: router.locale });
-            }
-            }, 1500);
+                if (router.pathname !== pathname) {
+                    router.push({pathname, query: {text: q}}, undefined, { locale: router.locale });
+                } else {
+                    router.replace({pathname, query: {text: q}}, undefined, { locale: router.locale });
+                }
+            }, 1000);
 
             queue.push(timeoutId);
         } catch(e) {

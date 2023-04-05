@@ -1,7 +1,7 @@
 .wrapper {
-  grid-template: "menu main" auto/minmax(270px,auto) minmax(690px,auto);
+  grid-template: "menu main" auto/minmax(316px,auto) minmax(880px,auto);
   display: grid;
-  margin: 0 15px;
+  justify-content: center;
 }
 
 .main {

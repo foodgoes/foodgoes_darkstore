@@ -224,20 +224,10 @@ const ProductSchema = new Schema({
         type: Boolean,
         default: true
     },
-    searchKeywords: {
-        en: {
-            type: String,
-            maxlength: 300,
-          },
-        he: {
-            type: String,
-            maxlength: 300,
-          },
-        ru: {
-            type: String,
-            maxlength: 300,
-          }
-    },
+    availableForSearch: {
+        type: Boolean,
+        default: true
+    }
 });
 
 ProductSchema.set('toObject', { virtuals: true });

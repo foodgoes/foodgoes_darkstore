@@ -1,14 +1,15 @@
-import { withSessionRoute } from "../../../lib/withSession";
-import dbConnect from '../../../lib/dbConnect';
-import Product from '../../../models/Product';
+import { withSessionRoute } from "@/lib/withSession";
+import dbConnect from '@/lib/dbConnect';
+import Product from '@/models/Product';
+import Search from '@/models/Search';
 
 export default withSessionRoute(handler);
 
 async function handler(req, res) {
-  try {
-    await dbConnect();
+  let {q} = req.query;
 
-    let {q, locale} = req.query;
+  try {
+    await dbConnect();  
 
     if (q === null || q === undefined) {
       throw 'invalid query';
@@ -29,12 +30,17 @@ async function handler(req, res) {
 
     q = q.toLowerCase();
 
-    const regex = new RegExp(q, 'i');
-    const title = `title.${locale}`;
-    const filter = {status: 'active', [title]: regex};
-    const data = await Product.find(filter, null, {skip: 0, limit: 35}).sort([['sort', 'asc']]);
+    const regex = new RegExp("(?<=[-\\s,.:;\"']|^)" + q, 'i');
+    const filter = {enabled: true, $or: [ { "keywords.en": regex }, { "keywords.he": regex }, { "keywords.ru": regex } ]};
+    const data = await Search.find(filter, null, {skip: 0, limit: 20});
+    if (!data || !data.length) {
+      throw('Empty search');
+    }
+    const productIds = data.reduce((acc, d) => acc.concat(d.productIds), []);
 
-    const products = data.map(product => ({
+    const filterProducts = {status: 'active', availableForSearch: true, '_id': {$in: productIds}};
+    const dataProducts = await Product.find(filterProducts, null, {skip: 0, limit: 35}).sort([['sort', 'asc']]);
+    const products = dataProducts.map(product => ({
       id: product.id,
       title: product.title,
       image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
@@ -42,7 +48,6 @@ async function handler(req, res) {
       price: product.price,
       compareAtPrice: product.compareAtPrice,
       brand: product.brand,
-      quantity: product.quantity,
       weight: product.weight,
       weightUnit: product.weightUnit,
       unit: product.unit,
@@ -51,7 +56,7 @@ async function handler(req, res) {
       availableForSale: product.availableForSale
     }));
 
-    const count = await Product.countDocuments(filter);
+    const count = await Product.countDocuments(filterProducts);
 
     res.status(200).json({
       products,
@@ -59,6 +64,10 @@ async function handler(req, res) {
       count
     });
   } catch(e) {
-    res.status(200).json(null);
+    res.status(200).json({
+      products: [],
+      phrase: q,
+      count: 0
+    });
   }
 }
