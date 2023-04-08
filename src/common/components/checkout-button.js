@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { callEventBeforeLogin, callEventAfterLogin, selectCallingEventAfterLogin } from '@/src/features/auth/authSlice';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
-import Login from "@/src/components/login/login";
-import Modal from "@/src/components/elements/modal";
-import Button from "@/src/components/elements/button";
+import Login from '@/src/common/components/login/login';
+import Modal from '@/src/common/components/elements/modal';
+import Button from '@/src/common/components/elements/button';
 import styles from '@/src/styles/CheckoutButton.module.css';
 
 export default function CheckoutButton({clearCart, totalPrice}) {

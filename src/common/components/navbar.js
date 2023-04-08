@@ -5,7 +5,7 @@ import LocaleSwitcherHeader from '@/src/common/components/locale-switcher-header
 import Catalogue from './catalogue';
 import LogoSVG from '@/public/icons/logo';
 
-import Account from "@/src/features/auth/Auth";
+import Account from '@/src/features/auth/Auth';
 import Location from '@/src/features/location/Location';
 import Cart from '@/src/features/cart/Cart';
 
@@ -25,7 +25,7 @@ export default function Navbar() {
 
         <div className={styles.buttons}>
           <div className={styles.cart}><Cart /></div>
-          <LocaleSwitcherHeader />          
+          <LocaleSwitcherHeader />
           <Account />
         </div>
       </div>

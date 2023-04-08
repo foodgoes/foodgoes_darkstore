@@ -22,7 +22,6 @@ export default function Discounts() {
 
     return (
         <>
-            
             <Modal
                 open={activeDiscount}
                 onClose={() => handleChangeDiscount(null)}

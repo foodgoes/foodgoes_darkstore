@@ -4,6 +4,14 @@ const nextConfig = {
   i18n: {
     locales: ["en", "he", "ru"],
     defaultLocale: "en"
+  }, 
+  images: {
+    remotePatterns: [
+      {
+        protocol: process.env.PROTOCOL,
+        hostname: process.env.HOSTNAME
+      },
+    ],
   },
 }
 

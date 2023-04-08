@@ -27,7 +27,6 @@ function Auth() {
 
     useEffect(() => {
         if (authStatus === 'idle') {
-            console.log('-- auth')
             dispatch(fetchUserAsync());
         }
     }, [authStatus, dispatch]);

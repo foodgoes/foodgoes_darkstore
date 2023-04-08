@@ -2,7 +2,6 @@ import styles from '@/src/styles/Home.module.css'
 
 import Sidebar from '@/src/common/components/sidebar'
 import Catalog from '@/src/common/components/catalog';
-import Discounts from '@/src/common/components/discounts';
 import Banners from '@/src/common/components/banners';
 
 export default function Home({categories, products}) {  
@@ -12,7 +11,6 @@ export default function Home({categories, products}) {
 
       <div className={styles.main}>
         <Banners />
-        <Discounts />
         <Catalog products={products} />
       </div>
     </div>
@@ -31,7 +29,7 @@ const getProductsAPI = async () => {
   return products;
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
   const categories = await getCategoriesAPI();
   const products = await getProductsAPI();
 

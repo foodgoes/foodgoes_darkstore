@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { createPortal } from 'react-dom';
 import styles from './location.module.css';
 import Button from '@/src/common/components/elements/button';
@@ -7,40 +7,22 @@ import NavigationSVG from '@/public/icons/navigation';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import Address from '@/src/common/components/modals/address';
 import Modal from '@/src/common/components/elements/modal';
-import {fetchLocationAsync} from './locationSlice';
 
 function Location() {
     const [activeAddress, setActiveAddress] = useState(false);
     const handleChangeAddress = useCallback(() => setActiveAddress(!activeAddress), [activeAddress]);
 
-    const dispatch = useDispatch();
     const {location} = useSelector(state => state.location);
     const locationStatus = useSelector(state => state.location.status);
 
     const { translate } = useTranslation();
 
-    useEffect(() => {
-        if (locationStatus === 'idle') {
-            console.log('-- location')
-            dispatch(fetchLocationAsync());
-        }
-    }, [locationStatus, dispatch]);
-
-    if (locationStatus === 'loading') return (<><span>Location Loading...</span></>);
-
-    return (
-        <>
-            {activeAddress && createPortal(
-                <Modal
-                    open={activeAddress}
-                    onClose={handleChangeAddress}
-                    title={translate('enterYourDeliveryAddress')}
-                >
-                    <Address onClose={handleChangeAddress} />
-                </Modal>,
-                document.body
-            )}
-
+    let content;
+    
+    if (locationStatus === 'loading') {
+        content = <span>Location Loading...</span>;
+    } else if (locationStatus === 'succeeded') {
+        content = (
             <div className={styles.delivery}>
                 <div className={styles.addressButton}>
                     {!location ? (
@@ -58,6 +40,22 @@ function Location() {
                     <div className={styles.deliveryPrice}>{translate('delivery')} &#8362;30</div>
                 </div>
             </div>
+        );
+    }
+
+    return (
+        <>
+            {activeAddress && createPortal(
+                <Modal
+                    open={activeAddress}
+                    onClose={handleChangeAddress}
+                    title={translate('enterYourDeliveryAddress')}
+                >
+                    <Address onClose={handleChangeAddress} />
+                </Modal>,
+                document.body
+            )}
+            {content}
         </>
     );
 }

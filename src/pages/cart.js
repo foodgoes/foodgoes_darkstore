@@ -1,4 +1,3 @@
-import {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 
 import Link from 'next/link'
@@ -16,35 +15,12 @@ import CheckoutButton from '@/src/common/components/checkout-button'
 import { deleteCart } from '@/src/features/cart/cartSlice';
 
 export default function Cart() {
-  const [cartId, setCartId] = useState(null);
-  const [products, setProducts] = useState([]);
-
   const dispatch = useDispatch();
+  const {cart} = useSelector(state => state.cart);
 
   const { translate } = useTranslation();
 
-  const {cart} = useSelector(state => state.cart);
   const totalDiscounts = 0;
-  
-  useEffect(() => {
-    const getCartAPI = async () => {
-      try {
-        const res = await fetch('/api/front/cart', {headers: {'Content-Type': 'application/json'}});
-        const cart = await res.json();
-
-        if (cart) {
-          setCartId(cart.id);
-          setProducts(cart.productsV2);
-        } else {
-          setProducts([]);
-        }
-      } catch(e) {
-        console.log(e);
-      }
-    }
-
-    getCartAPI();
-  }, [cart.products.length]);
 
   const totalShippingPrice = 30;
   const totalLineItemsPrice = cart.total;
@@ -55,7 +31,7 @@ export default function Cart() {
   };
 
   const deleteCartAPI = async () => {
-    const res = await fetch('/api/front/cart?id='+cartId, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
+    const res = await fetch('/api/front/cart?id=' + cart.id, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
     return await res.json();
   }
   
@@ -104,7 +80,7 @@ export default function Cart() {
         </div>
         <div className={styles.container}>
           <ul className={styles.products}>
-            {products.map(p => <li key={p.id}><ProductViewList product={p}/></li>)}
+            {cart.productsV2.map(p => <li key={p.id}><ProductViewList product={p}/></li>)}
           </ul>
           <div className={styles.wrapperTotals}>
             <div className={styles.totals}>

@@ -39,7 +39,6 @@ async function handler(req, res) {
 
     res.status(200).json(null);
   } catch(e) {
-    console.log(e)
     res.status(200).json(null);
   }
 }
@@ -88,9 +87,9 @@ async function handleBodyPUTAsync(userId, token, body) {
         id: location.id,
         userId: location.userId,
         address: location.address,
+        token: location.token,
       };
   } catch(e) {
-    console.log(e)
     throw e;
   }
 }

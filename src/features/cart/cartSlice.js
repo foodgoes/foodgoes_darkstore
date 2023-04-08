@@ -3,7 +3,7 @@ import { fetchCart } from "./cartAPI";
 
 const initialState = {
     cart: {
-      total:0, 
+      total: 0, 
       products: []
     },
     status: 'idle',
@@ -35,16 +35,16 @@ export const cartSlice = createSlice({
             state.status = 'loading';
           })
           .addCase(fetchCartAsync.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.status = 'succeeded';
             state.cart = action.payload;
           })
           .addCase(fetchCartAsync.rejected, (state, action) => {
-            state.status = 'failed'
-            state.error = action.error.message
+            state.status = 'failed';
+            state.error = action.error.message;
           })
     }
 });
 
-export const { updateCart } = cartSlice.actions;
+export const { updateCart, deleteCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

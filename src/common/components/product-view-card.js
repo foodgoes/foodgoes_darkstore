@@ -1,5 +1,6 @@
 import styles from '@/src/styles/ProductViewCard.module.css'
 
+import Image from 'next/image';
 import Link from 'next/link';
 import BuyButton from './buy-button';
 import { useRouter } from 'next/router';
@@ -19,7 +20,12 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                         <div className={styles.wrapperImg}>
                             <div className={styles.postionImage}>
                                 <div className={styles.image}>
-                                    <img src={product.image ? product.image : '/images/placeholder.svg'} />
+                                <Image
+                                    src={product.image ? product.image : '/images/placeholder.svg'}
+                                    alt={product.title[locale]}
+                                    width={500}
+                                    height={500}
+                                />
                                 </div>
                             </div>
                         </div>

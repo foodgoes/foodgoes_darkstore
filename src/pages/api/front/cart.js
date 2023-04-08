@@ -38,9 +38,15 @@ async function handler(req, res) {
       return res.status(200).json({deletedCartId: cart.id});
     }
 
-    res.status(200).json(null);
+    res.status(200).json({
+      total: 0,
+      products: []
+    });
   } catch(e) {
-    res.status(200).json(null);
+    res.status(200).json({
+      total: 0,
+      products: []
+    });
   }
 }
 
@@ -58,7 +64,6 @@ async function handleGETAsync(userId, token) {
 
     const productIds = cart.products.map(p => p.productId);
     const products = await Product.find({'_id': {$in: productIds}});
-
     const productsCart = products.map(product => ({
       id: product.id,
       productId: product.id,
@@ -86,8 +91,6 @@ async function handleGETAsync(userId, token) {
 }
 async function handleBodyPUTAsync(userId, token, body, headers) {
   try {
-      // check location !!!!
-
       let {total, products} = body;
 
       total = +total.toFixed(2);
@@ -101,9 +104,31 @@ async function handleBodyPUTAsync(userId, token, body, headers) {
         throw('cart error');
       }
 
-      return cart;
+      const productIds = cart.products.map(p => p.productId);
+      const productsList = await Product.find({'_id': {$in: productIds}});
+      const productsCart = productsList.map(product => ({
+        id: product.id,
+        productId: product.id,
+        title: product.title,
+        image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+        images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
+        price: product.price,
+        compareAtPrice: product.compareAtPrice,
+        brand: product.brand,
+        quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
+        excludeDiscount: product.excludeDiscount,
+        ageRestricted: product.ageRestricted
+      }));
+
+      return {
+        id: cart.id,
+        userId: cart.userId,
+        total: cart.total,
+        products: cart.products,
+        productsV2: productsCart || [],
+        token: cart.token,
+      };
   } catch(e) {
-    console.log(e)
     throw e;
   }
 }

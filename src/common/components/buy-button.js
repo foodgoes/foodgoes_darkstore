@@ -77,8 +77,8 @@ export default function BuyButton({disabled, productId, price, primary=false, se
                 }));
             })(cart.products, productId, action);
 
-            dispatch(updateCart({products, total}));
-            await updateCartAPI(products, total);
+            const updatedCart = await updateCartAPI(products, total);
+            dispatch(updateCart(updatedCart));
 
             if (productIdBeforelocation) {
                 dispatch(logProductIdBeforelocation(null));
