@@ -24,7 +24,7 @@ async function handler(req, res) {
     }
 
     const {cart: token, location: tokenLocation} = req.cookies;
-    
+
     if (req.method === 'GET') {
       const orders = await handleGETAsync(userId, req.query);
       return res.status(200).json(orders);
@@ -98,23 +98,18 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
   try {
     const guestLogged = body.guestLogged;
 
-    const filterCart = !guestLogged ? {userId} : {token};
-    const cart = await Cart.findOne(filterCart);
+    const cart = await Cart.findOne({$or: [{userId}, {token}]});
     if (!cart) {
       throw('error. Cart not found');
     }
 
-    const filterLocation = !guestLogged ? {userId} : {token: tokenLocation};
-    const location = await Location.findOne(filterLocation);
+    const location = await Location.findOne({$or: [{userId}, {token: tokenLocation}]});
     if (!location) {
       throw('error. Location not found');
     }
 
     if (guestLogged) {
-      const location = await Location.findOne({userId});
-      if (!location) {
-        await Location.findOneAndUpdate({token: tokenLocation}, {userId}, {new: true});
-      }
+      await Location.findOneAndUpdate({token: tokenLocation}, {userId}, {new: true, upsert: true});
     }
 
     const productIds = cart.products.map(p => p.productId);
@@ -124,7 +119,6 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
     
     const lineItems = products.map(product => {
       const quantity = cart.products.find(p => String(p.productId) === product.id).quantity;
-
       totalLineItemsPrice += product.price*quantity;
 
       return {
@@ -150,7 +144,7 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
     const totalDiscounts = 0;
     const totalShippingPrice = 30;
     const subtotalPrice = +(totalLineItemsPrice - totalDiscounts).toFixed(2);
-    const totalPrice = +(totalLineItemsPrice + totalShippingPrice - totalDiscounts).toFixed(2);
+    const totalPrice = +(subtotalPrice + totalShippingPrice).toFixed(2);
 
     const shippingAddress = location.address;
 

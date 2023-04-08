@@ -1,0 +1,9 @@
+.cart {
+  display: inline-block;
+  margin-left: 16px;
+  white-space: nowrap;
+}
+
+.cartButton svg {
+  margin-right: 9px;
+}

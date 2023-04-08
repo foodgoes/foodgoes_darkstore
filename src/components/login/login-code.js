@@ -1,20 +1,20 @@
-import {useEffect, useRef, useContext} from "react";
+import {useEffect, useRef} from "react";
+import { useSelector, useDispatch } from 'react-redux';
 
 import {getAdditionalUserInfo } from "firebase/auth";
 import {useForm} from "react-hook-form";
 
-import AuthContext from '@/src/context/auth-context';
 import { useTranslation } from '@/src/hooks/useTranslation';
-
 import Button from '@/src/components/elements/button';
 
-export default function LoginCode({onClose, actionAfterLogin=null}) {
+import { updateUser, callEventAfterLogin, selectCallingEventBeforeLogin } from '@/src/features/auth/authSlice';
+
+export default function LoginCode({onClose}) {
     const { translate } = useTranslation();
     const { register, handleSubmit } = useForm();
-
     const inputBoxRef = useRef();
-
-    const {setAuth, setActionAfterLogin} = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const callingEventBeforeLogin = useSelector(selectCallingEventBeforeLogin);
 
     useEffect(() => {
         focusInput();
@@ -38,8 +38,7 @@ export default function LoginCode({onClose, actionAfterLogin=null}) {
 
                     const data = await res.json();
                     
-                    setAuth(data);
-                    setActionAfterLogin(actionAfterLogin);
+                    dispatch(updateUser(data));
                 } else {
                     const body = {phoneNumber: user.phoneNumber};
                     const res = await fetch('/api/account/activate_session', {method: 'POST',  headers: {
@@ -48,8 +47,11 @@ export default function LoginCode({onClose, actionAfterLogin=null}) {
 
                     const data = await res.json();
 
-                    setAuth(data);
-                    setActionAfterLogin(actionAfterLogin);
+                    dispatch(updateUser(data));
+                }
+
+                if (callingEventBeforeLogin) {
+                    dispatch(callEventAfterLogin(callingEventBeforeLogin));
                 }
 
                 onClose();

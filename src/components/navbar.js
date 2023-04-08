@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import styles from '@/src/styles/Navbar.module.css';
 import SearchHeader from '@/src/components/search-header';
-import DeliveryAddressHeader from '@/src/components/delivery-address-header';
-import CartHeader from '@/src/components/cart-header';
 import LocaleSwitcherHeader from '@/src/components/locale-switcher-header';
-import AccountHeader from './account-header';
 import Catalogue from './catalogue';
 import LogoSVG from '@/public/icons/logo';
+
+import Account from "@/src/features/auth/Auth";
+import Location from '@/src/features/location/Location';
+import Cart from '@/src/features/cart/Cart';
 
 export default function Navbar() {
   return (
@@ -20,24 +21,24 @@ export default function Navbar() {
         </div>
 
         <div className={styles.search}><SearchHeader /></div>
-        <div className={styles.address}><DeliveryAddressHeader /></div>
+        <div className={styles.address}><Location /></div>
 
         <div className={styles.buttons}>
-          <div className={styles.cart}><CartHeader /></div>
-          <LocaleSwitcherHeader />
-          <AccountHeader />
+          <div className={styles.cart}><Cart /></div>
+          <LocaleSwitcherHeader />          
+          <Account />
         </div>
       </div>
 
       <div className={styles.headerMob}>
         <div className={styles.searchMob}><SearchHeader /></div>
-        <div className={styles.addressMob}><DeliveryAddressHeader /></div>
+        <div className={styles.addressMob}><Location /></div>
       </div>
 
       <div className={styles.headerMobS}>
         <SearchHeader />
-        <DeliveryAddressHeader />
-        <CartHeader />
+        <Location />
+        <Cart />
       </div>
     </>
   )

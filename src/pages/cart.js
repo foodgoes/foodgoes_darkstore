@@ -1,4 +1,5 @@
-import {useState, useEffect, useContext} from 'react'
+import {useState, useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 
 import Link from 'next/link'
 import Head from 'next/head'
@@ -6,26 +7,24 @@ import Head from 'next/head'
 import styles from '@/src/styles/Cart.module.css'
 import Button from '@/src/components/elements/button'
 import ProductViewList from '@/src/components/product-view-list'
-
-import CartContext from '@/src/context/cart-context'
-import AuthContext from '@/src/context/auth-context'
-import DiscountContext from '@/src/context/discount-context'
-
 import { useTranslation } from '@/src/hooks/useTranslation';
 
 import TrashSVG from '@/public/icons/trash'
 import ArrowLeftSVG from '@/public/icons/arrow-left'
 import CheckoutButton from '@/src/components/checkout-button'
 
-export default function Cart() {
-  const cartFromContext = useContext(CartContext);
-  const authFromContext = useContext(AuthContext);
-  const {totalDiscounts} = useContext(DiscountContext);
+import { deleteCart } from '@/src/features/cart/cartSlice';
 
+export default function Cart() {
   const [cartId, setCartId] = useState(null);
   const [products, setProducts] = useState([]);
-  
+
+  const dispatch = useDispatch();
+
   const { translate } = useTranslation();
+
+  const {cart} = useSelector(state => state.cart);
+  const totalDiscounts = 0;
   
   useEffect(() => {
     const getCartAPI = async () => {
@@ -45,14 +44,14 @@ export default function Cart() {
     }
 
     getCartAPI();
-  }, [authFromContext.auth, cartFromContext.cart.products.length]);
+  }, [cart.products.length]);
 
   const totalShippingPrice = 30;
-  const totalLineItemsPrice = cartFromContext.cart.total;
+  const totalLineItemsPrice = cart.total;
 
   const clearCart = async () => {
     await deleteCartAPI();
-    cartFromContext.deleteCart();
+    dispatch(deleteCart());
   };
 
   const deleteCartAPI = async () => {
@@ -60,7 +59,7 @@ export default function Cart() {
     return await res.json();
   }
   
-  if (!cartFromContext.cart.products.length) {
+  if (!cart.products.length) {
     return (
       <>
         <Head>

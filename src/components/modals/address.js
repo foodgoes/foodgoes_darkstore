@@ -1,18 +1,24 @@
-import {useContext, useEffect, useRef} from 'react';
+import {useEffect, useRef} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {useForm} from 'react-hook-form';
 import Button from '@/src/components/elements/button';
-import LocationContext from '@/src/context/location-context';
 import { useTranslation } from '@/src/hooks/useTranslation';
 import styles from '@/src/styles/Address.module.css';
 
-export default function Address({onClose, productIdAfterLocation=null}) {
-    const {location, updateAddress, setProductIdAfterLocation} = useContext(LocationContext);
+import { updateLocation, logProductIdAfterlocation, selectProductIdBeforelocation } from '@/src/features/location/locationSlice';
+
+export default function Address({onClose}) {
+    const dispatch = useDispatch();
+    const productIdBeforelocation = useSelector(selectProductIdBeforelocation);
+
+    const {location} = useSelector(state => state.location);
+
     const { translate } = useTranslation();
 
     const inputBoxRef = useRef();
     const {register, handleSubmit} = useForm({
         defaultValues: {
-          address: location.address?.address1 || ''
+          address: location ? location.address?.address1 : ''
         }
     });
 
@@ -31,9 +37,11 @@ export default function Address({onClose, productIdAfterLocation=null}) {
                 throw('Error, empty address');
             }
 
-            await updateLocationAPI(address);
-            updateAddress({address1: address});
-            setProductIdAfterLocation(productIdAfterLocation);
+            const location = await updateLocationAPI(address);
+            dispatch(updateLocation(location));
+            if (productIdBeforelocation) {
+                dispatch(logProductIdAfterlocation(productIdBeforelocation));
+            }
             onClose();
         } catch(e) {
             console.log(e);

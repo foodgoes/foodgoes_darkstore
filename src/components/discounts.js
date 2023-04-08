@@ -6,10 +6,9 @@ import ChevronRightSVG from '@/public/icons/chevron-right';
 import { useTranslation } from '@/src/hooks/useTranslation';
 import Modal from './elements/modal';
 import Button from './elements/button';
-import DiscountContext from '@/src/context/discount-context';
 
 export default function Discounts() {
-    const {discounts} = useContext(DiscountContext);
+    const {discounts} = useState({products: []});
     const [activeDiscount, setActiveDiscount] = useState(false);
     const [discount, setDiscount] = useState(false);
     const { locale } = useRouter();
@@ -43,11 +42,9 @@ export default function Discounts() {
                     </Button>
                 </div>
             </Modal>
-         
-            
 
             <div>
-                {discounts.products.map(discount => (
+                {discounts?.products.map(discount => (
                     <div key={discount.id}>
                         <div className={styles.alert} onClick={() => handleChangeDiscount(discount)}>
                             <div className={styles.leftSide}>

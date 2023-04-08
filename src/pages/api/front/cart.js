@@ -86,6 +86,8 @@ async function handleGETAsync(userId, token) {
 }
 async function handleBodyPUTAsync(userId, token, body, headers) {
   try {
+      // check location !!!!
+
       let {total, products} = body;
 
       total = +total.toFixed(2);

@@ -1,4 +1,5 @@
-import { useContext, useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { createPortal } from 'react-dom';
 
 import styles from '@/src/styles/BuyButton.module.css'
@@ -8,32 +9,32 @@ import PlusSVG from '@/public/icons/plus'
 import MinusSmallSVG from '@/public/icons/minus-small'
 import PlusSmallSVG from '@/public/icons/plus-small'
 
-import CartContext from '@/src/context/cart-context';
-import LocationContext from '@/src/context/location-context';
-import DiscountContext from '@/src/context/discount-context';
-
 import { useTranslation } from '@/src/hooks/useTranslation';
 
 import Button from './elements/button';
 import Modal from "./elements/modal";
 import Address from "./modals/address";
 
+import { logProductIdBeforelocation, logProductIdAfterlocation, selectProductIdBeforelocation ,selectProductIdAfterlocation } from '@/src/features/location/locationSlice';
+import { updateCart } from '@/src/features/cart/cartSlice';
+
 export default function BuyButton({disabled, productId, price, primary=false, secondary=false, size="medium"}) {
     const [activeAddress, setActiveAddress] = useState(false);
-
-    const cartFromContext = useContext(CartContext);
-    const locationFromContext = useContext(LocationContext);
-    const discountFromContext = useContext(DiscountContext);
+    const dispatch = useDispatch();
+    const productIdBeforelocation = useSelector(selectProductIdBeforelocation);
+    const productIdAfterlocation = useSelector(selectProductIdAfterlocation);
+    const {location} = useSelector(state => state.location);
+    const {cart} = useSelector(state => state.cart);
     
     const { translate } = useTranslation();
 
     const handleChangeAddress = useCallback(() => setActiveAddress(!activeAddress), [activeAddress]);
 
     useEffect(() => {
-        if (locationFromContext.productIdAfterLocation !== productId) return;
+        if (productIdAfterlocation !== productId) return;
 
         buy(productId, price);
-      }, [locationFromContext.productIdAfterLocation]);
+    }, [productIdAfterlocation, dispatch]);
 
     const buy = async (productId, price=0, action='inc') => {
         try {
@@ -41,11 +42,8 @@ export default function BuyButton({disabled, productId, price, primary=false, se
                 throw 'Invalid productId';
             }
 
-            const {location, setProductIdAfterLocation} = locationFromContext;
-            const {cart, updateCart} = cartFromContext;
-            const {updateTotalDiscounts} = discountFromContext;
-
-            if (!location.address) {
+            if (!location) {
+                dispatch(logProductIdBeforelocation(productId));
                 handleChangeAddress();
                 return;
             }
@@ -55,7 +53,7 @@ export default function BuyButton({disabled, productId, price, primary=false, se
                 if (action === 'dec') total = total - price;
                 return +(total.toFixed(2));
             })(cart.total, price, action);
-            
+
             const products = (function(products, productId, action) {
                 const product = products.find(p => p.productId === productId);
 
@@ -79,13 +77,13 @@ export default function BuyButton({disabled, productId, price, primary=false, se
                 }));
             })(cart.products, productId, action);
 
-            updateCart(products, total);
+            dispatch(updateCart({products, total}));
             await updateCartAPI(products, total);
 
-            const {totalDiscounts} = await computeDiscountAPI();
-            updateTotalDiscounts(totalDiscounts);
-
-            setProductIdAfterLocation(null);
+            if (productIdBeforelocation) {
+                dispatch(logProductIdBeforelocation(null));
+                dispatch(logProductIdAfterlocation(null));
+            }
         } catch(e) {
             console.log(e);
             return;
@@ -101,15 +99,12 @@ export default function BuyButton({disabled, productId, price, primary=false, se
         return await res.json();
     };
 
-    const computeDiscountAPI = async () => {
-        const res = await fetch('/api/front/compute-discount', {method: 'GET',  headers: {
-            'Content-Type': 'application/json'
-            }});
-
-        return await res.json();
+    const handleClose = () => {
+        handleChangeAddress();
+        dispatch(logProductIdBeforelocation(null));
     };
 
-    const productInCart = cartFromContext.cart.products.find(p => p.productId === productId);
+    const productInCart = cart?.products.find(p => p.productId === productId);
     if (productInCart) {
         return (
             <div className={styles.wrapper}>
@@ -140,10 +135,10 @@ export default function BuyButton({disabled, productId, price, primary=false, se
             {activeAddress && createPortal(
                 <Modal
                     open={activeAddress}
-                    onClose={handleChangeAddress}
+                    onClose={handleClose}
                     title={translate('enterYourDeliveryAddress')}
                 >
-                    <Address onClose={handleChangeAddress} productIdAfterLocation={productId} />
+                    <Address onClose={handleClose} />
                 </Modal>,
                 document.body
             )}

@@ -83,7 +83,12 @@ async function handleBodyPUTAsync(userId, token, body) {
       if (!location) {
         throw('location error');
       }
-     return location;
+     
+      return {
+        id: location.id,
+        userId: location.userId,
+        address: location.address,
+      };
   } catch(e) {
     console.log(e)
     throw e;

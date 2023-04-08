@@ -1,17 +1,18 @@
-import {useContext, useCallback, useState, useEffect} from "react";
-import {useRouter} from 'next/router'
+import {useCallback, useState, useEffect} from "react";
+import {useRouter} from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { callEventBeforeLogin, callEventAfterLogin, selectCallingEventAfterLogin } from '@/src/features/auth/authSlice';
 import { useTranslation } from '@/src/hooks/useTranslation';
-
-import Button from "./elements/button";
-import AuthContext from '@/src/context/auth-context'
-
-import Login from "./login/login";
-import Modal from "./elements/modal";
-
+import Login from "@/src/components/login/login";
+import Modal from "@/src/components/elements/modal";
+import Button from "@/src/components/elements/button";
 import styles from '@/src/styles/CheckoutButton.module.css';
 
 export default function CheckoutButton({clearCart, totalPrice}) {
-  const authFromContext = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const callingEventAfterLogin = useSelector(selectCallingEventAfterLogin);
+  const {user: auth} = useSelector(state => state.auth);
 
   const [active, setActive] = useState(false);
 
@@ -23,29 +24,30 @@ export default function CheckoutButton({clearCart, totalPrice}) {
   const minTotalPrice = 50;
 
   useEffect(() => {
-    if (!authFromContext.actionAfterLogin) return;
+    if (!callingEventAfterLogin) return;
 
-    if (authFromContext.actionAfterLogin === 'checkout') {
+    if (callingEventAfterLogin === 'checkout') {
       checkout();
     }
-  }, [authFromContext.actionAfterLogin]);
+  }, [callingEventAfterLogin, dispatch]);
 
   const checkout = async () => {
     try {
-      const {auth, setActionAfterLogin, actionAfterLogin} = authFromContext;
-      
       if (!auth) {
+        dispatch(callEventBeforeLogin('checkout'));
         handleChange();
         return;
       }
-    
-      const order = await createOrderAPI(actionAfterLogin);
+
+      const order = await createOrderAPI(callingEventAfterLogin);
       if (!order) {
         throw('Error create order.')
       }
 
       clearCart();
-      setActionAfterLogin(null);
+      dispatch(callEventBeforeLogin(null));
+      dispatch(callEventAfterLogin(null));
+
       router.push({pathname: '/orders/'+order.orderNumber}, undefined, { locale: router.locale });
     } catch(e) {
       console.log(e);
@@ -53,7 +55,7 @@ export default function CheckoutButton({clearCart, totalPrice}) {
   };
 
   const createOrderAPI = async (actionAfterLogin=null, body={}) => {
-    body.guestLogged = actionAfterLogin === 'checkout';
+    body.guestLogged = !!actionAfterLogin;
     const res = await fetch('/api/front/orders', {method: 'POST',  headers: {
         'Content-Type': 'application/json',
         }, body: JSON.stringify(body)});
@@ -61,14 +63,19 @@ export default function CheckoutButton({clearCart, totalPrice}) {
     return await res.json();
   };
 
+  const handleClose = () => {
+    handleChange();
+    dispatch(callEventBeforeLogin(null));
+  };
+
   return (
     <>
       <Modal
           open={active}
-          onClose={handleChange}
+          onClose={handleClose}
           title={translate('loginTitle')}
       >
-          <Login onClose={handleChange} actionAfterLogin='checkout' />
+          <Login onClose={handleClose} />
       </Modal>
 
       <div className={styles.minTotalPrice}>
