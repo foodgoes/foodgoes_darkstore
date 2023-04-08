@@ -3,7 +3,7 @@ import {useRouter} from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { callEventBeforeLogin, callEventAfterLogin, selectCallingEventAfterLogin } from '@/src/features/auth/authSlice';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 import Login from "@/src/components/login/login";
 import Modal from "@/src/components/elements/modal";
 import Button from "@/src/components/elements/button";

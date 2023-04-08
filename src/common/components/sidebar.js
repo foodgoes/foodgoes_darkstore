@@ -4,7 +4,7 @@ import styles from '@/src/styles/Sidebar.module.css'
 import { useState } from 'react';
 import {useRouter} from 'next/router'
 
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 import ChevronLeftSVG from '@/public/icons/chevron-left'
 

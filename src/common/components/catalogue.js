@@ -6,7 +6,7 @@ import MenuHamburgerSVG from '@/public/icons/menu-hamburger';
 import Button from "./elements/button";
 
 import styles from '@/src/styles/Catalogue.module.css';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 export default function Catalogue() {
     const [catalogueMenu, setCatalogueMenu] = useState(false);

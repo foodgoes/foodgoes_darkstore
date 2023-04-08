@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styles from '@/src/styles/Navbar.module.css';
-import SearchHeader from '@/src/components/search-header';
-import LocaleSwitcherHeader from '@/src/components/locale-switcher-header';
+import SearchHeader from '@/src/common/components/search-header';
+import LocaleSwitcherHeader from '@/src/common/components/locale-switcher-header';
 import Catalogue from './catalogue';
 import LogoSVG from '@/public/icons/logo';
 

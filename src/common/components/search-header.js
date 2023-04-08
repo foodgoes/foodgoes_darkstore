@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 import SearchSVG from '@/public/icons/search';
 import styles from '@/src/styles/SearchHeader.module.css';
 

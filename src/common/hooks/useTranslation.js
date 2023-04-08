@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router'
-import dictionary from '@/src/dictionary/dictionary'
+import dictionary from '@/src/common/dictionary/dictionary'
 
 export const useTranslation = () => {
     const { locale } = useRouter();

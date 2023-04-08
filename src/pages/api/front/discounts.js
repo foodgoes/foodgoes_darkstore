@@ -1,7 +1,7 @@
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import Discount from '@/src/models/Discount';
-import Order from '@/src/models/Order';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import Discount from '@/src/common/models/Discount';
+import Order from '@/src/common/models/Order';
 
 export default withSessionRoute(handler);
 

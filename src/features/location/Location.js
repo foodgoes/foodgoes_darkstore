@@ -2,11 +2,11 @@ import { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPortal } from 'react-dom';
 import styles from './location.module.css';
-import Button from '@/src/components/elements/button';
+import Button from '@/src/common/components/elements/button';
 import NavigationSVG from '@/public/icons/navigation';
-import { useTranslation } from '@/src/hooks/useTranslation';
-import Address from '@/src/components/modals/address';
-import Modal from '@/src/components/elements/modal';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
+import Address from '@/src/common/components/modals/address';
+import Modal from '@/src/common/components/elements/modal';
 import {fetchLocationAsync} from './locationSlice';
 
 function Location() {

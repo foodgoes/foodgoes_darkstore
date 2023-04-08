@@ -1,11 +1,11 @@
 import {useEffect, useRef} from "react";
 
-import {firebaseAuth} from '@/src/utils/init-firebase';
+import {firebaseAuth} from '@/src/common/utils/init-firebase';
 import {RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import {useForm} from "react-hook-form";
 
-import { useTranslation } from '@/src/hooks/useTranslation';
-import Button from '@/src/components/elements/button';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
+import Button from '@/src/common/components/elements/button';
 
 export default function LoginPhone({setStep}) {
     const { translate } = useTranslation();

@@ -1,6 +1,6 @@
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import Banner from '@/src/models/Banner';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import Banner from '@/src/common/models/Banner';
 
 export default withSessionRoute(handler);
 

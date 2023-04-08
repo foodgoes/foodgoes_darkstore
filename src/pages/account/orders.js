@@ -2,12 +2,12 @@ import Head from 'next/head'
 import styles from '@/src/styles/Orders.module.css'
 import Link from 'next/link'
 
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 import {useState, useEffect} from 'react'
-import Order from '@/src/components/order';
+import Order from '@/src/common/components/order';
 import ArrowLeftSVG from '@/public/icons/arrow-left'
-import { withSessionSsr } from '@/src/lib/withSession';
+import { withSessionSsr } from '@/src/common/lib/withSession';
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {

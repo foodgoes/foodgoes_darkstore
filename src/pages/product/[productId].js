@@ -4,9 +4,9 @@ import Head from 'next/head'
 
 import styles from '@/src/styles/Product.module.css'
 
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
-import BuyButton from '@/src/components/buy-button';
+import BuyButton from '@/src/common/components/buy-button';
 
 const Product = ({product}) => {
   const { translate } = useTranslation();

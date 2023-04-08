@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import { signOut } from "firebase/auth";
-import {firebaseAuth} from '@/src/utils/init-firebase';
+import {firebaseAuth} from '@/src/common/utils/init-firebase';
 
-import { useTranslation } from '@/src/hooks/useTranslation';
-import Modal from '@/src/components/elements/modal';
-import Login from '@/src/components/login/login'
-import Button from '@/src/components/elements/button';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
+import Modal from '@/src/common/components/elements/modal';
+import Login from '@/src/common/components/login/login'
+import Button from '@/src/common/components/elements/button';
 import AccountSVG from '@/public/icons/account';
 import styles from '@/src/styles/AccountHeader.module.css';
 

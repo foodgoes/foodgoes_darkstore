@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react'
 
-import { withSessionSsr } from '@/src/lib/withSession';
-import NestedLayoutAdmin from '@/src/components/nested-layout-admin'
-import Order from '@/src/components/order';
+import { withSessionSsr } from '@/src/common/lib/withSession';
+import NestedLayoutAdmin from '@/src/common/components/nested-layout-admin'
+import Order from '@/src/common/components/order';
 import styles from '@/src/styles/Admin.module.css'
 
 const Orders = () => {

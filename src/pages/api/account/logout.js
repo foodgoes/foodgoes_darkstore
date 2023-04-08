@@ -1,4 +1,4 @@
-import { withSessionRoute } from '@/src/lib/withSession';
+import { withSessionRoute } from '@/src/common/lib/withSession';
 
 export default withSessionRoute(handler);
 

@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {getAdditionalUserInfo } from "firebase/auth";
 import {useForm} from "react-hook-form";
 
-import { useTranslation } from '@/src/hooks/useTranslation';
-import Button from '@/src/components/elements/button';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
+import Button from '@/src/common/components/elements/button';
 
 import { updateUser, callEventAfterLogin, selectCallingEventBeforeLogin } from '@/src/features/auth/authSlice';
 

@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import Cart from '@/src/models/Cart';
-import Product from '@/src/models/Product';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import Cart from '@/src/common/models/Cart';
+import Product from '@/src/common/models/Product';
 
 export default withSessionRoute(handler);
 

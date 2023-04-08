@@ -6,7 +6,7 @@ import Sidebar from './sidebar'
 import styles from '@/src/styles/Category.module.css'
 
 import ChevronRightSVG from '@/public/icons/chevron-right'
-import {useTranslation} from '@/src/hooks/useTranslation'
+import {useTranslation} from '@/src/common/hooks/useTranslation'
 
 function NestedLayoutCategory({children, categories, slug, slug2}) {
     const {locale} = useRouter();

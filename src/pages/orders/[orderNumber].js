@@ -1,8 +1,8 @@
 import styles from '@/src/styles/OrderDone.module.css'
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import Button from '@/src/components/elements/button';
+import Button from '@/src/common/components/elements/button';
 
 export default function OrderDone() {
   const router = useRouter()

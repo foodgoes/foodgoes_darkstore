@@ -1,5 +1,5 @@
 import dbConnect from './dbConnect';
-import Counter from '@/src/models/Counter';
+import Counter from '@/src/common/models/Counter';
 
 export async function getNextSequence(name) {
     try {

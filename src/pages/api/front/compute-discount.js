@@ -1,9 +1,9 @@
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import Discount from '@/src/models/Discount';
-import Cart from '@/src/models/Cart';
-import Product from '@/src/models/Product';
-import Order from '@/src/models/Order';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import Discount from '@/src/common/models/Discount';
+import Cart from '@/src/common/models/Cart';
+import Product from '@/src/common/models/Product';
+import Order from '@/src/common/models/Order';
 
 export default withSessionRoute(handler);
 

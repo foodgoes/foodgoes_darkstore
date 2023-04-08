@@ -1,7 +1,7 @@
-import ProductViewList from '@/src/components/product-view-list'
+import ProductViewList from '@/src/common/components/product-view-list'
 import styles from '@/src/styles/Order.module.css'
 
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 export default function Order({order}) {
     const { translate } = useTranslation();

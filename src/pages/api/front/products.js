@@ -1,8 +1,8 @@
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import Product from '@/src/models/Product';
-import Collection from '@/src/models/Collection';
-import Category from '@/src/models/Category';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import Product from '@/src/common/models/Product';
+import Collection from '@/src/common/models/Collection';
+import Category from '@/src/common/models/Category';
 
 export default withSessionRoute(handler);
 

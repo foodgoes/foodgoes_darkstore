@@ -1,8 +1,8 @@
 import {useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {useForm} from 'react-hook-form';
-import Button from '@/src/components/elements/button';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import Button from '@/src/common/components/elements/button';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 import styles from '@/src/styles/Address.module.css';
 
 import { updateLocation, logProductIdAfterlocation, selectProductIdBeforelocation } from '@/src/features/location/locationSlice';

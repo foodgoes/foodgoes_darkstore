@@ -1,15 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import {getNextSequence} from '@/src/lib/counter';
-import Cart from '@/src/models/Cart';
-import Order from '@/src/models/Order';
-import User from '@/src/models/User';
-import Product from '@/src/models/Product';
-import Location from '@/src/models/Location';
-import Discount from '@/src/models/Discount';
-import {getFullDate} from '@/src/utils/date';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import {getNextSequence} from '@/src/common/lib/counter';
+import Cart from '@/src/common/models/Cart';
+import Order from '@/src/common/models/Order';
+import User from '@/src/common/models/User';
+import Product from '@/src/common/models/Product';
+import Location from '@/src/common/models/Location';
+import Discount from '@/src/common/models/Discount';
+import {getFullDate} from '@/src/common/utils/date';
 
 
 export default withSessionRoute(handler);

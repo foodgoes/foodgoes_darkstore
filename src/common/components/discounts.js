@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styles from '@/src/styles/Alert.module.css'
 import OfferSVG from '@/public/icons/offer'
 import ChevronRightSVG from '@/public/icons/chevron-right';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 import Modal from './elements/modal';
 import Button from './elements/button';
 

@@ -1,9 +1,9 @@
 import {useRouter} from 'next/router'
 
-import { withSessionSsr } from '@/src/lib/withSession';
-import NestedLayoutAdmin from '@/src/components/nested-layout-admin'
+import { withSessionSsr } from '@/src/common/lib/withSession';
+import NestedLayoutAdmin from '@/src/common/components/nested-layout-admin'
 import styles from '@/src/styles/Admin.module.css'
-import Button from '@/src/components/elements/button';
+import Button from '@/src/common/components/elements/button';
 
 const Dashboard = () => {
   const { locale } = useRouter();

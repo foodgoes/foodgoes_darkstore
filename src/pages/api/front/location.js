@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import Location from '@/src/models/Location';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import Location from '@/src/common/models/Location';
 
 export default withSessionRoute(handler);
 

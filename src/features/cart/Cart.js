@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './cart.module.css';
-import Button from '@/src/components/elements/button';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import Button from '@/src/common/components/elements/button';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 import CartSVG from '@/public/icons/cart';
 import {fetchCartAsync} from './cartSlice';
 

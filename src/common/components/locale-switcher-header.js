@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import GlobeSVG from '@/public/icons/globe';
-import Button from '@/src/components/elements/button';
-import Modal from '@/src/components/elements/modal';
-import LocalesList from '@/src/components/modals/locales-list';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import Button from '@/src/common/components/elements/button';
+import Modal from '@/src/common/components/elements/modal';
+import LocalesList from '@/src/common/components/modals/locales-list';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 import styles from '@/src/styles/LocaleSwitcherHeader.module.css';
 
 export default function LocaleSwitcherHeader() {

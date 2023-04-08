@@ -9,7 +9,7 @@ import PlusSVG from '@/public/icons/plus'
 import MinusSmallSVG from '@/public/icons/minus-small'
 import PlusSmallSVG from '@/public/icons/plus-small'
 
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 import Button from './elements/button';
 import Modal from "./elements/modal";

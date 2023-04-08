@@ -1,5 +1,5 @@
-import NestedLayoutCategory from '@/src/components/nested-layout-category'
-import Catalog from '@/src/components/catalog'
+import NestedLayoutCategory from '@/src/common/components/nested-layout-category'
+import Catalog from '@/src/common/components/catalog'
 
 import {useRouter} from 'next/router'
 

@@ -1,9 +1,9 @@
 import styles from '@/src/styles/Search.module.css'
 
-import Sidebar from '@/src/components/sidebar'
-import Catalog from '@/src/components/catalog';
+import Sidebar from '@/src/common/components/sidebar'
+import Catalog from '@/src/common/components/catalog';
 
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 export default function Search({categories, search}) {
   const { translate } = useTranslation();

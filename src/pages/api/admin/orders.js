@@ -1,9 +1,9 @@
-import { withSessionRoute } from '@/src/lib/withSession';
-import dbConnect from '@/src/lib/dbConnect';
-import Order from '@/src/models/Order';
-import User from '@/src/models/User';
-import Product from '@/src/models/Product';
-import {getFullDate} from '@/src/utils/date';
+import { withSessionRoute } from '@/src/common/lib/withSession';
+import dbConnect from '@/src/common/lib/dbConnect';
+import Order from '@/src/common/models/Order';
+import User from '@/src/common/models/User';
+import Product from '@/src/common/models/Product';
+import {getFullDate} from '@/src/common/utils/date';
 
 export default withSessionRoute(handler);
 

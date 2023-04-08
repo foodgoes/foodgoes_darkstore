@@ -3,7 +3,7 @@ import styles from '@/src/styles/ProductViewCard.module.css'
 import Link from 'next/link';
 import BuyButton from './buy-button';
 import { useRouter } from 'next/router';
-import { useTranslation } from '@/src/hooks/useTranslation';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 export default function ProductViewCard({product, disabledBuy=false}) {
     const { locale } = useRouter();

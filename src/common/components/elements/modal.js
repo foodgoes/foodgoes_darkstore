@@ -1,5 +1,5 @@
 import styles from '@/src/styles/Modal.module.css'
-import Button from '@/src/components/elements/button';
+import Button from '@/src/common/components/elements/button';
 import CloseSVG from '@/public/icons/close'
 
 export default function Modal(props) {

@@ -1,9 +1,9 @@
 import styles from '@/src/styles/Home.module.css'
 
-import Sidebar from '@/src/components/sidebar'
-import Catalog from '@/src/components/catalog';
-import Discounts from '@/src/components/discounts';
-import Banners from '@/src/components/banners';
+import Sidebar from '@/src/common/components/sidebar'
+import Catalog from '@/src/common/components/catalog';
+import Discounts from '@/src/common/components/discounts';
+import Banners from '@/src/common/components/banners';
 
 export default function Home({categories, products}) {  
   return (

@@ -5,13 +5,13 @@ import Link from 'next/link'
 import Head from 'next/head'
 
 import styles from '@/src/styles/Cart.module.css'
-import Button from '@/src/components/elements/button'
-import ProductViewList from '@/src/components/product-view-list'
-import { useTranslation } from '@/src/hooks/useTranslation';
+import Button from '@/src/common/components/elements/button'
+import ProductViewList from '@/src/common/components/product-view-list'
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 import TrashSVG from '@/public/icons/trash'
 import ArrowLeftSVG from '@/public/icons/arrow-left'
-import CheckoutButton from '@/src/components/checkout-button'
+import CheckoutButton from '@/src/common/components/checkout-button'
 
 import { deleteCart } from '@/src/features/cart/cartSlice';
 
