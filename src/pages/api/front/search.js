@@ -40,21 +40,31 @@ async function handler(req, res) {
 
     const filterProducts = {status: 'active', availableForSearch: true, '_id': {$in: productIds}};
     const dataProducts = await Product.find(filterProducts, null, {skip: 0, limit: 35}).sort([['sort', 'asc']]);
-    const products = dataProducts.map(product => ({
-      id: product.id,
-      title: product.title,
-      image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
-      images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
-      price: product.price,
-      compareAtPrice: product.compareAtPrice,
-      brand: product.brand,
-      weight: product.weight,
-      weightUnit: product.weightUnit,
-      unit: product.unit,
-      amountPerUnit: product.amountPerUnit,
-      displayAmount: product.displayAmount,
-      availableForSale: product.availableForSale
-    }));
+    const products = dataProducts.map(product => {
+      const images = product.images.map(img => ({
+        src: img.src,
+        srcWebp: img.srcWebp,
+        width: img.width,
+        height: img.height,
+        alt: img.alt
+      }));
+
+      return {
+        id: product.id,
+        title: product.title,
+        image: images.length ? images[0] : null,
+        images,
+        price: product.price,
+        compareAtPrice: product.compareAtPrice,
+        brand: product.brand,
+        weight: product.weight,
+        weightUnit: product.weightUnit,
+        unit: product.unit,
+        amountPerUnit: product.amountPerUnit,
+        displayAmount: product.displayAmount,
+        availableForSale: product.availableForSale
+      };
+    });
 
     const count = await Product.countDocuments(filterProducts);
 

@@ -1,4 +1,5 @@
 import styles from '@/src/styles/ProductViewList.module.css'
+import Image from 'next/image';
 import Link from 'next/link'
 import BuyButton from './buy-button';
 
@@ -12,7 +13,23 @@ export default function ProductViewList({product, disabledBuy=false}) {
             <div className={styles.info}>
                 <Link href={`/product/${product.id}`} className={styles.link}></Link>
                 <div className={styles.image}>
-                    {product.image && <img src={product.image} />}
+                    {product.image ? (
+                        <Image
+                            src={product.image.srcWebp}
+                            alt={product.image.alt}
+                            quality={100}
+                            width={product.image.width}
+                            height={product.image.height}
+                        />
+                    )                                    
+                    : (
+                        <Image
+                            src={'/images/placeholder.svg'}
+                            alt={'placeholder'}
+                            width={111}
+                            height={111}
+                        />
+                    )}
                 </div>
                 <div>
                     <div className={styles.title}><h3>{product.title[locale]}</h3></div>

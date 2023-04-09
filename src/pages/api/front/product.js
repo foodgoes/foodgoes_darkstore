@@ -15,12 +15,20 @@ async function handler(req, res) {
       throw("not found product")
     }
 
+    const images = product.images.map(img => ({
+      src: img.src,
+      srcWebp: img.srcWebp,
+      width: img.width,
+      height: img.height,
+      alt: img.alt
+    }));
+
     res.status(200).json({
       id: product.id,
       title: product.title,
       subTitle: product.subTitle,
-      image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
-      images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
+      image: images.length ? images[0] : null,
+      images,
       description: product.description,
       price: product.price,
       compareAtPrice: product.compareAtPrice,

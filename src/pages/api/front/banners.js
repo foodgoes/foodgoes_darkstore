@@ -13,7 +13,7 @@ async function handler(req, res) {
       return {
         id: banner.id,
         title: banner.title,
-        image: banner.image ? process.env.UPLOAD_BANNERS+banner.image : null,
+        image: banner.image ? process.env.UPLOAD_URL+'/banners/'+banner.image : null,
         url: banner.url
       };
     });

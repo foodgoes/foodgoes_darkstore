@@ -64,19 +64,29 @@ async function handleGETAsync(userId, token) {
 
     const productIds = cart.products.map(p => p.productId);
     const products = await Product.find({'_id': {$in: productIds}});
-    const productsCart = products.map(product => ({
-      id: product.id,
-      productId: product.id,
-      title: product.title,
-      image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
-      images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
-      price: product.price,
-      compareAtPrice: product.compareAtPrice,
-      brand: product.brand,
-      quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
-      excludeDiscount: product.excludeDiscount,
-      ageRestricted: product.ageRestricted
-    }));
+    const productsCart = products.map(product => {
+      const images = product.images.map(img => ({
+        src: img.src,
+        srcWebp: img.srcWebp,
+        width: img.width,
+        height: img.height,
+        alt: img.alt
+      }));
+      
+      return {
+        id: product.id,
+        productId: product.id,
+        title: product.title,
+        image: images.length ? images[0] : null,
+        images,
+        price: product.price,
+        compareAtPrice: product.compareAtPrice,
+        brand: product.brand,
+        quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
+        excludeDiscount: product.excludeDiscount,
+        ageRestricted: product.ageRestricted
+      };
+    });
 
     return {
       id: cart.id,
@@ -106,19 +116,29 @@ async function handleBodyPUTAsync(userId, token, body, headers) {
 
       const productIds = cart.products.map(p => p.productId);
       const productsList = await Product.find({'_id': {$in: productIds}});
-      const productsCart = productsList.map(product => ({
-        id: product.id,
-        productId: product.id,
-        title: product.title,
-        image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
-        images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
-        price: product.price,
-        compareAtPrice: product.compareAtPrice,
-        brand: product.brand,
-        quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
-        excludeDiscount: product.excludeDiscount,
-        ageRestricted: product.ageRestricted
-      }));
+      const productsCart = productsList.map(product => {
+        const images = product.images.map(img => ({
+          src: img.src,
+          srcWebp: img.srcWebp,
+          width: img.width,
+          height: img.height,
+          alt: img.alt
+        }));
+
+        return {
+          id: product.id,
+          productId: product.id,
+          title: product.title,
+          image: images.length ? images[0] : null,
+          images,
+          price: product.price,
+          compareAtPrice: product.compareAtPrice,
+          brand: product.brand,
+          quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
+          excludeDiscount: product.excludeDiscount,
+          ageRestricted: product.ageRestricted
+        };
+      });
 
       return {
         id: cart.id,

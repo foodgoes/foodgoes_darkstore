@@ -39,22 +39,32 @@ async function handler(req, res) {
           const {title, productIds} = collection;
           const productsData = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['availableForSale', 'desc'], ['sort', 'asc']]);
 
-          const products = productsData.map(product => ({
-            id: product.id,
-            title: product.title,
-            image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
-            images: product.images.map(img => process.env.UPLOAD_PRODUCTS+img),
-            price: product.price,
-            compareAtPrice: product.compareAtPrice,
-            brand: product.brand,
-            quantity: product.quantity,
-            weight: product.weight,
-            weightUnit: product.weightUnit,
-            unit: product.unit,
-            amountPerUnit: product.amountPerUnit,
-            displayAmount: product.displayAmount,
-            availableForSale: product.availableForSale
-          }));
+          const products = productsData.map(product => {
+            const images = product.images.map(img => ({
+              src: img.src,
+              srcWebp: img.srcWebp,
+              width: img.width,
+              height: img.height,
+              alt: img.alt
+            }));
+            
+            return {
+              id: product.id,
+              title: product.title,
+              image: images.length ? images[0] : null,
+              images,
+              price: product.price,
+              compareAtPrice: product.compareAtPrice,
+              brand: product.brand,
+              quantity: product.quantity,
+              weight: product.weight,
+              weightUnit: product.weightUnit,
+              unit: product.unit,
+              amountPerUnit: product.amountPerUnit,
+              displayAmount: product.displayAmount,
+              availableForSale: product.availableForSale
+            };
+          });
 
           linksWithProducts.push({
             title: link.title,

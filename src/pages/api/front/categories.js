@@ -24,7 +24,7 @@ async function handler(req, res) {
       return {
         id: category.id,
         title: category.title,
-        image: category.image ? process.env.UPLOAD_CATEGORIES+category.image : null,
+        image: category.image ? process.env.UPLOAD_URL+'/categories/'+category.image : null,
         links,
         hidden: category.hidden
       };

@@ -2,6 +2,27 @@ import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema;
 
+const Image = new Schema({
+    filename: String,
+    alt: String,
+    ext: String,
+    width: Number,
+    height: Number,
+    position: {
+        type: Number,
+        default: 1
+    }
+});
+Image.set('toObject', { virtuals: true });
+Image.set('toJSON', { virtuals: true });
+
+Image.virtual('src').get(function() {
+    return `${process.env.UPLOAD_URL}/products/${this.filename}.${this.ext}`;
+});
+Image.virtual('srcWebp').get(function() {
+    return `${process.env.UPLOAD_URL}/products_webp/${this.filename}.webp`;
+});
+
 const ProductSchema = new Schema({
     title: {
         en: {
@@ -98,10 +119,7 @@ const ProductSchema = new Schema({
         type: Number,
         default: 0
     },
-    images: {
-        type: Array,
-        default: []
-    },
+    images: [Image],
     ageRestricted: {
         type: Boolean,
         default: false

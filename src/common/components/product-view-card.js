@@ -20,12 +20,23 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                         <div className={styles.wrapperImg}>
                             <div className={styles.postionImage}>
                                 <div className={styles.image}>
-                                <Image
-                                    src={product.image ? product.image : '/images/placeholder.svg'}
-                                    alt={product.title[locale]}
-                                    width={500}
-                                    height={500}
-                                />
+                                    {product.image ? (
+                                        <Image
+                                            src={product.image.srcWebp}
+                                            alt={product.image.alt}
+                                            quality={100}
+                                            width={product.image.width}
+                                            height={product.image.height}
+                                        />
+                                    )                                    
+                                    : (
+                                        <Image
+                                            src={'/images/placeholder.svg'}
+                                            alt={'placeholder'}
+                                            width={111}
+                                            height={111}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </div>

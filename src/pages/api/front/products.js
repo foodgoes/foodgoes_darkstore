@@ -45,12 +45,18 @@ async function handler(req, res) {
 
           const dataProducts = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 400}).sort([['availableForSale', 'desc'], ['sort', 'asc']]);
           dataProducts.forEach(product => {
-            const images = product.images.map(img => process.env.UPLOAD_PRODUCTS+img);
-
+            const images = product.images.map(img => ({
+              src: img.src,
+              srcWebp: img.srcWebp,
+              width: img.width,
+              height: img.height,
+              alt: img.alt
+            }));
+    
             products.push({
               id: product.id,
               title: product.title,
-              image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+              image: images.length ? images[0] : null,
               images,
               brand: product.brand,
               price: product.price,
@@ -70,12 +76,18 @@ async function handler(req, res) {
     } else {
       const data = await Product.find({status: 'active'}, null, {skip: 0, limit: 400}).sort([['availableForSale', 'desc'], ['sort', 'asc']]);
       data.forEach(product => {
-        const images = product.images.map(img => process.env.UPLOAD_PRODUCTS+img);
+        const images = product.images.map(img => ({
+          src: img.src,
+          srcWebp: img.srcWebp,
+          width: img.width,
+          height: img.height,
+          alt: img.alt
+        }));
 
         products.push({
           id: product.id,
           title: product.title,
-          image: product.images && product.images.length ? process.env.UPLOAD_PRODUCTS+product.images[0] : null,
+          image: images.length ? images[0] : null,
           images,
           brand: product.brand,
           price: product.price,

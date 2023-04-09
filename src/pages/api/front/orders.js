@@ -59,7 +59,13 @@ async function handleGETAsync(userId) {
 
         const lineItems = order.lineItems.map(item => {
           const product = products.find(p => p.id === String(item.productId));
-          const images = product ? product.images.map(img => process.env.UPLOAD_PRODUCTS + img) : [];
+          const images = product.images.map(img => ({
+            src: img.src,
+            srcWebp: img.srcWebp,
+            width: img.width,
+            height: img.height,
+            alt: img.alt
+          }));
 
           return {
             id: item.id,

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Image from 'next/image';
 import Link from 'next/link'
 import Head from 'next/head'
 
@@ -39,7 +40,15 @@ const Product = ({product}) => {
         </div>
         <div className={styles.container}>
           <div className={styles.imagesContainer}>
-            <div className={styles.mainImage}><img src={product.image} /></div>
+            <div className={styles.mainImage}>
+              <Image
+                  src={product.image.srcWebp}
+                  alt={product.image.alt}
+                  quality={100}
+                  width={product.image.width}
+                  height={product.image.height}
+              />
+            </div>
           </div>
 
           <div className={styles.aboutProduct}>
