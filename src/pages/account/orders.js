@@ -50,7 +50,7 @@ export default function Orders() {
   return (
     <>
       <Head>
-        <title>FoodGoes - Orders</title>
+        <title>{translate('metaTitleOrders')}</title>
       </Head>
       <div className='topBar'>
         <div className='breadcrumbs'>

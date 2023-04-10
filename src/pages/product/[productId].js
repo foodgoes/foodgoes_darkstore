@@ -1,33 +1,45 @@
 import { useRouter } from 'next/router'
+import Error from '../_error'
 import Image from 'next/image';
 import Link from 'next/link'
 import Head from 'next/head'
 
 import styles from '@/src/styles/Product.module.css'
-
 import { useTranslation } from '@/src/common/hooks/useTranslation';
-
 import BuyButton from '@/src/common/components/buy-button';
+import ChevronRightSVG from '@/public/icons/chevron-right';
 
-const Product = ({product}) => {
+const Product = ({errorCode, breadcrumbs, product}) => {
   const { translate } = useTranslation();
   const {query, locale} = useRouter();
 
   const { productId } = query;
 
   let brandAndManif = '';
-  brandAndManif += product.brand && product.brand[locale] ? product.brand[locale] : '';
-  brandAndManif += product.manufacturer && product.manufacturer[locale] ? ', ' + product.manufacturer[locale] : '';
+  if (product) {
+    brandAndManif += product.brand && product.brand[locale] ? product.brand[locale] : '';
+    brandAndManif += product.manufacturer && product.manufacturer[locale] ? ', ' + product.manufacturer[locale] : '';
+  }
+
+  if (errorCode) {
+    return <Error statusCode={errorCode} />
+  }
 
   return (
     <>
       <Head>
-        <title>{`${product.subTitle[locale]} — купить с доставкой из FoodGoes`}</title>
+        <title>{`${product.subTitle[locale]} — ${translate('metaTitleProduct')}`}</title>
       </Head>
       <div className={styles.wrapper}>
         <div className='topBar'>
           <div className='breadcrumbs'>
             <Link href="/">{translate('breadcrumbsHome')}</Link>
+            {breadcrumbs.map((b,i) => (
+                <div key={i}>
+                    <ChevronRightSVG stroke='#9e9b98' />
+                    <Link href={b.handle}>{b.title[locale]}</Link>
+                </div>
+            ))}
           </div>
           <div className='infoBlock'>
             <div>
@@ -47,6 +59,7 @@ const Product = ({product}) => {
                   quality={100}
                   width={product.image.width}
                   height={product.image.height}
+                  priority={true}
               />
             </div>
           </div>
@@ -117,15 +130,18 @@ const Product = ({product}) => {
 
 const getProduct = async productId => {
   const res = await fetch(`${process.env.DOMAIN}/api/front/product?productId=${productId}`);
-  return await res.json();
+  const errorCode = res.ok ? false : res.status;
+  const data = await res.json();
+
+  return { errorCode, ...data };
 };
 
 export async function getServerSideProps(context) {
   const {productId} = context.params;
 
-  const product = await getProduct(productId);
+  const { errorCode, breadcrumbs, product } = await getProduct(productId);
 
-  return { props: { product } };
+  return { props: { errorCode, breadcrumbs, product } };
 }
 
 export default Product

@@ -39,7 +39,7 @@ function NestedLayoutCategory({children, categories, slug, slug2}) {
     return (
         <>
             <Head>
-                <title>FoodGoes - Category</title>
+                <title>{`${links[links.length-1].title[locale]} — ${translate('metaTitleCategory')}`}</title>
             </Head>
             
             <div className={styles.wrapper}>

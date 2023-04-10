@@ -21,8 +21,6 @@ export default function Layout({ children }) {
   return (  
     <>
       <Head>
-        <title>Home grocery online delivery - FoodGoes</title>
-        <meta name="description" content="Grocery delivery to your home or office. Always fresh, lots of prepared food, and all the household goods you need." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

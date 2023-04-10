@@ -1,19 +1,29 @@
-import styles from '@/src/styles/Home.module.css'
+import Head from 'next/head';
+import { useTranslation } from '@/src/common/hooks/useTranslation';
 
+import styles from '@/src/styles/Home.module.css'
 import Sidebar from '@/src/common/components/sidebar'
 import Catalog from '@/src/common/components/catalog';
 import Banners from '@/src/common/components/banners';
 
-export default function Home({categories, products}) {  
+export default function Home({categories, products}) {
+  const {translate} = useTranslation();
+  
   return (
-    <div className={styles.wrapper}>
-      <Sidebar categories={categories} />
+    <>
+      <Head>
+        <title>{translate('metaTitleHome')}</title>
+        <meta name="description" content={translate('metaDescriptionHome')} />
+      </Head>
+      <div className={styles.wrapper}>
+        <Sidebar categories={categories} />
 
-      <div className={styles.main}>
-        <Banners />
-        <Catalog products={products} />
+        <div className={styles.main}>
+          <Banners />
+          <Catalog products={products} />
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
