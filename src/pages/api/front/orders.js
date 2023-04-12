@@ -11,7 +11,6 @@ import Location from '@/src/common/models/Location';
 import Discount from '@/src/common/models/Discount';
 import {getFullDate} from '@/src/common/utils/date';
 
-
 export default withSessionRoute(handler);
 
 async function handler(req, res) {
@@ -180,9 +179,15 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
       totalPrice,
     });
 
+    const res = await fetch(process.env.DOMAIN+'/admin/api/orders', {method: 'POST',  headers: {
+      'Content-Type': 'application/json',
+    }, body: JSON.stringify({id: newOrder.id})});
+    await res.json();
+
     return newOrder;
   } catch(e) {
-      throw e;
+    console.log(e);
+    throw e;
   }
 }
 
