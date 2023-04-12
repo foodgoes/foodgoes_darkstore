@@ -103,12 +103,14 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
   try {
     const guestLogged = body.guestLogged;
 
-    const cart = await Cart.findOne({$or: [{userId}, {token}]});
+    const filter = userId ? {userId} : {token};
+    const cart = await Cart.findOne(filter);
     if (!cart) {
       throw('error. Cart not found');
     }
 
-    const location = await Location.findOne({$or: [{userId}, {token: tokenLocation}]});
+    const filterLocation = userId ? {userId} : {token: tokenLocation};
+    const location = await Location.findOne(filterLocation);
     if (!location) {
       throw('error. Location not found');
     }
@@ -157,6 +159,7 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
     const tokenOrder = uuidv4();
     
     const minTotalPrice = 50;
+
     if (totalPrice < minTotalPrice) {
       throw("Error, minimum total price is " + minTotalPrice);
     }
@@ -186,7 +189,6 @@ async function handleBodyPOSTAsync(userId, token, tokenLocation, body) {
 
     return newOrder;
   } catch(e) {
-    console.log(e);
     throw e;
   }
 }
