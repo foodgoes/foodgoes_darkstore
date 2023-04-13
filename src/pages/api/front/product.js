@@ -80,7 +80,6 @@ async function handler(req, res) {
       }
     });
   } catch(e) {
-    console.log(e)
-    res.status(500).json({ error: 'failed to load data' });
+    res.status(500).json({ error: 'failed to load data', breadcrumbs: [], product: {} });
   }
 }

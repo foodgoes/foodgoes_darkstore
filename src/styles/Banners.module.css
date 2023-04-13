@@ -6,7 +6,6 @@
     column-gap: 8px;
     display: grid;
     row-gap: 8px;
-    justify-content: flex-start;
 }
 .banner {
     display: inline-block;
@@ -18,7 +17,7 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    width: 288px;
+    width: 100%;
     height: 288px;
     padding: 24px;
 }
@@ -33,7 +32,6 @@
 
 @media only screen and (max-width: 673px) {
     .bannerImg {
-        width: 228px;
         height: 228px;
     }
     .bannerTitle {
@@ -46,7 +44,6 @@
         margin-top: 0;
     }
     .bannerImg {
-        width: 145px;
         height: 145px;
     }
     .bannerTitle {
