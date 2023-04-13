@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import Button from '@/src/common/components/elements/button';
 import styles from '@/src/styles/LocalesList.module.css';
 
+import { addCookie } from '@/src/common/utils/cookies';
+
 export default function LocalesList({onClose}) {
     const router = useRouter();
 
@@ -13,7 +15,9 @@ export default function LocalesList({onClose}) {
             updateUserAPI({locale});
         }
 
+        addCookie('NEXT_LOCALE', locale, 365*24*60*60);
         router.push(router.asPath, router.asPath, { locale });
+        
         onClose();
     }
 

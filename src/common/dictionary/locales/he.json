@@ -67,5 +67,9 @@
   "g": "g",
   "L": "L",
   "ml": "ml",
-  "pc": "pc."
+  "pc": "pc.",
+  "modalTitleEmptyCart": "?עגלת הקניות ריקה",
+  "modalTextEmptyCart": "אנחנו רק רוצים לוודא",
+  "modalSecondaryBtnEmptyCart": "שמור",
+  "modalPrimaryBtnEmptyCart": "מחק"
 }

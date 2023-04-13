@@ -8,6 +8,8 @@ import {useForm} from "react-hook-form";
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import Button from '@/src/common/components/elements/button';
 
+import { addCookie } from '@/src/common/utils/cookies';
+
 import { updateUser, callEventAfterLogin, selectCallingEventBeforeLogin } from '@/src/features/auth/authSlice';
 
 export default function LoginCode({onClose}) {
@@ -51,6 +53,7 @@ export default function LoginCode({onClose}) {
 
                     dispatch(updateUser(user));
 
+                    addCookie('NEXT_LOCALE', user.locale, 365*24*60*60);
                     router.push(router.asPath, router.asPath, { locale: user.locale });
                 }
 

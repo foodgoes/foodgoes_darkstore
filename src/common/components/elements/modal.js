@@ -16,21 +16,23 @@ export default function Modal(props) {
                         <div className={styles.container}>
                             <div className={styles.header}>
                                 <div>{title && <h2>{title}</h2>}</div>
-                                <Button plain onClick={onClose}><CloseSVG /></Button>
+                                <Button plain onClick={onClose} size="small"><CloseSVG /></Button>
                             </div>
                             {children && (
                                 <div className={styles.content}>{children}</div>
                             )}
-                            <div className={styles.footer}>
-                                {primaryAction && <Button primary={true} onClick={primaryAction.onAction}>{primaryAction.content}</Button>}
-                                {secondaryActions && (
-                                    <div className={styles.secondaryActions}>
-                                        {secondaryActions.map((secondaryAction, i) => 
-                                            <div key={i}><Button onClick={secondaryAction.onAction}>{secondaryAction.content}</Button></div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
+                            {(primaryAction || secondaryActions) && (
+                                 <div className={styles.footer}>
+                                    {secondaryActions && (
+                                        <>
+                                            {secondaryActions.map((secondaryAction, i) => 
+                                                <Button key={i} onClick={secondaryAction.onAction}>{secondaryAction.content}</Button>
+                                            )}
+                                        </>
+                                    )}
+                                    {primaryAction && <Button primary={true} onClick={primaryAction.onAction}>{primaryAction.content}</Button>}
+                                 </div>
+                            )}
                         </div>
                     </div>
                 </>

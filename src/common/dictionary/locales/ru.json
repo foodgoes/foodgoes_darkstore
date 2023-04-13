@@ -67,5 +67,9 @@
   "g": "г",
   "L": "л",
   "ml": "мл",
-  "pc": "шт."
+  "pc": "шт.",
+  "modalTitleEmptyCart": "Удалить всё из корзины?",
+  "modalTextEmptyCart": "Контрольное уточнение, а то вдруг вы случайно задели кнопку",
+  "modalSecondaryBtnEmptyCart": "Оставить",
+  "modalPrimaryBtnEmptyCart": "Удалить"
 }

@@ -34,10 +34,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 12px;
 }
 
 .header h2 {
   font-size: 28px;
+  line-height: 34px;
   margin: 0;
   padding: 0;
 }
@@ -45,13 +47,11 @@
 .footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  margin-top: 18px;
 }
-
-.secondaryActions {
-  display: block;
+.footer button {
+  width: 100%;
 }
-
-.secondaryActions div {
-  display: inline-block;
+.footer button:last-child {
+  margin-left: 8px;
 }

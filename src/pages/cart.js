@@ -1,10 +1,13 @@
+import { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { createPortal } from 'react-dom';
 
 import Link from 'next/link'
 import Head from 'next/head'
 
 import styles from '@/src/styles/Cart.module.css'
 import Button from '@/src/common/components/elements/button'
+import Modal from '@/src/common/components/elements/modal';
 import ProductViewList from '@/src/common/components/product-view-list'
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 
@@ -15,6 +18,8 @@ import CheckoutButton from '@/src/common/components/checkout-button'
 import { deleteCart } from '@/src/features/cart/cartSlice';
 
 export default function Cart() {
+  const [active, setActive] = useState(false);
+  const handleChange = useCallback(() => setActive(!active), [active]);
   const dispatch = useDispatch();
   const {cart} = useSelector(state => state.cart);
 
@@ -64,6 +69,24 @@ export default function Cart() {
       <Head>
         <title>{translate('metaTitleCart')}</title>
       </Head>
+      {active && createPortal(
+        <Modal
+            open={active}
+            onClose={handleChange}
+            title={translate("modalTitleEmptyCart")}
+            primaryAction={{
+              onAction: clearCart,
+              content: translate("modalPrimaryBtnEmptyCart")
+            }}
+            secondaryActions={[{
+              onAction: handleChange,
+              content: translate("modalSecondaryBtnEmptyCart")
+            }]}
+        >
+            <p>{translate("modalTextEmptyCart")}</p>
+        </Modal>,
+        document.body
+      )}
       <div className={styles.wrapper}>
         <div className='topBar'>
           <div className='breadcrumbs'>
@@ -74,7 +97,7 @@ export default function Cart() {
               <h1 className='heading'>{translate('cartTitlePage')}</h1>
             </div>
             <div className={styles.btnClearCart}>
-              <Button onClick={() => clearCart()} size='small'><TrashSVG />{translate('btnClearCart')}</Button>
+              <Button onClick={handleChange} size='small'><TrashSVG />{translate('btnClearCart')}</Button>
             </div>
           </div>
         </div>
