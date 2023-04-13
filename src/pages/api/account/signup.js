@@ -27,15 +27,14 @@ async function handler(req, res) {
 async function handleFormInputAsync(body, cookies) {
     try {
       const {cart: tokenCart, location: tokenLocation} = cookies;
-      
+      const {id: externalId, phoneNumber: phone, provider, locale} = body;
       const providers = ['firebase'];
-      const {id: externalId, phoneNumber: phone, provider} = body;
 
       if (!providers.includes(provider)) {
         throw('error provider');
       }
 
-      const newUser = await User.create({phone, providers: {[provider]: {externalId}}});
+      const newUser = await User.create({phone, providers: {[provider]: {externalId}}, locale});
 
       await Location.findOneAndUpdate({token: tokenLocation}, {userId: newUser.id}, {new: true, upsert: true});
       await Cart.findOneAndUpdate({token: tokenCart}, {userId: newUser.id}, {new: true, upsert: true});

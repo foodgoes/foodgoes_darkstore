@@ -1,5 +1,6 @@
 import {useEffect, useRef} from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import {useRouter} from 'next/router'
 
 import {getAdditionalUserInfo } from "firebase/auth";
 import {useForm} from "react-hook-form";
@@ -15,6 +16,7 @@ export default function LoginCode({onClose}) {
     const inputBoxRef = useRef();
     const dispatch = useDispatch();
     const callingEventBeforeLogin = useSelector(selectCallingEventBeforeLogin);
+    const router = useRouter();
 
     useEffect(() => {
         focusInput();
@@ -27,27 +29,29 @@ export default function LoginCode({onClose}) {
             const {code} = data;
 
             window.confirmationResult.confirm(code).then(async (result) => {
-                const user = result.user;
+                const userFirebase = result.user;
                 
                 const {isNewUser} = getAdditionalUserInfo(result);
                 if (isNewUser) {
-                    const body = {provider: 'firebase', id: user.uid, phoneNumber: user.phoneNumber};
+                    const body = {provider: 'firebase', id: userFirebase.uid, phoneNumber: userFirebase.phoneNumber, locale: router.locale};
                     const res = await fetch('/api/account/signup', {method: 'POST',  headers: {
                         'Content-Type': 'application/json',
                         }, body: JSON.stringify(body)});
 
-                    const data = await res.json();
-                    
-                    dispatch(updateUser(data));
+                    const user = await res.json();
+
+                    dispatch(updateUser(user));
                 } else {
-                    const body = {phoneNumber: user.phoneNumber};
+                    const body = {phoneNumber: userFirebase.phoneNumber};
                     const res = await fetch('/api/account/activate_session', {method: 'POST',  headers: {
                         'Content-Type': 'application/json',
                         }, body: JSON.stringify(body)});
 
-                    const data = await res.json();
+                    const user = await res.json();
 
-                    dispatch(updateUser(data));
+                    dispatch(updateUser(user));
+
+                    router.push(router.asPath, router.asPath, { locale: user.locale });
                 }
 
                 if (callingEventBeforeLogin) {
