@@ -77,7 +77,7 @@ const Product = ({errorCode, breadcrumbs, product}) => {
                       </>
                   ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
               </div>
-              <div><BuyButton disabled={!product.availableForSale} price={product.price} productId={productId} primary size="large"/></div>
+              <div><BuyButton disabled={!product.availableForSale} productId={productId} primary size="large"/></div>
             </div>
 
             <section className={styles.section}>

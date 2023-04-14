@@ -7,3 +7,7 @@
 .cartButton svg {
   margin-right: 9px;
 }
+
+.cartButtonLoading {
+  opacity: .5;
+}

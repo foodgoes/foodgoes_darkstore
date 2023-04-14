@@ -16,9 +16,9 @@ import Modal from "./elements/modal";
 import Address from "./modals/address";
 
 import { logProductIdBeforelocation, logProductIdAfterlocation, selectProductIdBeforelocation ,selectProductIdAfterlocation } from '@/src/features/location/locationSlice';
-import { updateCart } from '@/src/features/cart/cartSlice';
+import { updateCartAsync } from '@/src/features/cart/cartSlice';
 
-export default function BuyButton({disabled, productId, price, primary=false, secondary=false, size="medium"}) {
+export default function BuyButton({disabled, productId, primary=false, secondary=false, size="medium"}) {
     const [activeAddress, setActiveAddress] = useState(false);
     const dispatch = useDispatch();
     const productIdBeforelocation = useSelector(selectProductIdBeforelocation);
@@ -33,10 +33,10 @@ export default function BuyButton({disabled, productId, price, primary=false, se
     useEffect(() => {
         if (productIdAfterlocation !== productId) return;
 
-        buy(productId, price);
+        buy(productId);
     }, [productIdAfterlocation, dispatch]);
 
-    const buy = async (productId, price=0, action='inc') => {
+    const buy = async (productId, action='inc') => {
         try {
             if (!productId) {
                 throw 'Invalid productId';
@@ -48,37 +48,7 @@ export default function BuyButton({disabled, productId, price, primary=false, se
                 return;
             }
 
-            const total = (function(total, price, action) {
-                if (action === 'inc') total = total + price;
-                if (action === 'dec') total = total - price;
-                return +(total.toFixed(2));
-            })(cart.total, price, action);
-
-            const products = (function(products, productId, action) {
-                const product = products.find(p => p.productId === productId);
-
-                if (!product) {
-                    return products.concat({productId, quantity: 1});
-                }
-
-                const quantity = (function(quantity, action) {
-                    if (action === 'inc') return quantity + 1;
-                    if (action === 'dec') return quantity - 1;
-                    return quantity;
-                })(product.quantity, action);
-
-                if (quantity < 1) {
-                    return products.filter(p => p.productId !== productId);
-                }
-
-                return products.map(p => ({
-                    ...p,
-                    quantity: p.productId === productId ? quantity : p.quantity
-                }));
-            })(cart.products, productId, action);
-
-            const updatedCart = await updateCartAPI(products, total);
-            dispatch(updateCart(updatedCart));
+            dispatch(updateCartAsync({productId, action}));
 
             if (productIdBeforelocation) {
                 dispatch(logProductIdBeforelocation(null));
@@ -88,15 +58,6 @@ export default function BuyButton({disabled, productId, price, primary=false, se
             console.log(e);
             return;
         }
-    };
-
-    const updateCartAPI = async (products, total) => {
-        const body = {total, products};
-        const res = await fetch('/api/front/cart', {method: 'PUT',  headers: {
-            'Content-Type': 'application/json',
-            }, body: JSON.stringify(body)});
-
-        return await res.json();
     };
 
     const handleClose = () => {
@@ -109,10 +70,10 @@ export default function BuyButton({disabled, productId, price, primary=false, se
         return (
             <div className={styles.wrapper}>
                 <div className={styles.container + (size ? ' ' + styles[size] : '')}>
-                    <Button onClick={() => buy(productId, price, 'dec')} secondary>
+                    <Button onClick={() => buy(productId, 'dec')} secondary>
                         {size !== 'small' ? <MinusSVG /> : <MinusSmallSVG />}</Button>
                     <span className={styles.quantity}>{productInCart.quantity}</span>
-                    <Button onClick={() => buy(productId, price)} secondary>
+                    <Button onClick={() => buy(productId)} secondary>
                         {size !== 'small' ? <PlusSVG /> : <PlusSmallSVG />}
                     </Button>
                 </div>
@@ -145,7 +106,7 @@ export default function BuyButton({disabled, productId, price, primary=false, se
 
             <div className={styles.wrapper}>
                 <div className={styles.container}>
-                    <Button onClick={() => buy(productId, price)} size={size}
+                    <Button onClick={() => buy(productId)} size={size}
                     disabled={disabled} secondary={secondary} primary={primary} fullWidth><span>{translate('buy')}</span></Button>
                 </div>
             </div>

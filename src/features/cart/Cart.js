@@ -4,28 +4,35 @@ import styles from './cart.module.css';
 import Button from '@/src/common/components/elements/button';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import CartSVG from '@/public/icons/cart';
+import SpinnerSVG from '@/public/icons/spinner';
 
 function Cart() {
     const {cart} = useSelector(state => state.cart);
-    const cartStatus = useSelector(state => state.cart.status);
+    const statusOfUpdate = useSelector(state => state.cart.statusOfUpdate);   
 
     const { translate } = useTranslation();
 
     let content;
 
-    if (cartStatus === 'loading') {
-        content = <span>Cart Loading...</span>;
-    } else if (cartStatus === 'succeeded') {
+    if (statusOfUpdate === 'loading') {
         content = (
-            <div className={styles.cart}>
-                <Link className={styles.cartButton} href="/cart">
-                    <Button primary={!!cart?.total}><CartSVG />{cart?.total ? '\u20AA' + cart.total.toFixed(2) : translate('cart')}</Button>
-                </Link>
+            <div className={styles.cartButton + ' ' + styles.cartButtonLoading}>
+                <Button primary={true}><CartSVG /><SpinnerSVG /></Button>
             </div>
+        );
+    } else {
+        content = (
+            <Link className={styles.cartButton} href="/cart">
+                <Button primary={!!cart?.total}><CartSVG />{cart?.total ? '\u20AA' + cart.total.toFixed(2) : translate('cart')}</Button>
+            </Link>
         );
     }
 
-    return content;
+    return (
+        <div className={styles.cart}>
+            {content}
+        </div>
+    );
 }
 
 export default Cart;
