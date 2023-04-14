@@ -31,9 +31,7 @@ async function handler(req, res) {
 
     if (req.method === 'DELETE') {
       const cart = await handleBodyDELETEAsync(req);
-      if (!cart.userId) {
-        res.setHeader('Set-Cookie', 'cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
-      }
+      res.setHeader('Set-Cookie', 'cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
 
       return res.status(200).json({deletedCartId: cart.id});
     }
@@ -59,7 +57,7 @@ async function handleGETAsync(req) {
       try {
         const cartByToken = await Cart.findOne({token});
         if (!cartByToken) {
-          return await Cart.findOne({userId});
+          return await Cart.findOne({userId: {$and: [{ $ne: null }, {$eq: userId}]}});
         }
         return cartByToken;
       } catch(e) {
@@ -117,7 +115,7 @@ async function handleBodyPOSTAsync(req) {
       try {
         const cartByToken = await Cart.findOne({token});
         if (!cartByToken) {
-          return await Cart.findOne({userId});
+          return await Cart.findOne({userId: {$and: [{ $ne: null }, {$eq: userId}]}});
         }
         return cartByToken;
       } catch(e) {
@@ -195,13 +193,16 @@ async function handleBodyPOSTAsync(req) {
       }
     }(productId, action, cart));
 
-    const updCart = await (async function(obj) {
+    const updCart = await (async function(obj, token, userId, cart) {
       if (!cart) {
-        return await Cart.create(obj);
+        return await Cart.create({...obj, token, userId});
       } else {
-        return await Cart.findByIdAndUpdate(cart.id, {...obj, updatedAt: Date.now()}, {new: true});
+        if (!cart.userId) {
+          obj.userId = userId;
+        }
+        return await Cart.findByIdAndUpdate(cart.id, {...obj, token, updatedAt: Date.now()}, {new: true});
       }
-    })({token, userId, total, products});
+    })({total, products}, token, userId, cart);
 
     return {
       id: updCart.id,

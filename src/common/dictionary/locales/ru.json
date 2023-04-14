@@ -25,7 +25,7 @@
   "emptySearch": "По запросу «[searchPhrase]» ничего не найдено",
   "notEmptySearch": "По запросу «[searchPhrase]» найдено [searchCount] товаров",
   "menuAccount": "Аккаунт",
-  "menuOrders": "Заказы",
+  "menuOrders": "Мои заказы",
   "menuBilling": "Платежи",
   "ordersTitlePage": "Заказы",
   "modalLocalesTitle": "Выберите язык",

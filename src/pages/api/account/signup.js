@@ -10,7 +10,7 @@ async function handler(req, res) {
   try {
     await dbConnect();
 
-    const user = await handleFormInputAsync(req.body, req.cookies);
+    const user = await handleFormInputAsync(req);
 
     req.session.user = {
         id: user._id,
@@ -24,10 +24,12 @@ async function handler(req, res) {
   }
 }
 
-async function handleFormInputAsync(body, cookies) {
+async function handleFormInputAsync(req) {
     try {
-      const {cart: tokenCart, location: tokenLocation} = cookies;
-      const {id: externalId, phoneNumber: phone, provider, locale} = body;
+      const tokenLocation = req.cookies.location;
+      const tokenCart = req.cookies.cart;
+
+      const {id: externalId, phoneNumber: phone, provider, locale} = req.body;
       const providers = ['firebase'];
 
       if (!providers.includes(provider)) {
@@ -36,8 +38,12 @@ async function handleFormInputAsync(body, cookies) {
 
       const newUser = await User.create({phone, providers: {[provider]: {externalId}}, locale});
 
-      await Location.findOneAndUpdate({token: tokenLocation}, {userId: newUser.id}, {new: true, upsert: true});
-      await Cart.findOneAndUpdate({token: tokenCart}, {userId: newUser.id}, {new: true, upsert: true});
+      if (tokenLocation) {
+        await Location.findOneAndUpdate({token: tokenLocation}, {userId: newUser.id}); 
+      }
+      if (tokenCart) {
+        await Cart.findOneAndUpdate({token: tokenCart}, {userId: newUser.id});
+      }
 
       return newUser;
     } catch(e) {

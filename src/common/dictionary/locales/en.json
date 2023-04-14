@@ -25,7 +25,7 @@
   "emptySearch": "No results found for «[searchPhrase]»",
   "notEmptySearch": "[searchCount] items found for «[searchPhrase]»",
   "menuAccount": "Account",
-  "menuOrders": "Orders",
+  "menuOrders": "My orders",
   "menuBilling": "Billing",
   "ordersTitlePage": "Orders",
   "modalLocalesTitle": "Choose language",
