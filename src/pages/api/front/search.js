@@ -57,8 +57,6 @@ async function handler(req, res) {
         price: product.price,
         compareAtPrice: product.compareAtPrice,
         brand: product.brand,
-        weight: product.weight,
-        weightUnit: product.weightUnit,
         unit: product.unit,
         amountPerUnit: product.amountPerUnit,
         displayAmount: product.displayAmount,

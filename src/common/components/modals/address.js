@@ -59,11 +59,11 @@ export default function Address({onClose}) {
 
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit)} className="form">
+            <form className="form">
                 <div className="input-box" ref={inputBoxRef}>
                     <input type='input' {...register("address", { required: true })} />
                 </div>
-                <Button fullWidth primary submit>{translate('ok')}</Button>
+                <Button onClick={handleSubmit(onSubmit)} fullWidth primary submit>{translate('ok')}</Button>
             </form>
 
             <img className={styles.mapImg} src="/images/delivery_zones.jpg" />

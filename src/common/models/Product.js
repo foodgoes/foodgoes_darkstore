@@ -128,13 +128,7 @@ const ProductSchema = new Schema({
         type: Boolean,
         default: false
     },
-    weightUnit: {
-        type: String,
-        required: true,
-        enum: ['g', 'kg', 'oz', 'lb'],
-        default: 'g'
-    },
-    weight: {
+    grams: {
         type: Number,
         default: 0
     },

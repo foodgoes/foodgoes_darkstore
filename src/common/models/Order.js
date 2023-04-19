@@ -75,21 +75,55 @@ const Discount = new Schema({
 Discount.set('toObject', { virtuals: true });
 Discount.set('toJSON', { virtuals: true });
 
+const PaymentDetails = new Schema({
+    paymentId: {
+        type: String
+    },
+    status: {
+        type: String,
+        required: 'pending'
+    },
+    amount: {
+        value: String,
+        currency: String
+    },
+    description: String,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+PaymentDetails.set('toObject', { virtuals: true });
+PaymentDetails.set('toJSON', { virtuals: true });
+
 const ShippingAddress = new Schema({
-    address1: String,
+    address1: {
+        type: String,
+        required: true
+    },
     address2: String,
+    zip: String,
+    flat: String,
+    entrance: String,
+    floor: String,
+    doorcode: String,
+    country: String,
     city: String,
+    province: String,
+    countryCode: String,
+    provinceCode: String,
+    latitude: Number,
+    longitude: Number,
     company: String,
     firstName: String,
     lastName: String,
-    latitude: Number,
-    longitude: Number,
     phone: String,
-    zip: String,
-    countryCode: String,
-    provinceCode: String,
-    country: String,
-    province: String
+    comment: String,
+    options: {
+        leaveAtTheDoor: Boolean,
+        meetOutside: Boolean,
+        noDoorCall: Boolean,
+    }
 });
 ShippingAddress.set('toObject', { virtuals: true });
 ShippingAddress.virtual('name').get(function() {
@@ -169,13 +203,7 @@ const LineItem = new Schema({
             maxlength: 100
         }
     },
-    weightUnit: {
-        type: String,
-        required: true,
-        enum: ['g', 'kg', 'oz', 'lb'],
-        default: 'g'
-    },
-    weight: {
+    grams: {
         type: Number,
         default: 0
     },
@@ -229,20 +257,33 @@ const OrderSchema = new Schema({
         type: Number,
         default: 0
     },
+    totalWeight: {
+        type: Number,
+        default: 0
+    },
     financialStatus: {
         type: String,
-        enum: ['pending', 'authorized', ' partially_paid', 'paid', 'partially_refunded', 'refunded', 'voided', 'expired'],
+        enum: ['pending', 'paid'],
         default: null
     },
     fulfillmentStatus: {
         type: String,
-        enum: ['fulfilled', 'in_progress', 'open', 'partially_fulfilled', 'pending_fulfillment', 'restocked',
-            'scheduled', 'unfulfilled'],
+        enum: ['fulfilled', null],
         default: null
     },
     lineItems: [LineItem],
     shippingAddress: ShippingAddress,
+    paymentDetails: PaymentDetails,
     discounts: [Discount],
+    cancelReason: {
+        type: String,
+        enum: ['customer', 'fraud', ' inventory', 'declined', 'other', null],
+        default: null
+    },
+    cancelledAt: {
+        type: Date,
+        default: null
+    },
     createdAt: {
         type: Date,
         default: Date.now

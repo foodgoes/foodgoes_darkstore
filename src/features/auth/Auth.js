@@ -66,8 +66,8 @@ function Auth() {
                 {accountMenu && (
                     <div className={styles.accountMenu}>
                         <ul>
-                        <li><Link href={'/account/orders'}><Button plain fullWidth>{translate('menuOrders')}</Button></Link></li>
-                        <li><Button plain fullWidth onClick={() => logout()}>{translate('logout')}</Button></li>
+                            <li><Link href={'/history'}><Button plain fullWidth>{translate('menuOrders')}</Button></Link></li>
+                            <li><Button plain fullWidth onClick={() => logout()}>{translate('logout')}</Button></li>
                         </ul>
                     </div>
                 )}

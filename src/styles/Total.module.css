@@ -1,0 +1,60 @@
+.subheading {
+    font-size: 28px;
+    font-weight: 700;
+}
+.deliveryInfo {
+    font-size: 16px;
+    color: #9e9b98;
+}
+
+.top {
+    border-bottom: 1px solid #e8e7e6;
+    color: #21201f;
+    margin-bottom: 8px;
+    padding: 0 0 22px;
+}
+
+.totals {
+    width: 100%;
+}
+.totals th {
+    font-weight: 400;
+    text-align: left;
+}
+.totals td {
+    text-align: right;
+    font-weight: 500;
+}
+.totals tr {
+    display: flex;
+    justify-content: space-between;
+    min-height: 36px;
+    align-items: center;
+    padding: 8px 0;
+}
+.totals tr:last-child {
+    border-top: 1px solid hsla(30,3%,53%,.2);
+    height: 52px;
+    margin-top: 8px;
+    padding: 0;
+}
+.totals tr:last-child th, .totals tr:last-child td {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.container {
+    margin-bottom: 8px;
+}
+
+.totalDiscounts {
+    color: #fc5230;
+}
+
+.minTotalPrice span {
+    font-size: 13px;
+    color: #9e9b98;
+    display: block;
+    text-align: center;
+    margin-bottom: 6px;
+}

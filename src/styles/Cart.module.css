@@ -10,12 +10,18 @@
     margin: 0 15px;
 }
 
+.wrapperTotals {
+    grid-area: wrapperTotals;
+    margin-left: 72px;
+    display: flex;
+    flex-direction: column;
+}
+
 .containerEmpty {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
 .containerEmpty h2 {
     font-size: 28px;
     font-weight: 700;
@@ -31,69 +37,9 @@
 .products {
     grid-area: products;
 }
-.wrapperTotals {
-    grid-area: wrapperTotals;
-    margin-left: 72px;
-    display: flex;
-    flex-direction: column;
-}
-
-.subheading {
-    font-size: 28px;
-    font-weight: 700;
-}
-.deliveryInfo {
-    font-size: 16px;
-    color: #9e9b98;
-}
-
-.top {
-    border-bottom: 1px solid #e8e7e6;
-    color: #21201f;
-    margin-bottom: 8px;
-    padding: 0 0 22px;
-}
 
 .btnClearCart svg {
     margin-right: 8px;
-}
-
-.wrapperTotals table {
-    width: 100%;
-}
-.wrapperTotals table th {
-    font-weight: 400;
-    text-align: left;
-}
-.wrapperTotals table td {
-    text-align: right;
-    font-weight: 500;
-}
-.wrapperTotals table tr {
-    display: flex;
-    justify-content: space-between;
-    min-height: 36px;
-    align-items: center;
-    padding: 8px 0;
-}
-.wrapperTotals table tr:last-child {
-    border-top: 1px solid hsla(30,3%,53%,.2);
-    height: 52px;
-    margin-top: 8px;
-    padding: 0;
-}
-
-.wrapperTotals table tr:last-child th, .wrapperTotals table tr:last-child td {
-    font-weight: 500;
-    font-size: 20px;
-}
-
-.totals {
-    margin-bottom: 8px;
-}
-
-.totalDiscounts {
-    color: #fc5230;
 }
 
 @media only screen and (max-width: 980px) {
@@ -109,4 +55,4 @@
     .btnClearCart {
         margin-top: 10px;
     }
-  }
+}

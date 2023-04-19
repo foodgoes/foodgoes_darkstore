@@ -1,0 +1,38 @@
+.wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.container {
+    display: grid;
+    grid-template: "delivery wrapperTotals" auto/minmax(560px,auto) minmax(370px,auto);
+    margin: 0 15px;
+}
+
+.wrapperDelivery {
+    grid-area: delivery;
+}
+
+.wrapperTotals {
+    grid-area: wrapperTotals;
+    margin-left: 72px;
+    display: flex;
+    flex-direction: column;
+}
+
+.methods:first-child {
+    margin-top: 0;
+}
+.methods {
+    margin-top: 32px;
+}
+
+@media only screen and (max-width: 980px) {
+    .container {
+      grid-template: "wrapperTotals" "delivery";
+    }
+    .wrapperTotals {
+        margin-left: 0;
+    }
+}

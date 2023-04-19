@@ -1,0 +1,20 @@
+.heading span {
+    font-size: 34px;
+    line-height: 34px;
+    font-weight: 700;
+}
+.heading span {
+    padding: 19px 0;
+    display: block;
+}
+
+.payment {
+    border-radius: 12px;
+    padding: 3px 7px;
+    border: 1px solid #e8e7e6;
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    min-height: 56px;
+    width: 100%;
+}

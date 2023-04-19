@@ -23,10 +23,7 @@ async function handler(req, res) {
         const expires = "expires="+ d.toUTCString();
         res.setHeader('Set-Cookie', `cart=${cart.token}; ${expires}; path=/`);
       }
-      setTimeout((() => {
-        res.status(200).json(cart);
-      }), 500);
-      return;
+      return res.status(200).json(cart);
     }
 
     if (req.method === 'DELETE') {
@@ -115,10 +112,11 @@ async function handleBodyPOSTAsync(req) {
       try {
         const cartByToken = await Cart.findOne({token});
         if (!cartByToken) {
-          return await Cart.findOne({userId: {$and: [{ $ne: null }, {$eq: userId}]}});
+          return await Cart.findOne({$and: [{ userId: {$ne: null} }, { userId }]});
         }
         return cartByToken;
       } catch(e) {
+        console.log(e)
         return null;
       }
     }(userId, token));

@@ -14,17 +14,33 @@ const LocationSchema = new Schema({
         type: String
     },
     address: {
-        address1: String,
+        address1: {
+            type: String,
+            required: true
+        },
         address2: String,
-        city: String,
-        latitude: Number,
-        longitude: Number,
-        phone: String,
         zip: String,
+        flat: String,
+        entrance: String,
+        floor: String,
+        doorcode: String,
+        country: String,
+        city: String,
+        province: String,
         countryCode: String,
         provinceCode: String,
-        country: String,
-        province: String,
+        latitude: Number,
+        longitude: Number,
+        company: String,
+        firstName: String,
+        lastName: String,
+        phone: String,
+        comment: String,
+        options: {
+            leaveAtTheDoor: Boolean,
+            meetOutside: Boolean,
+            noDoorCall: Boolean,
+        }
     },
     deactivatedAt: Date,
     createdAt: {
