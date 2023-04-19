@@ -104,5 +104,6 @@
   "deliveryInformation": "Информация о доставке",
   "deliveryTime": "Время доставки",
   "schedule": "График работы",
-  "scheduleWorkDays": "Каждый день, кроме Шаббата"
+  "scheduleWorkDays": "Каждый день, кроме Шаббата",
+  "meetOutside": "Встреча снаружи"
 }

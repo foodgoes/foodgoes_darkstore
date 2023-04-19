@@ -78,23 +78,6 @@ export default function DeliveryAddress({register}) {
                         </div>
                     </label>
                 </div>
-                <div className={styles.options}>
-                    <h3 className={styles.subheading}>{translate('deliveryOptions')}</h3>
-                    <hr />
-                    <div>
-                        <div className={styles.option}>
-                            <div>
-                                <span className={styles.optionTitle}>{translate('leaveAtTheDoor')}</span>
-                            </div>
-                            <div className={styles.switchButton}>
-                                <label className={styles.switch}>
-                                    <input type="checkbox" {...register("shippingAddress.options.leaveAtTheDoor")} />
-                                    <span className={styles.slider + ' ' + styles.round}></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </>
     );

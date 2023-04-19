@@ -104,5 +104,6 @@
   "deliveryInformation": "Delivery information",
   "deliveryTime": "Delivery time",
   "schedule": "Schedule",
-  "scheduleWorkDays": "Every day, besides Shabbat"
+  "scheduleWorkDays": "Every day, besides Shabbat",
+  "meetOutside": "Meet outside"
 }
