@@ -6,9 +6,8 @@
 
 .container {
     margin: 0 15px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template: "content total" auto/minmax(560px,auto) minmax(370px,auto);
 }
 
 .shortInfo {
@@ -35,10 +34,8 @@
 }
 
 .content {
-    flex-grow: 1;
-    max-width: 560px;
+    grid-area: content;
 }
-
 .content section {
     margin-bottom: 32px;
 }
@@ -47,9 +44,7 @@
 }
 
 .total {
-    max-width: 328px;
-    width: 100%;
-    flex-shrink: 0;
+    grid-area: total;
     margin-left: 72px;
 }
 
@@ -101,7 +96,7 @@
 
 @media only screen and (max-width: 980px) {
     .container {
-        flex-direction: column;
+        grid-template: "total" "content";
     }
     .total {
         margin-left: 0;

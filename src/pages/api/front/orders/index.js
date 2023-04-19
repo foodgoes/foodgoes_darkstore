@@ -126,59 +126,51 @@ async function handleBodyPOSTAsync(userId, req, res) {
               const {shippingAddress} = data;
 
               const {address1} = shippingAddress;
-              const [errorsAddress1, valueAddress1] = validateString(address1, {require: true, max: 500});
+              const [errorsAddress1, valueAddress1] = validateString(address1, {require: true, max: 550});
               if (errorsAddress1.length > 0) {
                   errors.push({field: ['shippingAddress', 'address1'], message: errorsAddress1[0]});
               }
               outputShippingAddress.address1 = valueAddress1;
 
-              const {address2} = shippingAddress;
-              const [errorsAddress2, valueAddress2] = validateString(address2, {require: true, max: 255});
-              if (errorsAddress2.length > 0) {
-                  errors.push({field: ['shippingAddress', 'address2'], message: errorsAddress2[0]});
+              if (shippingAddress.hasOwnProperty('address2')) {
+                const {address2} = shippingAddress;
+                const [errorsAddress2, valueAddress2] = validateString(address2, {max: 550});
+                if (errorsAddress2.length > 0) {
+                    errors.push({field: ['shippingAddress', 'address2'], message: errorsAddress2[0]});
+                }
+                outputShippingAddress.address2 = valueAddress2;
               }
-              outputShippingAddress.address2 = valueAddress2;
-
-
               if (shippingAddress.hasOwnProperty('entrance')) {
                   const {entrance} = shippingAddress;
-                  const [errorsAddress2, valueAddress2] = validateString(entrance, {max: 255});
-                  if (errorsAddress2.length > 0) {
-                      errors.push({field: ['shippingAddress', 'entrance'], message: errorsAddress2[0]});
+                  const [errorsEntrance, valueEntrance] = validateString(entrance, {max: 100});
+                  if (errorsEntrance.length > 0) {
+                      errors.push({field: ['shippingAddress', 'entrance'], message: errorsEntrance[0]});
                   }
-                  outputShippingAddress.entrance = valueAddress2;
+                  outputShippingAddress.entrance = valueEntrance;
               }
               if (shippingAddress.hasOwnProperty('floor')) {
                   const {floor} = shippingAddress;
-                  const [errorsAddress2, valueAddress2] = validateString(floor, {max: 255});
-                  if (errorsAddress2.length > 0) {
-                      errors.push({field: ['shippingAddress', 'floor'], message: errorsAddress2[0]});
+                  const [errorsFloor, valueFloor] = validateString(floor, {max: 5});
+                  if (errorsFloor.length > 0) {
+                      errors.push({field: ['shippingAddress', 'floor'], message: errorsFloor[0]});
                   }
-                  outputShippingAddress.floor = valueAddress2;
+                  outputShippingAddress.floor = valueFloor;
               }
               if (shippingAddress.hasOwnProperty('doorcode')) {
                   const {doorcode} = shippingAddress;
-                  const [errorsAddress2, valueAddress2] = validateString(doorcode, {max: 255});
-                  if (errorsAddress2.length > 0) {
-                      errors.push({field: ['shippingAddress', 'doorcode'], message: errorsAddress2[0]});
+                  const [errorsDoorcode, valueDoorcode] = validateString(doorcode, {max: 10});
+                  if (errorsDoorcode.length > 0) {
+                      errors.push({field: ['shippingAddress', 'doorcode'], message: errorsDoorcode[0]});
                   }
-                  outputShippingAddress.doorcode = valueAddress2;
+                  outputShippingAddress.doorcode = valueDoorcode;
               }
               if (shippingAddress.hasOwnProperty('comment')) {
                   const {comment} = shippingAddress;
-                  const [errorsAddress2, valueAddress2] = validateString(comment, {max: 255});
-                  if (errorsAddress2.length > 0) {
-                      errors.push({field: ['shippingAddress', 'comment'], message: errorsAddress2[0]});
+                  const [errorsComment, valueComment] = validateString(comment, {max: 650});
+                  if (errorsComment.length > 0) {
+                      errors.push({field: ['shippingAddress', 'comment'], message: errorsComment[0]});
                   }
-                  outputShippingAddress.comment = valueAddress2;
-              }
-              if (shippingAddress.hasOwnProperty('comment')) {
-                  const {comment} = shippingAddress;
-                  const [errorsAddress2, valueAddress2] = validateString(comment, {max: 255});
-                  if (errorsAddress2.length > 0) {
-                      errors.push({field: ['shippingAddress', 'comment'], message: errorsAddress2[0]});
-                  }
-                  outputShippingAddress.comment = valueAddress2;
+                  outputShippingAddress.comment = valueComment;
               }
               if (shippingAddress.hasOwnProperty('options')) {
                 const {options} = shippingAddress;
