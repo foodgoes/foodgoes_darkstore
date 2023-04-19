@@ -52,6 +52,9 @@
 .footer button {
   width: 100%;
 }
-.footer button:last-child {
+.footer button {
   margin-left: 8px;
+}
+.footer button:first-child {
+  margin-left: 0;
 }

@@ -100,5 +100,9 @@
   "address": "כתובת",
   "paid": "שולם",
   "createdAt" : "נוצר ב",
-  "canceledAt" : "בוטל ב"
+  "canceledAt" : "בוטל ב",
+  "deliveryInformation": "מידע על המשלוח",
+  "deliveryTime": "זמן משלוח",
+  "schedule": "לוח זמנים",
+  "scheduleWorkDays": "כל יום חוץ משבת"
 }

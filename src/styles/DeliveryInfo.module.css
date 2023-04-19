@@ -1,0 +1,18 @@
+.line {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    height: 52px;
+    border-bottom: 1px solid #efeeed;
+}
+li:last-child .line {
+    border-bottom: 0;
+    height: 32px;
+}
+.line span {
+    flex: 1;
+}
+.line span:last-child {
+    text-align: right;
+    flex: 2;
+}

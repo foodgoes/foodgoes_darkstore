@@ -100,5 +100,9 @@
   "address": "Адрес",
   "paid": "Оплаченный",
   "createdAt" : "Создан в",
-  "canceledAt" : "Отменен в"
+  "canceledAt" : "Отменен в",
+  "deliveryInformation": "Информация о доставке",
+  "deliveryTime": "Время доставки",
+  "schedule": "График работы",
+  "scheduleWorkDays": "Каждый день, кроме Шаббата"
 }

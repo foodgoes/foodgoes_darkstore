@@ -100,5 +100,9 @@
   "address": "Address",
   "paid": "Paid",
   "createdAt" : "Created at",
-  "canceledAt" : "Canceled at"
+  "canceledAt" : "Canceled at",
+  "deliveryInformation": "Delivery information",
+  "deliveryTime": "Delivery time",
+  "schedule": "Schedule",
+  "scheduleWorkDays": "Every day, besides Shabbat"
 }

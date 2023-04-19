@@ -34,14 +34,31 @@
   align-self: center;
   margin-left: 16px;
   white-space: nowrap;
+  cursor: pointer;
 }
 .deliveryTime {
   font-size: 16px;
   font-weight: 500;
 }
-.deliveryPrice {
+.priceContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.priceContainer span {
   font-size: 13px;
   color: #9e9b98;
+}
+.price {
+  margin-right: 4px;
+}
+.info {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  line-height: 0;
+  display: inline-block;
 }
 
 @media only screen and (max-width:442px) {
