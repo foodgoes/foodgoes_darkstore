@@ -87,7 +87,9 @@ async function handleGETAsync(req) {
         brand: product.brand,
         quantity: cart.products.find(p => String(p.productId) === product.id).quantity,
         excludeDiscount: product.excludeDiscount,
-        ageRestricted: product.ageRestricted
+        ageRestricted: product.ageRestricted,
+        displayAmount: product.displayAmount,
+        unit: product.unit
       };
     });
 
@@ -180,7 +182,9 @@ async function handleBodyPOSTAsync(req) {
               brand: product.brand,
               quantity: products.find(p => String(p.productId) === product.id).quantity,
               excludeDiscount: product.excludeDiscount,
-              ageRestricted: product.ageRestricted
+              ageRestricted: product.ageRestricted,
+              displayAmount: product.displayAmount,
+              unit: product.unit
             };
           });
         })(products);

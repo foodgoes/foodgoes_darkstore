@@ -31,7 +31,7 @@ export default function ProductViewList({product, disabledBuy=false}) {
                         />
                     )}
                 </div>
-                <div>
+                <div className={styles.titlePriceWeight}>
                     <div className={styles.title}><h3>{product.title[locale]}</h3></div>
                     <div className={styles.priceBlock}>
                         {product.compareAtPrice ? (
@@ -43,6 +43,7 @@ export default function ProductViewList({product, disabledBuy=false}) {
                                 </span>
                             </>
                         ) : <span className={styles.price}>&#8362;{product.price}</span>}
+                        <span className={styles.weight}> · {product.displayAmount} {product.unit}</span>
                     </div>
                 </div>
             </div>
