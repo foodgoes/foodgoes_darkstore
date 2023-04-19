@@ -297,7 +297,7 @@ async function handleBodyPOSTAsync(userId, req, res) {
         await Location.findOneAndUpdate({userId}, {address: data.shippingAddress});
 
         // send alert of new order to admin dashboard
-        const response = await fetch(process.env.DOMAIN + '/admin/api/orders', {method: 'POST',  headers: {
+        const response = await fetch(process.env.DOMAIN + '/admin/api/alert/new_order', {method: 'POST',  headers: {
           'Content-Type': 'application/json',
         }, body: JSON.stringify({id: orderId})});
         await response.json();

@@ -22,6 +22,9 @@ export const locationSlice = createSlice({
         updateLocation: (state, action) => {
             state.location = action.payload;
         },
+        updateLocationAddress: (state, action) => {
+            state.location.address = action.payload;
+        },
         logProductIdBeforelocation: (state, action) => {
             state.productIdBeforelocation = action.payload;
         },
@@ -45,7 +48,7 @@ export const locationSlice = createSlice({
     }
 });
 
-export const { updateLocation, logProductIdBeforelocation, logProductIdAfterlocation } = locationSlice.actions;
+export const { updateLocation, updateLocationAddress, logProductIdBeforelocation, logProductIdAfterlocation } = locationSlice.actions;
 
 export const selectProductIdBeforelocation = state => state.location.productIdBeforelocation;
 export const selectProductIdAfterlocation = state => state.location.productIdAfterlocation;

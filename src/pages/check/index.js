@@ -14,6 +14,7 @@ import { withSessionSsr } from '@/src/common/lib/withSession';
 import PaymentMethod from '@/src/common/components/payment-method';
 import DeliveryAddress from '@/src/common/components/delivery-address';
 import { deleteCart } from '@/src/features/cart/cartSlice';
+import { updateLocationAddress } from '@/src/features/location/locationSlice';
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
@@ -57,6 +58,7 @@ export default function Check() {
       }
 
       dispatch(deleteCart());
+      dispatch(updateLocationAddress(data.shippingAddress));
 
       router.push({pathname: '/check/success', query: {orderId: order.id}}, undefined, { locale: router.locale });
     } catch (e) {
