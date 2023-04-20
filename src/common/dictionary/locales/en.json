@@ -105,5 +105,7 @@
   "deliveryTime": "Delivery time",
   "schedule": "Schedule",
   "scheduleWorkDays": "Every day, besides Shabbat",
-  "meetOutside": "Meet outside"
+  "meetOutside": "Meet outside",
+  "whatWeSell": "What we sell",
+  "infoAboutDelivery": "Delivery area is limited. The delivery time may vary and is influenced by different factors (weather, traffic, etc.). The delivery time does not include order acceptance, processing and picking time."
 }
