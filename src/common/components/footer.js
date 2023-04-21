@@ -2,6 +2,8 @@ import Link from 'next/link';
 import LogoGraySVG from '@/public/icons/logo-gray';
 import styles from '@/src/styles/Footer.module.css';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
+import FacebookSVG from '@/public/icons/facebook';
+import InstagramSVG from '@/public/icons/instagram';
 
 export default function Footer() {
   const {translate} = useTranslation();
@@ -11,7 +13,7 @@ export default function Footer() {
       <footer className={styles.footer}>
         <div className={styles.top}>
           <Link href="/">
-            <LogoGraySVG fill="#9e9b98" />
+            <LogoGraySVG />
           </Link>
         </div>
         <div className={styles.content}>
@@ -29,6 +31,16 @@ export default function Footer() {
             <span className={styles.links}>
               &copy; {new Date().getFullYear()} FoodGoes
             </span>
+          </div>
+          <div className={styles.socialsWrapper}>
+            <div className={styles.socials}>
+              <a target="_blank" href="https://www.facebook.com/foodgoes.deli/" rel="noopener noreferrer">
+                <FacebookSVG fill="#9e9b98" />
+              </a>
+              <a target="_blank" href="https://www.instagram.com/foodgoes.deli/" rel="noopener noreferrer">
+                <InstagramSVG fill="#9e9b98" />
+              </a>
+            </div>
           </div>
         </div>
       </footer>
