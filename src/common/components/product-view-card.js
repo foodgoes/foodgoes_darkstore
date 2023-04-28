@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 
 import styles from '@/src/styles/ProductViewCard.module.css';
-import {financialStr} from '@/src/common/utils/utils';
+import {getPriceFormat} from '@/src/common/utils/currency';
 
 export default function ProductViewCard({product, disabledBuy=false}) {
     const { locale } = useRouter();
@@ -54,13 +54,13 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                             <div className={styles.priceBlock}>
                                 {product.compareAtPrice ? (
                                     <>
-                                        <span className={styles.compareAtPrice}>&#8362;{financialStr(product.price)}</span>
+                                        <span className={styles.compareAtPrice}>&#8362;{getPriceFormat(product.price)}</span>
                                         <span className={styles.oldPriceWithLine}>
-                                            <span className={styles.oldPrice}>&#8362;{financialStr(product.compareAtPrice)}</span>
+                                            <span className={styles.oldPrice}>&#8362;{getPriceFormat(product.compareAtPrice)}</span>
                                             <span className={styles.line}></span>
                                         </span>
                                     </>
-                                ) : <span className={styles.price}>&#8362;{financialStr(product.price)}</span>}
+                                ) : <span className={styles.price}>&#8362;{getPriceFormat(product.price)}</span>}
                             </div>
                             <h3 className={styles.title}>{product.title[locale]}</h3>
                             <span className={styles.weightInfo}>{product.displayAmount} {translate(product.unit)}</span>

@@ -1,7 +1,7 @@
 import dbConnect from '@/src/common/lib/dbConnect';
 import Product from '@/src/common/models/Product';
 import Discount from '@/src/common/models/Discount';
-import {financial} from '@/src/common/utils/utils';
+import {getPrice} from '@/src/common/utils/currency';
 
 export default async function ResourceProduct({filter, projection=null, options, sort}, payload) {
     try {
@@ -33,12 +33,12 @@ export default async function ResourceProduct({filter, projection=null, options,
               }
               if (custom.percentage) {
                 compareAtPrice = price;
-                price -= financial(price*custom.percentage/100);
+                price -= getPrice(price*custom.percentage/100);
               }
             } else if (discount.products.all.enabled) {
               if (!discount.products.all.excludeProductIds.includes(product.id)) {
                 compareAtPrice = price;
-                price -= financial(price*discount.products.all.percentage/100);
+                price -= getPrice(price*discount.products.all.percentage/100);
               }
             }
           }

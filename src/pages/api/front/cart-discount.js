@@ -4,7 +4,7 @@ import Cart from '@/src/common/models/Cart';
 import Product from '@/src/common/models/Product';
 import Discount from '@/src/common/models/Discount';
 import User from '@/src/common/models/User';
-import {financial} from '@/src/common/utils/utils';
+import {getPrice} from '@/src/common/utils/currency';
 
 export default withSessionRoute(handler);
 
@@ -108,11 +108,11 @@ async function handleBodyPOSTAsync(req, res) {
           }
         }
   
-        totalLineItemsPrice = financial(totalLineItemsPrice);
-        totalDiscounts = financial(totalDiscounts);
-        subtotalPrice = financial(totalLineItemsPrice - totalDiscounts);
-        totalPrice = financial(subtotalPrice + totalShippingPrice);
-        minTotalPrice = financial(minTotalPrice);
+        totalLineItemsPrice = getPrice(totalLineItemsPrice);
+        totalDiscounts = getPrice(totalDiscounts);
+        subtotalPrice = getPrice(totalLineItemsPrice - totalDiscounts);
+        totalPrice = getPrice(subtotalPrice + totalShippingPrice);
+        minTotalPrice = getPrice(minTotalPrice);
   
         return totalPrice !== totalPriceCart || minTotalPrice !== minTotalPriceCart;
       } catch(e) {

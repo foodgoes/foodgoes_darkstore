@@ -5,7 +5,7 @@ import Collection from '@/src/common/models/Collection';
 import Category from '@/src/common/models/Category';
 import Discount from '@/src/common/models/Discount';
 import User from '@/src/common/models/User';
-import {financial} from '@/src/common/utils/utils';
+import {getPrice} from '@/src/common/utils/currency';
 
 export default withSessionRoute(handler);
 
@@ -45,12 +45,12 @@ async function handler(req, res) {
         }
         if (custom.percentage) {
           compareAtPrice = price;
-          price -= financial(price*custom.percentage/100);
+          price -= getPrice(price*custom.percentage/100);
         }
       } else if (discount.products.all.enabled) {
         if (!discount.products.all.excludeProductIds.includes(product.id)) {
           compareAtPrice = price;
-          price -= financial(price*discount.products.all.percentage/100);
+          price -= getPrice(price*discount.products.all.percentage/100);
         }
       }
     }

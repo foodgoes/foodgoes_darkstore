@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import styles from '@/src/styles/Total.module.css';
-import {financialStr} from '@/src/common/utils/utils';
+import {getPriceFormat} from '@/src/common/utils/currency';
 
 export default function Total() {
     const {cart} = useSelector(state => state.cart);
@@ -18,21 +18,21 @@ export default function Total() {
                 <tbody>
                   <tr>
                     <th>{translate('products')}</th>
-                    <td>&#8362;{financialStr(cart.totalLineItemsPrice)}</td>
+                    <td>&#8362;{getPriceFormat(cart.totalLineItemsPrice)}</td>
                   </tr>
                   {cart.totalDiscounts > 0 && (
                     <tr>
                       <th>{translate('discount')}</th>
-                      <td><span className={styles.totalDiscounts}>−&#8362;{financialStr(cart.totalDiscounts)}</span></td>
+                      <td><span className={styles.totalDiscounts}>−&#8362;{getPriceFormat(cart.totalDiscounts)}</span></td>
                     </tr>
                   )}
                   <tr>
                     <th>{translate('shipping')}</th>
-                    <td>&#8362;{financialStr(cart.totalShippingPrice)}</td>
+                    <td>&#8362;{getPriceFormat(cart.totalShippingPrice)}</td>
                   </tr>
                   <tr>
                     <th>{translate('payment')}</th>
-                    <td>&#8362;{financialStr(cart.totalPrice)}</td>
+                    <td>&#8362;{getPriceFormat(cart.totalPrice)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -40,7 +40,7 @@ export default function Total() {
 
             {cart.minTotalPrice > 0 && (
               <div className={styles.minTotalPrice}>
-                <span>{translate('minTotalPrice')} &#8362;{financialStr(cart.minTotalPrice)}</span>
+                <span>{translate('minTotalPrice')} &#8362;{getPriceFormat(cart.minTotalPrice)}</span>
               </div>
             )}
         </div>

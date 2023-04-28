@@ -10,7 +10,7 @@ import Product from '@/src/common/models/Product';
 import Location from '@/src/common/models/Location';
 import Discount from '@/src/common/models/Discount';
 import {getDateV2} from '@/src/common/utils/date';
-import {financial} from '@/src/common/utils/utils';
+import {getPrice} from '@/src/common/utils/currency';
 
 import { validateString, validateBoolean } from '@/src/common/utils/validators';
 
@@ -253,11 +253,11 @@ async function handleBodyPOSTAsync(userId, req, res) {
             const custom = discount.products.custom.find(c => c.productId.toString() === product.id);
             if (custom) {
               if (custom.percentage) {
-                price -= financial(price*custom.percentage/100);
+                price -= getPrice(price*custom.percentage/100);
               }
             } else if (discount.products.all.enabled) {
               if (!discount.products.all.excludeProductIds.includes(product.id)) {
-                price -= financial(price*discount.products.all.percentage/100);
+                price -= getPrice(price*discount.products.all.percentage/100);
               }
             }
           }
@@ -279,7 +279,7 @@ async function handleBodyPOSTAsync(userId, req, res) {
             grams: product.grams
           };
         });
-        totalWeight = financial(totalWeight);
+        totalWeight = getPrice(totalWeight);
 
         const totalShippingPrice = cart.totalShippingPrice;
         const totalLineItemsPrice = cart.totalLineItemsPrice;

@@ -8,7 +8,7 @@ import styles from '@/src/styles/Product.module.css'
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import BuyButton from '@/src/common/components/buy-button';
 import ChevronRightSVG from '@/public/icons/chevron-right';
-import {financialStr} from '@/src/common/utils/utils';
+import {getPriceFormat} from '@/src/common/utils/currency';
 
 const Product = ({errorCode, breadcrumbs, product}) => {
   const { translate } = useTranslation();
@@ -79,13 +79,13 @@ const Product = ({errorCode, breadcrumbs, product}) => {
               <div className={styles.priceBlock}>
                   {product.compareAtPrice ? (
                       <>
-                          <span className={styles.compareAtPrice}>&#8362;{financialStr(product.price)}</span>
+                          <span className={styles.compareAtPrice}>&#8362;{getPriceFormat(product.price)}</span>
                           <span className={styles.oldPriceWithLine}>
-                              <span className={styles.oldPrice}>&#8362;{financialStr(product.compareAtPrice)}</span>
+                              <span className={styles.oldPrice}>&#8362;{getPriceFormat(product.compareAtPrice)}</span>
                               <span className={styles.line}></span>
                           </span>
                       </>
-                  ) : <span className={styles.price}>&#8362;{financialStr(product.price)}</span>}
+                  ) : <span className={styles.price}>&#8362;{getPriceFormat(product.price)}</span>}
               </div>
               <div><BuyButton disabled={!product.availableForSale} productId={productId} primary size="large"/></div>
             </div>

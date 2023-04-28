@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import styles from '@/src/styles/LineItemViewList.module.css';
-import {financialStr} from '@/src/common/utils/utils';
+import {getPriceFormat} from '@/src/common/utils/currency';
 
 export default function LineItemViewList({lineItem}) {
     const { locale } = useRouter();
@@ -30,7 +30,7 @@ export default function LineItemViewList({lineItem}) {
             <div className={styles.info}>
                 <div className={styles.title}><h3>{lineItem.title[locale]}</h3></div>
                 <div>
-                    <span className={styles.price}>&#8362;{financialStr(lineItem.price)}</span>
+                    <span className={styles.price}>&#8362;{getPriceFormat(lineItem.price)}</span>
                     <span> · </span>
                     <span className={styles.weight}>{lineItem.displayAmount} {lineItem.unit}</span>
                 </div>
