@@ -1,14 +1,20 @@
 import { withSessionRoute } from '@/src/common/lib/withSession';
 import dbConnect from '@/src/common/lib/dbConnect';
-import Product from '@/src/common/models/Product';
 import Collection from '@/src/common/models/Collection';
 import Category from '@/src/common/models/Category';
+import User from '@/src/common/models/User';
+import ResourceProduct from '@/src/common/resources/product';
 
 export default withSessionRoute(handler);
 
 async function handler(req, res) {
   try {
     await dbConnect();
+
+    const userId = req.session.user ? req.session.user.id : null;
+    const user = await User.findById(userId);
+
+    const discountCode = user ? user.discount : 'new_user';
 
     const {slug} = req.query;
 
@@ -31,38 +37,15 @@ async function handler(req, res) {
       for (let link of baseLink.links) {
         if (link.subjectId) {
           const collection = await Collection.findById(link.subjectId);
-
           if (!collection) {
             continue;
           }
 
-          const {title, productIds} = collection;
-          const productsData = await Product.find({status: 'active', '_id': {$in: productIds}}, null, {skip: 0, limit: 50}).sort([['availableForSale', 'desc'], ['sort', 'asc']]);
-
-          const products = productsData.map(product => {
-            const images = product.images.map(img => ({
-              src: img.src,
-              srcWebp: img.srcWebp,
-              width: img.width,
-              height: img.height,
-              alt: img.alt
-            }));
-            
-            return {
-              id: product.id,
-              title: product.title,
-              image: images.length ? images[0] : null,
-              images,
-              price: product.price,
-              compareAtPrice: product.compareAtPrice,
-              brand: product.brand,
-              quantity: product.quantity,
-              unit: product.unit,
-              amountPerUnit: product.amountPerUnit,
-              displayAmount: product.displayAmount,
-              availableForSale: product.availableForSale
-            };
-          });
+          const {productIds} = collection;
+          const filter = {status: 'active', '_id': {$in: productIds}};
+          const options = {filter, projection: null, options: {skip: 0, limit: 400}, sort: [['availableForSale', 'desc'], ['sort', 'asc']]};
+          const payload = {discountCode};
+          const products = await ResourceProduct(options, payload);
 
           linksWithProducts.push({
             title: link.title,
@@ -78,10 +61,8 @@ async function handler(req, res) {
       });
     }
 
-
     res.status(200).json(linksWithProducts);
   } catch(e) {
-    console.log(e)
     res.status(200).json(null);
   }
 }

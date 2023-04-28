@@ -1,17 +1,11 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import styles from '@/src/styles/Total.module.css';
+import {financialStr} from '@/src/common/utils/utils';
 
 export default function Total() {
     const {cart} = useSelector(state => state.cart);
     const { translate } = useTranslation();
-    
-    const minTotalPrice = 50;
-    const totalDiscounts = 0;
-    const totalShippingPrice = 30;
-    const totalLineItemsPrice = cart.total;
-    const subtotalPrice = totalLineItemsPrice - totalDiscounts;
-    const totalPrice = subtotalPrice + totalShippingPrice;
 
     return (
         <div>
@@ -24,29 +18,31 @@ export default function Total() {
                 <tbody>
                   <tr>
                     <th>{translate('products')}</th>
-                    <td>&#8362;{totalLineItemsPrice.toFixed(2)}</td>
+                    <td>&#8362;{financialStr(cart.totalLineItemsPrice)}</td>
                   </tr>
-                  {totalDiscounts > 0 && (
+                  {cart.totalDiscounts > 0 && (
                     <tr>
                       <th>{translate('discount')}</th>
-                      <td><span className={styles.totalDiscounts}>−&#8362;{totalDiscounts}</span></td>
+                      <td><span className={styles.totalDiscounts}>−&#8362;{financialStr(cart.totalDiscounts)}</span></td>
                     </tr>
                   )}
                   <tr>
                     <th>{translate('shipping')}</th>
-                    <td>&#8362;{totalShippingPrice}</td>
+                    <td>&#8362;{financialStr(cart.totalShippingPrice)}</td>
                   </tr>
                   <tr>
                     <th>{translate('payment')}</th>
-                    <td>&#8362;{totalPrice.toFixed(2)}</td>
+                    <td>&#8362;{financialStr(cart.totalPrice)}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            
-            <div className={styles.minTotalPrice}>
-              <span>{translate('minTotalPrice')} &#8362;{minTotalPrice}</span>
-            </div>
+
+            {cart.minTotalPrice > 0 && (
+              <div className={styles.minTotalPrice}>
+                <span>{translate('minTotalPrice')} &#8362;{financialStr(cart.minTotalPrice)}</span>
+              </div>
+            )}
         </div>
     );
 };

@@ -19,7 +19,7 @@
   "shippingTime": "Shipping [time] hours",
   "products": "Products",
   "shipping": "Shipping",
-  "payment": "Payment",
+  "payment": "Payment due",
   "order": "Order",
   "btnClearCart": "Clear cart",
   "btnBackToCatalog": "Back to catalog",
@@ -107,5 +107,7 @@
   "scheduleWorkDays": "Every day, besides Shabbat",
   "meetOutside": "Meet outside",
   "whatWeSell": "What we sell",
-  "infoAboutDelivery": "Delivery area is limited. The delivery time may vary and is influenced by different factors (weather, traffic, etc.). The delivery time does not include order acceptance, processing and picking time."
+  "infoAboutDelivery": "Delivery area is limited. The delivery time may vary and is influenced by different factors (weather, traffic, etc.). The delivery time does not include order acceptance, processing and picking time.",
+  "discountChanged": "Discount changed",
+  "priceAndTotalsUpdated": "Price of products and totals updated"
 }

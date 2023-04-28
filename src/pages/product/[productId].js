@@ -8,6 +8,7 @@ import styles from '@/src/styles/Product.module.css'
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import BuyButton from '@/src/common/components/buy-button';
 import ChevronRightSVG from '@/public/icons/chevron-right';
+import {financialStr} from '@/src/common/utils/utils';
 
 const Product = ({errorCode, breadcrumbs, product}) => {
   const { translate } = useTranslation();
@@ -41,6 +42,15 @@ const Product = ({errorCode, breadcrumbs, product}) => {
                 </div>
             ))}
           </div>
+          <div>
+            {product.labels.length > 0 && (
+                <ul className={styles.labels}>
+                    {product.labels.map((label, i) => (
+                        <li key={i}><div><span>{label[locale]}</span></div></li>
+                    ))}
+                </ul>
+            )}
+          </div>
           <div className='infoBlock'>
             <div>
               <h1 className='heading'>{product.subTitle[locale]}</h1>
@@ -69,13 +79,13 @@ const Product = ({errorCode, breadcrumbs, product}) => {
               <div className={styles.priceBlock}>
                   {product.compareAtPrice ? (
                       <>
-                          <span className={styles.compareAtPrice}>&#8362;{product.price.toFixed(2)}</span>
+                          <span className={styles.compareAtPrice}>&#8362;{financialStr(product.price)}</span>
                           <span className={styles.oldPriceWithLine}>
-                              <span className={styles.oldPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
+                              <span className={styles.oldPrice}>&#8362;{financialStr(product.compareAtPrice)}</span>
                               <span className={styles.line}></span>
                           </span>
                       </>
-                  ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
+                  ) : <span className={styles.price}>&#8362;{financialStr(product.price)}</span>}
               </div>
               <div><BuyButton disabled={!product.availableForSale} productId={productId} primary size="large"/></div>
             </div>
@@ -128,8 +138,12 @@ const Product = ({errorCode, breadcrumbs, product}) => {
   );
 }
 
-const getProduct = async productId => {
-  const res = await fetch(`${process.env.DOMAIN}/api/front/product?productId=${productId}`);
+const getProductAPI = async (productId, headers) => {
+  const res = await fetch(`${process.env.DOMAIN}/api/front/product?productId=${productId}`, {
+    headers: {
+      Cookie: headers.cookie
+    }
+  });
   const errorCode = res.ok ? false : res.status;
   const data = await res.json();
 
@@ -139,7 +153,7 @@ const getProduct = async productId => {
 export async function getServerSideProps(context) {
   const {productId} = context.params;
 
-  const { errorCode, breadcrumbs, product } = await getProduct(productId);
+  const { errorCode, breadcrumbs, product } = await getProductAPI(productId, context.req.headers);
 
   return { props: { errorCode, breadcrumbs, product } };
 }

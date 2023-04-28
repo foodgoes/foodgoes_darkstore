@@ -21,11 +21,29 @@ const CartSchema = new Schema({
     token: {
         type: String
     },
-    total: {
+    totalShippingPrice: {
         type: Number,
-        min: 0.00,
-        maxlength: 15,
-        default: 0.00
+        default: 0
+    },
+    totalLineItemsPrice: {
+        type: Number,
+        default: 0
+    },
+    totalDiscounts: {
+        type: Number,
+        default: 0
+    },
+    subtotalPrice: {
+        type: Number,
+        default: 0
+    },
+    totalPrice: {
+        type: Number,
+        default: 0
+    },
+    minTotalPrice: {
+        type: Number,
+        default: 0
     },
     products: [ProductCart],
     createdAt: {

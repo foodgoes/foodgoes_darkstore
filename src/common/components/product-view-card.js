@@ -1,10 +1,11 @@
-import styles from '@/src/styles/ProductViewCard.module.css'
-
 import Image from 'next/image';
 import Link from 'next/link';
 import BuyButton from './buy-button';
 import { useRouter } from 'next/router';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
+
+import styles from '@/src/styles/ProductViewCard.module.css';
+import {financialStr} from '@/src/common/utils/utils';
 
 export default function ProductViewCard({product, disabledBuy=false}) {
     const { locale } = useRouter();
@@ -18,7 +19,7 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                 <div className={styles.container}>
                     <div className={styles.containerImg}>
                         <div className={styles.wrapperImg}>
-                            <div className={styles.postionImage}>
+                            <div className={styles.positionImage}>
                                 <div className={styles.image}>
                                     {product.image ? (
                                         <Image
@@ -38,6 +39,13 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                                         />
                                     )}
                                 </div>
+                                {product.labels.length > 0 && (
+                                    <ul className={styles.labels}>
+                                        {product.labels.map((label, i) => (
+                                            <li key={i}><div><span>{label[locale]}</span></div></li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -46,13 +54,13 @@ export default function ProductViewCard({product, disabledBuy=false}) {
                             <div className={styles.priceBlock}>
                                 {product.compareAtPrice ? (
                                     <>
-                                        <span className={styles.compareAtPrice}>&#8362;{product.price.toFixed(2)}</span>
+                                        <span className={styles.compareAtPrice}>&#8362;{financialStr(product.price)}</span>
                                         <span className={styles.oldPriceWithLine}>
-                                            <span className={styles.oldPrice}>&#8362;{product.compareAtPrice.toFixed(2)}</span>
+                                            <span className={styles.oldPrice}>&#8362;{financialStr(product.compareAtPrice)}</span>
                                             <span className={styles.line}></span>
                                         </span>
                                     </>
-                                ) : <span className={styles.price}>&#8362;{product.price.toFixed(2)}</span>}
+                                ) : <span className={styles.price}>&#8362;{financialStr(product.price)}</span>}
                             </div>
                             <h3 className={styles.title}>{product.title[locale]}</h3>
                             <span className={styles.weightInfo}>{product.displayAmount} {translate(product.unit)}</span>

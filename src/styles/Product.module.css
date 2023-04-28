@@ -133,6 +133,46 @@
     font-size: 20px;
 }
 
+
+.labels {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin-top: 16px;
+    padding: 0;
+    flex-direction: column;
+}
+.labels li {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+.labels li div {
+    background-color: rgb(252, 82, 48);
+    border-radius: 6px;
+    height: 21px;
+    padding: 0 5px;
+    align-items: center;
+    display: flex;
+    line-height: 0;
+    width: fit-content;
+}
+.labels li span {
+    display: inline-block;
+    font-size: 13px;
+    line-height: 21px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 700;
+    color: #fff;
+}
+
+.labels li span:lang(he) {
+    direction: rtl;
+}
+
 @media only screen and (max-width: 980px) {
     .container {
         flex-direction: column;

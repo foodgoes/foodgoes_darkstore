@@ -10,6 +10,7 @@ import Product from '@/src/common/models/Product';
 import Location from '@/src/common/models/Location';
 import Discount from '@/src/common/models/Discount';
 import {getDateV2} from '@/src/common/utils/date';
+import {financial} from '@/src/common/utils/utils';
 
 import { validateString, validateBoolean } from '@/src/common/utils/validators';
 
@@ -67,12 +68,10 @@ async function handleGETAsync(userId) {
 
           return {
             id: item.id,
+            productId: item.productId,
             title: item.title,
-            brand: item.brand,
             price: item.price,
             quantity: item.quantity,
-            productId: item.productId,
-            images,
             image: images.length ? images[0] : null
           };
         });
@@ -90,7 +89,6 @@ async function handleGETAsync(userId) {
           orderNumber: order.orderNumber,
           token: order.token,
           totalShippingPrice: order.totalShippingPrice,
-          totalTax: order.totalTax,
           totalLineItemsPrice: order.totalLineItemsPrice,
           totalDiscounts: order.totalDiscounts,
           subtotalPrice: order.subtotalPrice,
@@ -213,6 +211,9 @@ async function handleBodyPOSTAsync(userId, req, res) {
         if (!userId) {
           throw(new Error('userId not found'));
         }
+        
+        const user = await User.findById(userId);
+        const discountCode = user.discount;
 
         const cart = await Cart.findOne({userId}).sort({_id: -1});
         if (!cart) {
@@ -224,41 +225,69 @@ async function handleBodyPOSTAsync(userId, req, res) {
           throw(new Error('Location not found'));
         }
 
+        let discountToSave = null;
+        const discount = await Discount.findOne(
+          {
+            status: 'active', code: discountCode, 
+            startedAt: {$lt: new Date()}, finishedAt: {$gt: new Date()}
+          }
+        );
+        if (discount) {
+          discountToSave = {
+            discountId: discount.id,
+            title: discount.title,
+            code: discount.code,
+            startedAt: discount.startedAt,
+            finishedAt: discount.finishedAt
+          };
+        }
+        
         const productIds = cart.products.map(p => p.productId);
         const products = await Product.find({'_id': {$in: productIds}});
 
         let totalWeight = 0;
-        let totalLineItemsPrice = 0;
         const lineItems = products.map(product => {
+          let price = product.price;
+
+          if (discount) {
+            const custom = discount.products.custom.find(c => c.productId.toString() === product.id);
+            if (custom) {
+              if (custom.percentage) {
+                price -= financial(price*custom.percentage/100);
+              }
+            } else if (discount.products.all.enabled) {
+              if (!discount.products.all.excludeProductIds.includes(product.id)) {
+                price -= financial(price*discount.products.all.percentage/100);
+              }
+            }
+          }
+
           const quantity = cart.products.find(p => String(p.productId) === product.id).quantity;
-          totalLineItemsPrice += product.price*quantity;
           totalWeight += product.grams*quantity;
 
           return {
             productId: product.id,
             title: product.title,
             brand: product.brand,
-            price: product.price,
+            price,
             unitCost: product.unitCost,
-            compareAtPrice: product.compareAtPrice,
             pricePerUnit: product.pricePerUnit,
             unit: product.unit,
             amountPerUnit: product.amountPerUnit,
             displayAmount: product.displayAmount,
             quantity,
-            grams: product.grams,
+            grams: product.grams
           };
         });
-        totalLineItemsPrice = +totalLineItemsPrice.toFixed(2);
-        totalWeight = +totalWeight.toFixed(0);
+        totalWeight = financial(totalWeight);
 
-        const totalTax = 0;
-        const totalDiscounts = 0;
-        const totalShippingPrice = 30;
-        const subtotalPrice = +(totalLineItemsPrice - totalDiscounts).toFixed(2);
-        const totalPrice = +(subtotalPrice + totalShippingPrice).toFixed(2);
-        const minTotalPrice = 50;
-    
+        const totalShippingPrice = cart.totalShippingPrice;
+        const totalLineItemsPrice = cart.totalLineItemsPrice;
+        const totalDiscounts = cart.totalDiscounts;
+        const subtotalPrice = cart.subtotalPrice;
+        const totalPrice = cart.totalPrice;
+        const minTotalPrice = cart.minTotalPrice;
+
         if (totalPrice < minTotalPrice) {
           throw(new Error('Minimum total price is ' + minTotalPrice));
         }
@@ -276,8 +305,8 @@ async function handleBodyPOSTAsync(userId, req, res) {
           token: uuidv4(),
           financialStatus: 'pending',
           lineItems,
+          discount: discountToSave,
           totalShippingPrice,
-          totalTax,
           totalLineItemsPrice, 
           totalDiscounts,
           subtotalPrice,
@@ -291,10 +320,11 @@ async function handleBodyPOSTAsync(userId, req, res) {
         const {id: orderId} = order;
         output.orderId = orderId;
 
-        await Cart.findOneAndRemove({userId});
-        res.setHeader('Set-Cookie', 'cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
-
+        await Cart.findByIdAndRemove(cart.id);
         await Location.findOneAndUpdate({userId}, {address: data.shippingAddress});
+        await User.findByIdAndUpdate(userId, {discount: 'regular'});
+
+        res.setHeader('Set-Cookie', 'cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
 
         // send alert of new order to admin dashboard
         const response = await fetch(process.env.DOMAIN + '/admin/api/alert/new_order', {method: 'POST',  headers: {
@@ -332,7 +362,6 @@ async function handleBodyPOSTAsync(userId, req, res) {
             orderNumber: order.orderNumber,
             token: order.token,
             totalShippingPrice: order.totalShippingPrice,
-            totalTax: order.totalTax,
             totalLineItemsPrice: order.totalLineItemsPrice,
             totalDiscounts: order.totalDiscounts,
             subtotalPrice: order.subtotalPrice,
@@ -361,6 +390,6 @@ async function handleBodyPOSTAsync(userId, req, res) {
       userErrors: []
     };
   } catch(e) {
-    throw e;
+    return {errors: [{message: e.message}]};
   }
 }

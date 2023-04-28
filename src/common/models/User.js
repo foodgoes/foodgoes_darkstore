@@ -56,6 +56,10 @@ const UserSchema = new Schema({
     isAdmin: {
         type: Boolean,
         default: false
+    },
+    discount: {
+        type: String,
+        default: null
     }
 });
 

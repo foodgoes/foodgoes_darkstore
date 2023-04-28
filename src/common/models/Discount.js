@@ -3,24 +3,7 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const Condition = new Schema({
-    orderCountEqual: Number,
-    totalLineItemsPriceMin: Number,
-    everyDayOfWeek: Number
-});
-Condition.set('toObject', { virtuals: true });
-Condition.set('toJSON', { virtuals: true });
-
-const Rule = new Schema({
-    column: String,
-    relation: String,
-    condition: String
-});
-Rule.set('toObject', { virtuals: true });
-Rule.set('toJSON', { virtuals: true });
-
 const DiscountSchema = new Schema({
-    userIds: [ObjectId],
     title: {
         en: {
             type: String,
@@ -38,34 +21,7 @@ const DiscountSchema = new Schema({
             required: true
         },
     },
-    description: {
-        en: {
-            type: String,
-            maxlength: 660,
-          },
-        he: {
-            type: String,
-            maxlength: 660,
-          },
-        ru: {
-            type: String,
-            maxlength: 660,
-          }
-    },
-    previewDescription: {
-        en: {
-            type: String,
-            maxlength: 660,
-          },
-        he: {
-            type: String,
-            maxlength: 660,
-          },
-        ru: {
-            type: String,
-            maxlength: 660,
-          }
-    },
+    code: String,
     createdAt: {
         type: Date,
         default: Date.now
@@ -88,19 +44,77 @@ const DiscountSchema = new Schema({
         enum: ['active', 'archived', 'draft'],
         default: 'draft'
     },
-    subjectType: {
-        type: String,
-        required: true,
-        enum: ['products', 'shipping'],
-        default: 'products'
+    products: {
+        all: {
+            enabled: {
+                type: Boolean,
+                default: false
+            },
+            percentage: {
+                type: Number,
+                default: 0
+            },
+            excludeProductIds: {
+                type: Array,
+                default: []
+            }
+        },
+        custom: [{
+            productId: ObjectId,
+            percentage: {
+                type: Number,
+                default: 0
+            },
+            amount: {
+                type: Number,
+                min: 0.00,
+                maxlength: 15,
+                default: 0.00
+            },
+            quantity: {
+                type: Number,
+                default: 0
+            },
+            title: {
+                en: {
+                    type: String,
+                    maxlength: 255,
+                    required: true
+                },
+                he: {
+                    type: String,
+                    maxlength: 255,
+                    required: true
+                },
+                ru: {
+                    type: String,
+                    maxlength: 255,
+                    required: true
+                },
+            },
+            isLabel: {
+                type: Boolean,
+                default: false
+            }
+        }]
     },
-    percentage: {
-        type: Number,
-        default: 0
+    shipping: {
+        all: {
+            enabled: {
+                type: Boolean,
+                default: false
+            },
+            percentage: {
+                type: Number,
+                default: 0
+            }
+        }
     },
-    conditions: [Condition],
-    ruleSet: {
-        rules: [Rule]
+    order: {
+        minTotalPrice: {
+            type: Number,
+            default: 0
+        }
     }
 });
 

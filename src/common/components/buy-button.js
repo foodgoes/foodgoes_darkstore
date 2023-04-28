@@ -10,13 +10,12 @@ import MinusSmallSVG from '@/public/icons/minus-small'
 import PlusSmallSVG from '@/public/icons/plus-small'
 
 import { useTranslation } from '@/src/common/hooks/useTranslation';
-
-import Button from './elements/button';
-import Modal from "./elements/modal";
-import Address from "./modals/address";
+import Button from '@/src/common/components/elements/button';
+import Modal from "@/src/common/components/elements/modal";
+import Address from "@/src/common/components/modals/address";
 
 import { logProductIdBeforelocation, logProductIdAfterlocation, selectProductIdBeforelocation ,selectProductIdAfterlocation } from '@/src/features/location/locationSlice';
-import { updateCartAsync } from '@/src/features/cart/cartSlice';
+import { updateCartAsync, checkDiscountCartAsync } from '@/src/features/cart/cartSlice';
 
 export default function BuyButton({disabled, productId, primary=false, secondary=false, size="medium"}) {
     const [activeAddress, setActiveAddress] = useState(false);
@@ -48,6 +47,7 @@ export default function BuyButton({disabled, productId, primary=false, secondary
                 return;
             }
 
+            dispatch(checkDiscountCartAsync());
             dispatch(updateCartAsync({productId, action}));
 
             if (productIdBeforelocation) {
@@ -55,7 +55,6 @@ export default function BuyButton({disabled, productId, primary=false, secondary
                 dispatch(logProductIdAfterlocation(null));
             }
         } catch(e) {
-            console.log(e);
             return;
         }
     };
@@ -65,9 +64,18 @@ export default function BuyButton({disabled, productId, primary=false, secondary
         dispatch(logProductIdBeforelocation(null));
     };
 
+    let content = (
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <Button onClick={() => buy(productId)} size={size}
+                disabled={disabled} secondary={secondary} primary={primary} fullWidth><span>{translate('buy')}</span></Button>
+            </div>
+        </div>
+    );
+
     const productInCart = cart?.products.find(p => p.productId === productId);
     if (productInCart) {
-        return (
+        content = (
             <div className={styles.wrapper}>
                 <div className={styles.container + (size ? ' ' + styles[size] : '')}>
                     <Button onClick={() => buy(productId, 'dec')} secondary>
@@ -82,12 +90,12 @@ export default function BuyButton({disabled, productId, primary=false, secondary
     }
 
     if (disabled) {
-       return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <Button size={size} disabled={disabled} secondary={secondary} fullWidth><span>{translate('notAvailable')}</span></Button>
+       content = (
+            <div className={styles.wrapper}>
+                <div className={styles.container}>
+                    <Button size={size} disabled={disabled} secondary={secondary} fullWidth><span>{translate('notAvailable')}</span></Button>
+                </div>
             </div>
-        </div>
        );
     }
 
@@ -104,12 +112,7 @@ export default function BuyButton({disabled, productId, primary=false, secondary
                 document.body
             )}
 
-            <div className={styles.wrapper}>
-                <div className={styles.container}>
-                    <Button onClick={() => buy(productId)} size={size}
-                    disabled={disabled} secondary={secondary} primary={primary} fullWidth><span>{translate('buy')}</span></Button>
-                </div>
-            </div>
+            {content}
         </>
     );
 }

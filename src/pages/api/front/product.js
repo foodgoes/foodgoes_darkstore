@@ -3,6 +3,9 @@ import dbConnect from '@/src/common/lib/dbConnect';
 import Product from '@/src/common/models/Product';
 import Collection from '@/src/common/models/Collection';
 import Category from '@/src/common/models/Category';
+import Discount from '@/src/common/models/Discount';
+import User from '@/src/common/models/User';
+import {financial} from '@/src/common/utils/utils';
 
 export default withSessionRoute(handler);
 
@@ -10,14 +13,48 @@ async function handler(req, res) {
   try {
     await dbConnect();
 
+    const userId = req.session.user ? req.session.user.id : null;
+
     const {productId} = req.query;
+
+    const labels = [];
+    const breadcrumbs = [];
 
     const product = await Product.findOne({_id: productId, status: 'active'});
     if (!product) {
       throw("not found product");
     }
 
-    const breadcrumbs = [];
+    let compareAtPrice = 0;
+    let price = product.price;
+
+    const user = await User.findById(userId);
+    const discountCode = user ? user.discount : 'new_user';
+
+    const discount = await Discount.findOne(
+      {
+        status: 'active', code: discountCode, 
+        startedAt: {$lt: new Date()}, finishedAt: {$gt: new Date()}
+      }
+    );
+    if (discount) {
+      const custom = discount.products.custom.find(c => c.productId.toString() === product.id);
+      if (custom) {
+        if (custom.isLabel) {
+          labels.push(custom.title);
+        }
+        if (custom.percentage) {
+          compareAtPrice = price;
+          price -= financial(price*custom.percentage/100);
+        }
+      } else if (discount.products.all.enabled) {
+        if (!discount.products.all.excludeProductIds.includes(product.id)) {
+          compareAtPrice = price;
+          price -= financial(price*discount.products.all.percentage/100);
+        }
+      }
+    }
+
     const collection = await Collection.findOne({productIds: product.id});
     if (collection) {
       const category = await Category.findOne({'links.links.subjectId': collection._id, enabled: true});
@@ -60,8 +97,8 @@ async function handler(req, res) {
         image: images.length ? images[0] : null,
         images,
         description: product.description,
-        price: product.price,
-        compareAtPrice: product.compareAtPrice,
+        price,
+        compareAtPrice,
         pricePerUnit: product.pricePerUnit,
         currencyCode: product.currencyCode,
         unit: product.unit,
@@ -75,6 +112,7 @@ async function handler(req, res) {
         shelfLife: product.shelfLife,
         currencyCode: product.currencyCode,
         availableForSale: product.availableForSale,
+        labels
       }
     });
   } catch(e) {

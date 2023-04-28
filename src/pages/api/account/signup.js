@@ -36,7 +36,8 @@ async function handleFormInputAsync(req) {
         throw('error provider');
       }
 
-      const newUser = await User.create({phone, providers: {[provider]: {externalId}}, locale});
+      const discount = 'new_user';
+      const newUser = await User.create({phone, providers: {[provider]: {externalId}}, locale, discount});
 
       if (tokenLocation) {
         await Location.findOneAndUpdate({token: tokenLocation}, {userId: newUser.id}); 

@@ -2,6 +2,8 @@ import { withSessionRoute } from '@/src/common/lib/withSession';
 import dbConnect from '@/src/common/lib/dbConnect';
 import Product from '@/src/common/models/Product';
 import Search from '@/src/common/models/Search';
+import User from '@/src/common/models/User';
+import ResourceProduct from '@/src/common/resources/product';
 
 export default withSessionRoute(handler);
 
@@ -9,7 +11,7 @@ async function handler(req, res) {
   let {q} = req.query;
 
   try {
-    await dbConnect();  
+    await dbConnect();
 
     if (q === null || q === undefined) {
       throw 'invalid query';
@@ -36,33 +38,18 @@ async function handler(req, res) {
     if (!data || !data.length) {
       throw('Empty search');
     }
+
+    const userId = req.session.user ? req.session.user.id : null;
+    const user = await User.findById(userId);
+
+    const discountCode = user ? user.discount : 'new_user';
+
     const productIds = data.reduce((acc, d) => acc.concat(d.productIds), []);
-
     const filterProducts = {status: 'active', availableForSearch: true, '_id': {$in: productIds}};
-    const dataProducts = await Product.find(filterProducts, null, {skip: 0, limit: 35}).sort([['sort', 'asc']]);
-    const products = dataProducts.map(product => {
-      const images = product.images.map(img => ({
-        src: img.src,
-        srcWebp: img.srcWebp,
-        width: img.width,
-        height: img.height,
-        alt: img.alt
-      }));
 
-      return {
-        id: product.id,
-        title: product.title,
-        image: images.length ? images[0] : null,
-        images,
-        price: product.price,
-        compareAtPrice: product.compareAtPrice,
-        brand: product.brand,
-        unit: product.unit,
-        amountPerUnit: product.amountPerUnit,
-        displayAmount: product.displayAmount,
-        availableForSale: product.availableForSale
-      };
-    });
+    const options = {filter: filterProducts, projection: null, options: {skip: 0, limit: 35}, sort: [['availableForSale', 'desc'], ['sort', 'asc']]};
+    const payload = {discountCode};
+    const products = await ResourceProduct(options, payload);
 
     const count = await Product.countDocuments(filterProducts);
 

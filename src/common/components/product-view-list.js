@@ -1,9 +1,10 @@
-import styles from '@/src/styles/ProductViewList.module.css'
 import Image from 'next/image';
-import Link from 'next/link'
-import BuyButton from './buy-button';
+import Link from 'next/link';
+import BuyButton from '@/src/common/components/buy-button';
+import {useRouter} from 'next/router';
 
-import {useRouter} from 'next/router'
+import {financialStr} from '@/src/common/utils/utils';
+import styles from '@/src/styles/ProductViewList.module.css';
 
 export default function ProductViewList({product, disabledBuy=false}) {
     const { locale } = useRouter();
@@ -36,13 +37,13 @@ export default function ProductViewList({product, disabledBuy=false}) {
                     <div className={styles.priceBlock}>
                         {product.compareAtPrice ? (
                             <>
-                                <span className={styles.compareAtPrice}>&#8362;{product.price}</span>
+                                <span className={styles.compareAtPrice}>&#8362;{financialStr(product.price)}</span>
                                 <span className={styles.oldPriceWithLine}>
                                     <span className={styles.oldPrice}>&#8362;{product.compareAtPrice}</span>
                                     <span className={styles.line}></span>
                                 </span>
                             </>
-                        ) : <span className={styles.price}>&#8362;{product.price}</span>}
+                        ) : <span className={styles.price}>&#8362;{financialStr(product.price)}</span>}
                         <span className={styles.weight}> · {product.displayAmount} {product.unit}</span>
                     </div>
                 </div>

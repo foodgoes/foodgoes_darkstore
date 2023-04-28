@@ -25,14 +25,22 @@ export default function Search({categories, search}) {
   )
 }
 
-const getCategories = async () => {
-  const res = await fetch(`${process.env.DOMAIN}/api/front/categories`);
+const getCategories = async (headers) => {
+  const res = await fetch(`${process.env.DOMAIN}/api/front/categories`, {
+    headers: {
+      Cookie: headers.cookie
+    }
+  });
   const categories = await res.json();
 
   return categories;
 };
-const getProductsByQuery = async (query, locale='en') => {
-  const res = await fetch(`${process.env.DOMAIN}/api/front/search?q=${query}&locale=${locale}`);
+const getProductsByQuery = async (query, locale='en', headers) => {
+  const res = await fetch(`${process.env.DOMAIN}/api/front/search?q=${query}&locale=${locale}`, {
+    headers: {
+      Cookie: headers.cookie
+    }
+  });
   return await res.json();
 };
 
@@ -49,8 +57,8 @@ export async function getServerSideProps(context) {
     }
   }
   
-  const categories = await getCategories();
-  const search = text && await getProductsByQuery(text, locale);
+  const categories = await getCategories(context.req.headers);
+  const search = text && await getProductsByQuery(text, locale, context.req.headers);
 
   return { props: { categories, search } };
 }

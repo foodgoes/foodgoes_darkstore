@@ -13,8 +13,9 @@ import Button from '@/src/common/components/elements/button';
 import { withSessionSsr } from '@/src/common/lib/withSession';
 import PaymentMethod from '@/src/common/components/payment-method';
 import DeliveryAddress from '@/src/common/components/delivery-address';
-import { deleteCart } from '@/src/features/cart/cartSlice';
+import { clearCart } from '@/src/features/cart/cartSlice';
 import { updateLocationAddress } from '@/src/features/location/locationSlice';
+import { checkDiscountCartAsync, updateCartAsync } from '@/src/features/cart/cartSlice';
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
@@ -52,12 +53,18 @@ export default function Check() {
 
   const onSubmit = async data => {
     try {
+      const dicountChanged = await dispatch(checkDiscountCartAsync()).unwrap();
+      if (dicountChanged) {
+        dispatch(updateCartAsync());
+        return;
+      }
+
       const {order} = await createOrderAPI(data);
       if (!order) {
         throw('Error create order.');
       }
 
-      dispatch(deleteCart());
+      dispatch(clearCart());
       dispatch(updateLocationAddress(data.shippingAddress));
 
       router.push({pathname: '/check/success', query: {orderId: order.id}}, undefined, { locale: router.locale });

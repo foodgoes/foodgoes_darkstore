@@ -107,7 +107,7 @@ export default function Success() {
                     <ul className={styles.totalUl}>
                       <li>
                         <span>{translate('products')}</span>
-                        <span className={styles.ttlInt}>&#8362;{order.totalLineItemsPrice}</span>
+                        <span className={styles.ttlInt}>&#8362;{order.subtotalPrice}</span>
                       </li>
                       <li>
                         <span>{translate('delivery')}</span>

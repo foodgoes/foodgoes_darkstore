@@ -60,7 +60,7 @@ async function handler(req, res) {
         lineItems,
         shippingAddress,
         totalShippingPrice: order.totalShippingPrice,
-        totalLineItemsPrice: order.totalLineItemsPrice,
+        subtotalPrice: order.subtotalPrice,
         totalPrice: order.totalPrice
       }
     });

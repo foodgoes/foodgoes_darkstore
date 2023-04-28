@@ -11,7 +11,7 @@ import Modal from '@/src/common/components/elements/modal';
 import ProductViewList from '@/src/common/components/product-view-list';
 import Total from '@/src/common/components/total';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
-import { deleteCart } from '@/src/features/cart/cartSlice';
+import { deleteCartAsync } from '@/src/features/cart/cartSlice';
 import TrashSVG from '@/public/icons/trash';
 import ArrowLeftSVG from '@/public/icons/arrow-left';
 import Login from '@/src/common/components/login/login';
@@ -42,13 +42,8 @@ export default function Cart() {
   }, [callingEventAfterLogin, dispatch]);
 
   const clearCart = async () => {
-    await deleteCartAPI();
-    dispatch(deleteCart());
+    dispatch(deleteCartAsync(cart.id));
   };
-  const deleteCartAPI = async () => {
-    const res = await fetch('/api/front/cart?id=' + cart.id, {method: 'DELETE',  headers: {'Content-Type': 'application/json'}});
-    return await res.json();
-  }
 
   const goToPayment = () => {
     try {

@@ -149,7 +149,7 @@
     width: 100%;
 }
 
-.postionImage {
+.positionImage {
     bottom: 0;
     left: 0;
     overflow: hidden;
@@ -160,4 +160,43 @@
 .image {
     height: 100%;
     width: 100%;
+}
+.labels {
+    position: absolute;
+    transform: rotate(-3deg);
+    transform-origin: top left;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+}
+.labels li {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+.labels li div {
+    background-color: rgb(252, 82, 48);
+    border-radius: 5px;
+    height: 17px;
+    padding: 0 4px;
+    align-items: center;
+    display: flex;
+    line-height: 0;
+    width: fit-content;
+}
+.labels li span {
+    display: inline-block;
+    font-size: 10px;
+    line-height: 17px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 700;
+    color: #fff;
 }

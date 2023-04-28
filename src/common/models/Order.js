@@ -3,23 +3,8 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const Condition = new Schema({
-    orderCountEqual: Number,
-    totalLineItemsPriceMin: Number,
-    everyDayOfWeek: Number
-});
-Condition.set('toObject', { virtuals: true });
-Condition.set('toJSON', { virtuals: true });
-
-const Rule = new Schema({
-    column: String,
-    relation: String,
-    condition: String
-});
-Rule.set('toObject', { virtuals: true });
-Rule.set('toJSON', { virtuals: true });
-
 const Discount = new Schema({
+    discountId: ObjectId,
     title: {
         en: {
             type: String,
@@ -37,41 +22,17 @@ const Discount = new Schema({
             required: true
         },
     },
-    description: {
-        en: {
-            type: String,
-            maxlength: 660,
-          },
-        he: {
-            type: String,
-            maxlength: 660,
-          },
-        ru: {
-            type: String,
-            maxlength: 660,
-          }
+    code: String,
+    startedAt: {
+        type: Date,
+        default: Date.now
     },
-    previewDescription: {
-        en: {
-            type: String,
-            maxlength: 660,
-          },
-        he: {
-            type: String,
-            maxlength: 660,
-          },
-        ru: {
-            type: String,
-            maxlength: 660,
-          }
-    },
-    ruleSet: {
-        rules: [Rule]
-    },
-    percentage: Number,
-    subjectType: String,
-    conditions: [Condition]
+    finishedAt: {
+        type: Date,
+        default: Date.now
+    }
 });
+
 Discount.set('toObject', { virtuals: true });
 Discount.set('toJSON', { virtuals: true });
 
@@ -155,12 +116,6 @@ const LineItem = new Schema({
         default: 0.00
     },
     price: {
-        type: Number,
-        min: 0.00,
-        maxlength: 15,
-        default: 0.00
-    },
-    compareAtPrice: {
         type: Number,
         min: 0.00,
         maxlength: 15,
@@ -274,7 +229,7 @@ const OrderSchema = new Schema({
     lineItems: [LineItem],
     shippingAddress: ShippingAddress,
     paymentDetails: PaymentDetails,
-    discounts: [Discount],
+    discount: Discount,
     cancelReason: {
         type: String,
         enum: ['customer', 'fraud', ' inventory', 'declined', 'other', null],

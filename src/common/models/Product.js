@@ -88,12 +88,6 @@ const ProductSchema = new Schema({
         maxlength: 15,
         default: 0.00
     },
-    compareAtPrice: {
-        type: Number,
-        min: 0.00,
-        maxlength: 15,
-        default: 0.00
-    },
     pricePerUnit: {
         type: Number,
         min: 0.00,
