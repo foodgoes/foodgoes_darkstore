@@ -1,6 +1,7 @@
 import styles from '@/src/styles/OrderViewCard.module.css';
 import { useTranslation } from '@/src/common/hooks/useTranslation';
 import Link from 'next/link';
+import {financialStr} from '@/src/common/utils/utils';
 
 export default function OrderViewCard({order}) {
     const {translate} = useTranslation();
@@ -14,7 +15,7 @@ export default function OrderViewCard({order}) {
                     <h2 className={styles.date}>{date}</h2>
                     <Link className={styles.link} href={'/check/success?orderId='+order.id+'&from=history'}></Link>
                     <div className={styles.priceAndAddress}>
-                        <span>&#8362;{order.totalPrice}</span>
+                        <span>&#8362;{financialStr(order.totalPrice)}</span>
                         <span> · </span>
                         <span>{order.shippingAddress.address1}</span>
                     </div>
