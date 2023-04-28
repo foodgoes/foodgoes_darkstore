@@ -91,7 +91,10 @@ async function handleBodyPOSTAsync(req, res) {
                 totalDiscounts += price*quantity*custom.percentage/100;
               }
               if (custom.amount) {
-                totalDiscounts += custom.amount*quantity;
+                const q = quantity % custom.quantity === 0 ? quantity : quantity - 1;
+                if (q) {
+                  totalDiscounts += custom.amount*(q/custom.quantity); 
+                }
               }
             } else if (discount.products.all.enabled) {
               if (!discount.products.all.excludeProductIds.includes(productId)) {
