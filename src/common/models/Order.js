@@ -251,6 +251,10 @@ const OrderSchema = new Schema({
         type: Boolean,
         default: false
     },
+    currency: {
+        type: String,
+        default: 'ILS'
+    }
 });
 
 OrderSchema.set('toObject', { virtuals: true });
