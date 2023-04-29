@@ -5,6 +5,7 @@ import styles from '@/src/styles/Home.module.css'
 import Sidebar from '@/src/common/components/sidebar'
 import Catalog from '@/src/common/components/catalog';
 import Banners from '@/src/common/components/banners';
+import Alerts from '@/src//common/components/alerts';
 
 export default function Home({categories, products}) {
   const {translate} = useTranslation();
@@ -20,6 +21,7 @@ export default function Home({categories, products}) {
 
         <div className={styles.main}>
           <Banners />
+          <Alerts />
           <Catalog products={products} />
         </div>
       </div>

@@ -20,7 +20,6 @@ async function handler(req, res) {
 
     res.status(200).json(banners);
   } catch(e) {
-    console.log(e);
-    res.status(200).json(null);
+    res.status(200).json([]);
   }
 }

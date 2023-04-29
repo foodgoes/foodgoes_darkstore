@@ -44,7 +44,7 @@ export default function Navbar() {
             <DiscountChanged />
         </Modal>,
         document.body
-    )}
+      )}
 
       <div className={styles.header}>
         <div className={styles.logoMenu}>
