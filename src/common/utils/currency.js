@@ -1,5 +1,5 @@
 export function getPrice(x) {
-    return +Number.parseFloat(x).toFixed(1);
+    return +Number.parseFloat(x).toFixed(2);
 }
 
 export function getPriceFormat(x) {
