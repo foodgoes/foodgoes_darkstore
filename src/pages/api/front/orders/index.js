@@ -352,7 +352,7 @@ async function handleBodyPOSTAsync(userId, req, res) {
           const {orderId} = data;
           const {userId} = payload;
 
-          const order = await Order.findOne({orderId, userId});
+          const order = await Order.findOne({_id: orderId, userId});
           if (!order) {
             throw(new Error('Order not found'));
           }
